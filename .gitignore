@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+_shots/
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.html.gz
