@@ -14,7 +14,7 @@ export const STRINGS = {
     "home.intro1":
       "Somos PEHUER. Construimos software para el posicionamiento en la superficie lunar, sobre la infraestructura de navegación y comunicaciones en despliegue.",
     "home.intro2":
-      "Sostenemos el servicio con el Marco Cuantitativo: describimos cómo se estima una posición lunar y cómo se cuantifica el riesgo de esa estimación. La estadística que ya maduró en las finanzas cuantitativas —factores de riesgo y medición de cola— es complementaria a la navegación lunar.",
+      "Sostenemos el servicio con el Marco Cuantitativo: describimos cómo se estima una posición lunar y cómo se cuantifica el riesgo de esa estimación. La estadística que ya maduró en las finanzas cuantitativas es complementaria a la navegación lunar.",
     "home.intro3":
       "Sobre la infraestructura de comunicaciones y navegación que despliegan las agencias, aportamos dos capacidades que aún no existen como producto independiente: una corrección de red que aísla y descuenta el error sistemático compartido entre activos, y la traducción de esa precisión a un veredicto operativo de riesgo, con el criterio de medición propio de los mercados financieros.",
     "home.aims": "Objetivo",
@@ -118,7 +118,7 @@ export const STRINGS = {
     "home.intro1":
       "We are PEHUER. We build software for positioning on the lunar surface, on the navigation and communications infrastructure now being deployed.",
     "home.intro2":
-      "We underpin the service with the Quantitative Framework: we describe how a lunar position is estimated and how the risk of that estimate is quantified. Statistics that already matured in quantitative finance — risk factors and tail measurement — complement lunar navigation.",
+      "We underpin the service with the Quantitative Framework: we describe how a lunar position is estimated and how the risk of that estimate is quantified. Statistics that already matured in quantitative finance complement lunar navigation.",
     "home.intro3":
       "On the communications and navigation infrastructure deployed by the agencies, we provide two capabilities that do not yet exist as a standalone product: a network correction that isolates and subtracts the systematic error shared among assets, and the translation of that precision into an operational risk verdict, with the measurement criteria of financial markets.",
     "home.aims": "Purpose",
