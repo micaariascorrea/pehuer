@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PEHUER — Software para posicionamiento lunar</title>
-  <meta name="description" content="PEHUER construye software para el posicionamiento en la superficie lunar. Desde Argentina." />
+  <meta name="description" content="Somos PEHUER. Construimos software para el posicionamiento en la superficie lunar. Desde Argentina." />
   <link rel="icon" href="assets/mark.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,32 +27,36 @@
           <img src="assets/mark.png" alt="" />
           <span class="brand-name">PEHUER</span>
         </div>
-        <nav class="tabs" aria-label="Secciones">
+        <nav class="tabs" aria-label="Secciones" data-i18n-aria="nav.sections">
           <button class="tab is-active" data-tab="home" type="button">
             <span class="tab-ear left"></span>
             <img class="tab-icon" src="assets/mark.png" alt="" />
-            <span class="tab-label">Home</span>
+            <span class="tab-label" data-i18n="nav.home">Home</span>
             <span class="tab-ear right"></span>
           </button>
           <button class="tab" data-tab="sistema" type="button">
             <span class="tab-ear left"></span>
             <img class="tab-icon" src="assets/mark.png" alt="" />
-            <span class="tab-label">Sistema</span>
+            <span class="tab-label" data-i18n="nav.sistema">Sistema</span>
             <span class="tab-ear right"></span>
           </button>
           <button class="tab" data-tab="moon" type="button">
             <span class="tab-ear left"></span>
             <img class="tab-icon" src="assets/mark.png" alt="" />
-            <span class="tab-label">Moon</span>
+            <span class="tab-label" data-i18n="nav.moon">Moon</span>
             <span class="tab-ear right"></span>
           </button>
           <button class="tab" data-tab="contacto" type="button">
             <span class="tab-ear left"></span>
             <img class="tab-icon" src="assets/mark.png" alt="" />
-            <span class="tab-label">Contacto</span>
+            <span class="tab-label" data-i18n="nav.contacto">Contacto</span>
             <span class="tab-ear right"></span>
           </button>
         </nav>
+        <div class="lang" role="group" aria-label="Idioma" data-i18n-aria="nav.lang">
+          <button type="button" class="lang-btn is-on" data-set-lang="es" aria-pressed="true">ES</button>
+          <button type="button" class="lang-btn" data-set-lang="en" aria-pressed="false">EN</button>
+        </div>
       </div>
       <div class="chrome-accent"></div>
     </header>
@@ -68,69 +72,69 @@
         <div class="page">
           <article class="intro">
             <h1 class="name-pehuer">PEHUER</h1>
-            <p>PEHUER construye software para el posicionamiento en la superficie lunar, sobre la infraestructura de navegación y comunicaciones en despliegue.</p>
-            <p>El Marco Cuantitativo sostiene el servicio: describe cómo se estima una posición lunar y cómo se cuantifica el riesgo de esa estimación. La estadística que ya maduró en las finanzas cuantitativas —factores de riesgo y medición de cola— es complementaria a la navegación lunar.</p>
-            <p>Sobre la infraestructura de comunicaciones y navegación que despliegan las agencias, PEHUER aporta dos capacidades que aún no existen como producto independiente: una corrección de red que aísla y descuenta el error sistemático compartido entre activos, y la traducción de esa precisión a un veredicto operativo de riesgo, con el criterio de medición propio de los mercados financieros.</p>
+            <p data-i18n="home.intro1">Somos PEHUER. Construimos software para el posicionamiento en la superficie lunar, sobre la infraestructura de navegación y comunicaciones en despliegue.</p>
+            <p data-i18n="home.intro2">Sostenemos el servicio con el Marco Cuantitativo: describimos cómo se estima una posición lunar y cómo se cuantifica el riesgo de esa estimación. La estadística que ya maduró en las finanzas cuantitativas —factores de riesgo y medición de cola— es complementaria a la navegación lunar.</p>
+            <p data-i18n="home.intro3">Sobre la infraestructura de comunicaciones y navegación que despliegan las agencias, aportamos dos capacidades que aún no existen como producto independiente: una corrección de red que aísla y descuenta el error sistemático compartido entre activos, y la traducción de esa precisión a un veredicto operativo de riesgo, con el criterio de medición propio de los mercados financieros.</p>
           </article>
 
           <div class="aims">
-            <p class="kicker aims-kicker">Objetivo</p>
+            <p class="kicker aims-kicker" data-i18n="home.aims">Objetivo</p>
             <article class="obj">
               <div class="obj-n">01</div>
-              <h3>Estimación de posición</h3>
-              <p>Fusiona las fuentes disponibles a lo largo del tiempo y modela la estructura del error, incluido el componente compartido entre activos cercanos.</p>
+              <h3 data-i18n="home.obj1.title">Estimación de posición</h3>
+              <p data-i18n="home.obj1.body">Fusionamos las fuentes disponibles a lo largo del tiempo y modelamos la estructura del error, incluido el componente compartido entre activos cercanos.</p>
             </article>
             <article class="obj">
               <div class="obj-n">02</div>
-              <h3>Veredicto de riesgo</h3>
-              <p>Traduce esa lectura a un veredicto sobre esta posición: dentro del margen de riesgo o fuera del margen de riesgo, para quien autoriza la operación.</p>
+              <h3 data-i18n="home.obj2.title">Veredicto de riesgo</h3>
+              <p data-i18n="home.obj2.body">Traducimos esa lectura a un veredicto sobre esta posición: RIESGO ACEPTABLE o RIESGO EXCEDIDO. El umbral es parametrizable por cada cliente.</p>
             </article>
           </div>
 
           <div class="roadmap">
-            <p class="kicker">Hoja de ruta</p>
-            <h2>Roadmap</h2>
+            <p class="kicker" data-i18n="home.roadmap.kicker">Hoja de ruta</p>
+            <h2 data-i18n="home.roadmap.title">Roadmap</h2>
             <div class="rail">
               <article class="step">
                 <div class="step-n">01</div>
                 <div>
-                  <h3>Simulador</h3>
-                  <p>Entorno de simulación para universidades y otros proyectos que ensayan la capa de posición.</p>
+                  <h3 data-i18n="home.step1.title">Simulador</h3>
+                  <p data-i18n="home.step1.body">Brindamos un entorno de simulación para universidades y otros proyectos que ensayan la capa de posición.</p>
                 </div>
               </article>
               <article class="step">
                 <div class="step-n">02</div>
                 <div>
-                  <h3>Sistema PEHUER</h3>
-                  <p>Entrega operativa del software a clientes: estimación, incertidumbre y veredicto.</p>
+                  <h3 data-i18n="home.step2.title">Sistema PEHUER</h3>
+                  <p data-i18n="home.step2.body">Entregamos el software a clientes: estimación, incertidumbre y veredicto.</p>
                 </div>
               </article>
               <article class="step">
                 <div class="step-n">03</div>
                 <div>
-                  <h3>Balizas en la Luna</h3>
-                  <p>Despliegue lunar de balizas para mejorar la precisión del sistema.</p>
+                  <h3 data-i18n="home.step3.title">Balizas en la Luna</h3>
+                  <p data-i18n="home.step3.body">Desplegamos balizas en la Luna para mejorar la precisión del sistema.</p>
                 </div>
               </article>
               <article class="step">
                 <div class="step-n">04</div>
                 <div>
-                  <h3>Simulador Marte</h3>
-                  <p>Extensión del entorno de simulación al caso marciano.</p>
+                  <h3 data-i18n="home.step4.title">Simulador Marte</h3>
+                  <p data-i18n="home.step4.body">Extendemos el entorno de simulación al caso marciano.</p>
                 </div>
               </article>
               <article class="step">
                 <div class="step-n">05</div>
                 <div>
-                  <h3>Balizas con cámaras</h3>
-                  <p>Evolución de la red de balizas con captura visual de apoyo al posicionamiento.</p>
+                  <h3 data-i18n="home.step5.title">Balizas con cámaras</h3>
+                  <p data-i18n="home.step5.body">Evolucionamos la red de balizas con captura visual de apoyo al posicionamiento.</p>
                 </div>
               </article>
               <article class="step">
                 <div class="step-n">06</div>
                 <div>
-                  <h3>Balizas en Marte</h3>
-                  <p>Expansión de la misma lógica de red más allá de la Luna.</p>
+                  <h3 data-i18n="home.step6.title">Balizas en Marte</h3>
+                  <p data-i18n="home.step6.body">Expandimos la misma lógica de red más allá de la Luna.</p>
                 </div>
               </article>
             </div>
@@ -140,36 +144,36 @@
 
       <section id="panel-sistema" class="panel" data-panel="sistema">
         <div class="page sys-hero">
-          <h1>Sistema PEHUER</h1>
-          <p class="lede">Proveemos una lectura de posicionamiento estructurada: dónde está el activo, con qué margen y con qué veredicto de riesgo.</p>
+          <h1 data-i18n="sys.title">Sistema PEHUER</h1>
+          <p class="lede" data-i18n="sys.lede">Proveemos una lectura de posicionamiento estructurada: dónde está el activo, con qué margen y con qué veredicto de riesgo.</p>
 
           <div class="sys-grid">
             <article class="sys-block">
-              <h3>Posición estimada</h3>
-              <p>Una estimación de dónde está el activo, en el marco de referencia declarado, a partir de las observaciones disponibles.</p>
+              <h3 data-i18n="sys.pos.title">Posición estimada</h3>
+              <p data-i18n="sys.pos.body">Estimamos dónde está el activo, en el marco de referencia declarado, a partir de las observaciones disponibles.</p>
             </article>
             <article class="sys-block">
-              <h3>Incertidumbre</h3>
-              <p>El margen con el que la operación trabaja sobre esa estimación: una lectura de confianza para decidir.</p>
+              <h3 data-i18n="sys.unc.title">Incertidumbre</h3>
+              <p data-i18n="sys.unc.body">Brindamos el margen con el que la operación trabaja sobre esa estimación: una lectura de confianza para decidir.</p>
             </article>
             <article class="sys-block">
-              <h3>Veredicto</h3>
-              <p>Dentro del margen de riesgo o fuera del margen de riesgo, sobre esta posición, frente al límite de alerta que declara el cliente.</p>
+              <h3 data-i18n="sys.ver.title">Veredicto</h3>
+              <p data-i18n="sys.ver.body">RIESGO ACEPTABLE o RIESGO EXCEDIDO, sobre esta posición. El umbral es parametrizable por cada cliente.</p>
             </article>
             <article class="sys-block">
-              <h3>Observaciones</h3>
-              <p>El sistema admite las mediciones y las efemérides de trabajo que el integrador ya opera.</p>
+              <h3 data-i18n="sys.obs.title">Observaciones</h3>
+              <p data-i18n="sys.obs.body">Admitimos las mediciones y las efemérides de trabajo que el integrador ya opera.</p>
             </article>
             <article class="sys-block wide">
-              <p class="kicker">APIs</p>
-              <h3>Una API por cada objetivo</h3>
+              <p class="kicker" data-i18n="sys.api.kicker">APIs</p>
+              <h3 data-i18n="sys.api.title">Brindamos una API por cada objetivo</h3>
               <ul class="api-list">
-                <li>API de estimación de posición</li>
-                <li>API de incertidumbre</li>
-                <li>API de riesgo de la lectura</li>
-                <li>API de veredicto de margen de riesgo</li>
-                <li>API de ingestión de observaciones</li>
-                <li>API de marco de referencia y época</li>
+                <li data-i18n="sys.api.1">API de estimación de posición</li>
+                <li data-i18n="sys.api.2">API de incertidumbre</li>
+                <li data-i18n="sys.api.3">API de riesgo de la lectura</li>
+                <li data-i18n="sys.api.4">API de veredicto de riesgo</li>
+                <li data-i18n="sys.api.5">API de ingestión de observaciones</li>
+                <li data-i18n="sys.api.6">API de marco de referencia y época</li>
               </ul>
             </article>
           </div>
@@ -178,10 +182,10 @@
 
       <section id="panel-moon" class="panel panel-moon" data-panel="moon">
         <aside class="moon-side">
-          <h2>Referencias</h2>
-          <p class="hint">Solo seis misiones tripuladas alunizaron (Apollo 11, 12, 14, 15, 16 y 17). El resto son robóticas. Órbitas y lugares indican su fuente.</p>
+          <h2 data-i18n="moon.title">Referencias</h2>
+          <p class="hint" data-i18n="moon.hint">Solo seis misiones tripuladas alunizaron (Apollo 11, 12, 14, 15, 16 y 17). El resto son robóticas. Órbitas y lugares indican su fuente.</p>
           <div class="search-wrap">
-            <input id="ref-search" type="search" placeholder="Buscar cráter, misión, órbita, IBM…" autocomplete="off" />
+            <input id="ref-search" type="search" placeholder="Buscar cráter, misión, órbita, IBM…" data-i18n-placeholder="moon.search" autocomplete="off" />
           </div>
           <div class="ref-meta" id="ref-count"></div>
           <div class="ref-list" id="ref-list"></div>
@@ -189,7 +193,7 @@
         <div class="moon-stage">
           <div class="moon-loader" id="moon-loader">
             <img src="assets/mark.png" alt="" />
-            <p id="moon-loader-text">Cargando globo lunar…</p>
+            <p id="moon-loader-text" data-i18n="moon.loading">Cargando globo lunar…</p>
           </div>
           <div class="moon-status" id="moon-status"></div>
           <div class="moon-tip" id="moon-tip" hidden>
@@ -203,7 +207,7 @@
             <p class="moon-tip-fuente" hidden></p>
             <p class="moon-tip-detalle" hidden></p>
           </div>
-          <canvas id="moon-canvas" aria-label="Globo 3D de la Luna"></canvas>
+          <canvas id="moon-canvas" aria-label="Globo 3D de la Luna" data-i18n-aria="moon.canvas"></canvas>
         </div>
       </section>
 
@@ -212,19 +216,19 @@
           <div class="contact-card">
             <img class="mark" src="assets/mark.png" alt="PEHUER" />
             <h1 class="name-pehuer">PEHUER</h1>
-            <p class="tag">Software para posicionamiento lunar.</p>
+            <p class="tag" data-i18n="contact.tag">Brindamos software para posicionamiento lunar.</p>
             <a class="ig" href="https://www.instagram.com/pehuer.space/" target="_blank" rel="noopener noreferrer">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7zm11.2 1.3a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1zM12 8.2A3.8 3.8 0 1 1 8.2 12 3.8 3.8 0 0 1 12 8.2zm0 2a1.8 1.8 0 1 0 1.8 1.8A1.8 1.8 0 0 0 12 10.2z"/></svg>
               @pehuer.space
             </a>
-            <p class="contact-foot">Desde Argentina</p>
+            <p class="contact-foot" data-i18n="contact.from">Desde Argentina</p>
           </div>
         </div>
       </section>
     </main>
     <footer class="site-footer">
-      <p class="copy">© 2026 PEHUER SPACE. Todos los derechos reservados.</p>
-      <a class="footer-contact" href="https://www.instagram.com/pehuer.space/" target="_blank" rel="noopener noreferrer">Contacto · @pehuer.space</a>
+      <p class="copy" data-i18n="footer.copy">© 2026 PEHUER SPACE. Todos los derechos reservados.</p>
+      <a class="footer-contact" href="https://www.instagram.com/pehuer.space/" target="_blank" rel="noopener noreferrer" data-i18n="contact.footer">Contacto · @pehuer.space</a>
       <span class="ar-flag" title="Argentina" aria-label="Argentina">
         <svg viewBox="0 0 18 12" width="18" height="12" aria-hidden="true">
           <rect width="18" height="12" fill="#74acdf"/>

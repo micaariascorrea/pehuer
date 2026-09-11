@@ -11,8 +11,34 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-HOST = "127.0.0.1"
+HOST = os.environ.get("PEHUER_HOST", "0.0.0.0")
 PORT = int(os.environ.get("PEHUER_PORT", "8765"))
+
+
+def lan_urls(port: int) -> list[str]:
+    urls: list[str] = []
+    seen: set[str] = set()
+    try:
+        hostname = socket.gethostname()
+        for info in socket.getaddrinfo(hostname, None, socket.AF_INET, socket.SOCK_STREAM):
+            ip = info[4][0]
+            if ip.startswith("127.") or ip in seen:
+                continue
+            seen.add(ip)
+            urls.append("http://%s:%s/" % (ip, port))
+    except OSError:
+        pass
+    if not urls:
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.connect(("8.8.8.8", 80))
+            ip = sock.getsockname()[0]
+            sock.close()
+            if not ip.startswith("127."):
+                urls.append("http://%s:%s/" % (ip, port))
+        except OSError:
+            pass
+    return urls
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -57,15 +83,17 @@ def main():
     try:
         httpd = Server((HOST, PORT), Handler)
     except OSError as exc:
-        print("No se pudo abrir http://%s:%s/" % (HOST, PORT))
+        print("No se pudo abrir el puerto %s." % PORT)
         print("El puerto ya está en uso. Cerrá la otra ventana de PEHUER (Ctrl+C) y volvé a correr iniciar.bat.")
         print(exc)
         sys.exit(1)
-    url = "http://%s:%s/" % (HOST, PORT)
-    print("PEHUER  ->  " + url)
+    local_url = "http://127.0.0.1:%s/" % PORT
+    print("PEHUER  ->  " + local_url)
+    for lan in lan_urls(PORT):
+        print("Celular (misma Wi-Fi)  ->  " + lan)
     print("Ctrl+C para salir.")
     try:
-        webbrowser.open(url)
+        webbrowser.open(local_url)
     except Exception:
         pass
     try:

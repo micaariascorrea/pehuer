@@ -98,8 +98,7 @@ img { max-width: 100%; display: block; }
   gap: 0;
   flex: 1;
   min-width: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .tab {
@@ -108,9 +107,9 @@ img { max-width: 100%; display: block; }
   align-items: center;
   gap: 8px;
   height: var(--tab-h);
-  min-width: 132px;
+  min-width: 0;
   max-width: 220px;
-  flex: 1 1 160px;
+  flex: 1 1 0;
   margin: 0 -7px;
   padding: 0 22px 0 20px;
   border: 0;
@@ -192,6 +191,40 @@ img { max-width: 100%; display: block; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.lang {
+  display: flex;
+  align-items: stretch;
+  align-self: center;
+  flex-shrink: 0;
+  height: 26px;
+  margin: 0 4px 8px 0;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.lang-btn {
+  border: 0;
+  background: transparent;
+  color: var(--cream-mute);
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 0 9px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.lang-btn:hover {
+  color: var(--cream);
+}
+
+.lang-btn.is-on {
+  background: var(--pink);
+  color: var(--navy);
 }
 
 .chrome-accent {
@@ -924,11 +957,57 @@ h2 {
   .lockup { gap: 14px; }
   .panel-moon.is-active { flex-direction: column; height: calc(100vh - var(--chrome-h) - 44px); }
   .moon-side { width: 100%; min-width: 0; max-height: 42%; }
-  .tab { min-width: 108px; flex: 1 1 108px; padding: 0 10px; }
+  .tab {
+    min-width: 0;
+    flex: 1 1 0;
+    max-width: none;
+    padding: 0 8px;
+    margin: 0 -4px;
+    gap: 0;
+    font-size: 12px;
+  }
+  .tab-icon { display: none; }
   .brand-name { display: none; }
+  .brand { padding: 0 10px 8px 2px; margin-right: 0; }
   .site-footer {
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .chrome-top {
+    padding: 6px 4px 0 6px;
+    gap: 4px;
+  }
+  .brand {
+    padding: 0 8px 8px 0;
+    border-right: 0;
+  }
+  .brand img {
+    width: 22px;
+    height: 22px;
+  }
+  .tab {
+    padding: 0 3px;
+    margin: 0 -2px;
+    font-size: 10.5px;
+  }
+  .tab.is-active::after {
+    left: 8px;
+    right: 8px;
+  }
+  .tab-label {
+    overflow: visible;
+    text-overflow: clip;
+  }
+  .lang {
+    height: 24px;
+    margin: 0 2px 8px 0;
+  }
+  .lang-btn {
+    padding: 0 7px;
+    font-size: 9px;
   }
 }

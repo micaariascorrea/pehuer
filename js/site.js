@@ -1,4 +1,16 @@
+import { apply, setLang, t, locale } from "./i18n.js";
 import { createMoonGlobe } from "./moon-globe.js";
+
+apply();
+document.querySelectorAll("[data-set-lang]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    setLang(btn.getAttribute("data-set-lang"));
+    renderList();
+    if (loaderText && loader && !loader.classList.contains("is-hide") && !moonReady) {
+      loaderText.textContent = t("moon.loading");
+    }
+  });
+});
 
 const TABS = ["home", "sistema", "moon", "contacto"];
 
@@ -60,10 +72,10 @@ function matches(r, q) {
 }
 
 function kindLabel(r) {
-  if (r.kind === "mision") return r.tripulada ? "Misión tripulada" : "Misión no tripulada";
-  if (r.kind === "orbita") return "Órbita";
-  if (r.kind === "dato") return "Capa de datos";
-  return "Lugar";
+  if (r.kind === "mision") return r.tripulada ? t("moon.kind.crew") : t("moon.kind.uncrewed");
+  if (r.kind === "orbita") return t("moon.kind.orbita");
+  if (r.kind === "dato") return t("moon.kind.dato");
+  return t("moon.kind.lugar");
 }
 
 function renderList() {
@@ -71,8 +83,8 @@ function renderList() {
   filtered = q ? refs.filter((r) => matches(r, q)) : refs.slice();
 
   countEl.textContent = q
-    ? `${filtered.length} coincidencia${filtered.length === 1 ? "" : "s"}`
-    : `${refs.length} marcas`;
+    ? t(filtered.length === 1 ? "moon.count.one" : "moon.count.many", { n: filtered.length })
+    : t("moon.count.all", { n: refs.length });
 
   if (highlight >= filtered.length) highlight = 0;
 
@@ -109,29 +121,30 @@ function renderList() {
 
 function listMeta(r) {
   if (r.kind === "orbita") {
-    const inc = r.inclinacion != null ? "i = " + String(r.inclinacion).replace(".", ",") + "°" : r.tipo;
+    const loc = locale();
+    const inc = r.inclinacion != null ? "i = " + Number(r.inclinacion).toLocaleString(loc) + "°" : r.tipo;
     const alt =
       r.perilune_km != null && r.apolune_km != null
-        ? r.perilune_km.toLocaleString("es-AR") + " × " + r.apolune_km.toLocaleString("es-AR") + " km"
+        ? r.perilune_km.toLocaleString(loc) + " × " + r.apolune_km.toLocaleString(loc) + " km"
         : r.altitud_km != null
           ? "h ≈ " + r.altitud_km + " km"
           : "";
     const used = r.misiones
-      ? "misiones: " + r.misiones
-      : "clase de órbita (sin misión única)";
-    const src = r.fuente ? "fuente: " + r.fuente : "";
+      ? t("moon.meta.missions", { v: r.misiones })
+      : t("moon.meta.orbitClass");
+    const src = r.fuente ? t("moon.meta.source", { v: r.fuente }) : "";
     return [r.tipo, inc, alt, used, src].filter(Boolean).join(" · ");
   }
   if (r.kind === "mision") {
-    const crew = r.tripulada ? "tripulada" : "no tripulada";
-    const src = r.fuente ? "fuente: " + r.fuente : "";
+    const crew = r.tripulada ? t("moon.meta.crew") : t("moon.meta.uncrewed");
+    const src = r.fuente ? t("moon.meta.source", { v: r.fuente }) : "";
     return [r.agencia || r.tipo, crew, fmtCoord(r), src].filter(Boolean).join(" · ");
   }
   if (r.kind === "dato") {
-    const src = r.fuente ? "fuente: " + r.fuente : "";
+    const src = r.fuente ? t("moon.meta.source", { v: r.fuente }) : "";
     return [r.tipo, r.agencia, r.origen, src].filter(Boolean).join(" · ");
   }
-  const src = r.fuente ? "fuente: " + r.fuente : "";
+  const src = r.fuente ? t("moon.meta.source", { v: r.fuente }) : "";
   return [r.tipo, fmtCoord(r), src].filter(Boolean).join(" · ");
 }
 
@@ -157,12 +170,13 @@ function showStatus(text) {
 
 function statusLabel(r) {
   if (r.kind === "mision") {
-    const crew = r.tripulada ? "Tripulada" : "No tripulada";
-    return r.anio ? `${crew} · ${r.name} · ${r.anio}` : `${crew} · ${r.name}`;
+    const base = t(r.tripulada ? "moon.status.crew" : "moon.status.uncrewed", { name: r.name });
+    return r.anio ? `${base} · ${r.anio}` : base;
   }
-  if (r.kind === "orbita") return `Órbita · ${r.name}`;
+  if (r.kind === "orbita") return t("moon.status.orbit", { name: r.name });
   if (r.kind === "dato") {
-    return r.anio ? `Capa de datos · ${r.name} · ${r.anio}` : `Capa de datos · ${r.name}`;
+    const base = t("moon.status.data", { name: r.name });
+    return r.anio ? `${base} · ${r.anio}` : base;
   }
   return r.name;
 }
@@ -187,7 +201,7 @@ async function startMoon() {
     }
   } catch (err) {
     if (loaderText) {
-      loaderText.textContent = "No se pudo iniciar el globo 3D.";
+      loaderText.textContent = t("moon.fail");
     }
     console.error(err);
   }
@@ -198,7 +212,7 @@ function fly(r) {
   if (!moonReady) {
     pendingFly = r;
     startMoon();
-    showStatus("Preparando el globo…");
+    showStatus(t("moon.preparing"));
     return;
   }
   moon.flyTo(r);
@@ -250,5 +264,5 @@ fetch("data/refs.json")
     if (moon) moon.setRefs(refs);
   })
   .catch(() => {
-    countEl.textContent = "No se pudieron cargar las referencias";
+    countEl.textContent = t("moon.refsFail");
   });

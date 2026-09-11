@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { locale, t } from "./i18n.js";
 
 const RADIUS = 1.85;
 const CAM_DIST = 4.15;
@@ -136,10 +137,11 @@ export function createMoonGlobe(canvas) {
   }
 
   function fmtOrbit(ref) {
-    const inc = ref.inclinacion != null ? "i = " + String(ref.inclinacion).replace(".", ",") + "°" : "";
+    const loc = locale();
+    const inc = ref.inclinacion != null ? "i = " + Number(ref.inclinacion).toLocaleString(loc) + "°" : "";
     let alt = "";
     if (ref.perilune_km != null && ref.apolune_km != null) {
-      alt = ref.perilune_km.toLocaleString("es-AR") + " × " + ref.apolune_km.toLocaleString("es-AR") + " km";
+      alt = ref.perilune_km.toLocaleString(loc) + " × " + ref.apolune_km.toLocaleString(loc) + " km";
     } else if (ref.altitud_km != null) {
       alt = "h ≈ " + ref.altitud_km + " km";
     }
@@ -163,39 +165,39 @@ export function createMoonGlobe(canvas) {
     const kicker =
       ref.kind === "mision"
         ? ref.tripulada
-          ? "misión tripulada"
-          : "misión no tripulada"
+          ? t("moon.kind.crew.lc")
+          : t("moon.kind.uncrewed.lc")
         : ref.kind === "orbita"
-          ? "órbita"
+          ? t("moon.kind.orbita.lc")
           : ref.kind === "dato"
-            ? "capa de datos"
-            : "lugar";
+            ? t("moon.kind.dato.lc")
+            : t("moon.kind.lugar.lc");
     setText(".moon-tip-kicker", kicker, true);
     const title =
       (ref.kind === "mision" || ref.kind === "dato") && ref.anio
         ? ref.name + " · " + ref.anio
         : ref.name;
     tip.querySelector(".moon-tip-name").textContent = title;
-    tip.querySelector(".moon-tip-tipo").textContent = "tipo: " + ref.tipo;
+    tip.querySelector(".moon-tip-tipo").textContent = t("moon.tip.type", { v: ref.tipo });
     const coordEl = tip.querySelector(".moon-tip-coord");
     if (ref.kind === "orbita") {
       coordEl.textContent = fmtOrbit(ref);
     } else {
       coordEl.textContent = fmtCoord(ref);
     }
-    const agencia = ref.agencia ? "agencia: " + ref.agencia : "";
+    const agencia = ref.agencia ? t("moon.tip.agency", { v: ref.agencia }) : "";
     setText(".moon-tip-agencia", agencia, true);
     let misiones = "";
     if (ref.kind === "orbita") {
       misiones = ref.misiones
-        ? "misiones en esta órbita: " + ref.misiones
-        : "clase de órbita (no es una misión)";
+        ? t("moon.tip.missions", { v: ref.misiones })
+        : t("moon.tip.orbitClass");
     }
     setText(".moon-tip-misiones", misiones, true);
     const origenEl = tip.querySelector(".moon-tip-origen");
-    origenEl.textContent = ref.origen ? "origen: " + ref.origen : "";
+    origenEl.textContent = ref.origen ? t("moon.tip.origin", { v: ref.origen }) : "";
     origenEl.hidden = !ref.origen;
-    setText(".moon-tip-fuente", ref.fuente ? "fuente: " + ref.fuente : "", true);
+    setText(".moon-tip-fuente", ref.fuente ? t("moon.tip.source", { v: ref.fuente }) : "", true);
     setText(".moon-tip-detalle", ref.detalle || "", true);
     const stage = canvas.parentElement.getBoundingClientRect();
     let left = clientX - stage.left + 12;
