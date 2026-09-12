@@ -73,16 +73,18 @@ export function createMoonGlobe(canvas, opts = {}) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(interactive ? 42 : 38, 1, 0.08, 40);
   camera.position.set(0.45, 0.12, CAM_DIST * (interactive ? 1 : 1.38));
+  const lookTarget = new THREE.Vector3();
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.06;
-  controls.enablePan = false;
-  controls.minDistance = 2.58;
-  controls.maxDistance = 12;
-  controls.rotateSpeed = 0.55;
-  controls.enabled = interactive;
-  controls.target.set(0, 0, 0);
+  const controls = interactive ? new OrbitControls(camera, renderer.domElement) : null;
+  if (controls) {
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.enablePan = false;
+    controls.minDistance = 2.58;
+    controls.maxDistance = 12;
+    controls.rotateSpeed = 0.55;
+    controls.target.set(0, 0, 0);
+  }
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.07));
   const sun = new THREE.DirectionalLight(0xfff3e4, 3.35);
@@ -95,11 +97,12 @@ export function createMoonGlobe(canvas, opts = {}) {
   const moon = new THREE.Mesh(
     new THREE.SphereGeometry(RADIUS, 192, 96),
     new THREE.MeshStandardMaterial({
-      color: 0x888888,
+      color: 0x111111,
       roughness: 1,
       metalness: 0,
     })
   );
+  moon.visible = false;
   scene.add(moon);
 
   const pins = new Map();
@@ -260,61 +263,55 @@ export function createMoonGlobe(canvas, opts = {}) {
     moon.material.bumpScale = 0.02;
     moon.material.color.set(0xffffff);
     moon.material.needsUpdate = true;
+    moon.visible = true;
+    canvas.parentElement?.classList.add("is-ready");
   }
 
-  const texPromise = Promise.all([
-    new Promise((resolve, reject) => {
-      loader.load(
-        moonMap,
-        (tex) => {
-          applyColor(tex);
-          resolve();
-        },
-        undefined,
-        () => {
-          loader.load(
-            "assets/moon-color.jpg",
-            (tex) => {
-              applyColor(tex);
-              resolve();
-            },
-            undefined,
-            reject
-          );
-        }
-      );
-    }),
-    new Promise((resolve) => {
-      loader.load(
-        "assets/moon-dem.png",
-        (tex) => {
-          tex.colorSpace = THREE.NoColorSpace;
-          tex.anisotropy = maxAniso;
-          moon.material.displacementMap = tex;
-          moon.material.displacementScale = 0.05;
-          moon.material.displacementBias = -0.018;
-          moon.material.needsUpdate = true;
-          resolve();
-        },
-        undefined,
-        () => resolve()
-      );
-    }),
-    new Promise((resolve, reject) => {
-      loader.load(
-        "assets/mark.png?v=5",
-        (tex) => {
-          tex.colorSpace = THREE.SRGBColorSpace;
-          tex.premultiplyAlpha = false;
-          tex.needsUpdate = true;
-          pinTex = tex;
-          resolve();
-        },
-        undefined,
-        reject
-      );
-    }),
-  ]);
+  const colorReady = new Promise((resolve, reject) => {
+    loader.load(
+      moonMap,
+      (tex) => {
+        applyColor(tex);
+        resolve();
+      },
+      undefined,
+      () => {
+        loader.load(
+          "assets/moon-color.jpg",
+          (tex) => {
+            applyColor(tex);
+            resolve();
+          },
+          undefined,
+          reject
+        );
+      }
+    );
+  });
+
+  loader.load("assets/moon-dem.png", (tex) => {
+    tex.colorSpace = THREE.NoColorSpace;
+    tex.anisotropy = maxAniso;
+    moon.material.displacementMap = tex;
+    moon.material.displacementScale = 0.05;
+    moon.material.displacementBias = -0.018;
+    moon.material.needsUpdate = true;
+  });
+
+  const pinReady = new Promise((resolve, reject) => {
+    loader.load(
+      "assets/mark.png?v=5",
+      (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.premultiplyAlpha = false;
+        tex.needsUpdate = true;
+        pinTex = tex;
+        resolve();
+      },
+      undefined,
+      reject
+    );
+  });
 
   let fly = null;
   let selected = null;
@@ -460,7 +457,7 @@ export function createMoonGlobe(canvas, opts = {}) {
         to: dest,
         t: 0,
       };
-      controls.target.set(0, 0, 0);
+      lookAt(0, 0, 0);
       return;
     }
     const look = latLonToVec3(ref.lat, ref.lon, RADIUS);
@@ -477,7 +474,13 @@ export function createMoonGlobe(canvas, opts = {}) {
       t: 0,
       look,
     };
-    controls.target.copy(look.clone().multiplyScalar(0.04));
+    lookAt(look.clone().multiplyScalar(0.04));
+  }
+
+  function lookAt(x, y, z) {
+    if (x && typeof x === "object") lookTarget.copy(x);
+    else lookTarget.set(x, y, z);
+    if (controls) controls.target.copy(lookTarget);
   }
 
   function wideShot() {
@@ -487,7 +490,7 @@ export function createMoonGlobe(canvas, opts = {}) {
       to: new THREE.Vector3(0.45, 0.12, CAM_DIST * 1.38),
       t: 0,
     };
-    controls.target.set(0, 0, 0);
+    lookAt(0, 0, 0);
   }
 
   let paused = false;
@@ -509,9 +512,10 @@ export function createMoonGlobe(canvas, opts = {}) {
       camera.position.lerpVectors(fly.from, fly.to, e);
       if (fly.t >= 1) fly = null;
     } else if (!interactive) {
-      camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), 0.00055);
+      camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), 0.00135);
     }
-    controls.update();
+    if (controls) controls.update();
+    else camera.lookAt(lookTarget);
     renderer.render(scene, camera);
   }
 
@@ -536,12 +540,12 @@ export function createMoonGlobe(canvas, opts = {}) {
 
   sizeToStage();
   tick();
-  texPromise.then(() => {
+  pinReady.then(() => {
     if (pendingRefs) setRefs(pendingRefs);
   });
 
   return {
-    ready: texPromise,
+    ready: colorReady,
     setRefs,
     highlight,
     flyTo,
@@ -552,6 +556,7 @@ export function createMoonGlobe(canvas, opts = {}) {
       cancelAnimationFrame(raf);
       raf = 0;
       ro.disconnect();
+      if (controls) controls.dispose();
       renderer.dispose();
     },
   };

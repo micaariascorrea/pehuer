@@ -325,7 +325,7 @@ function prefersReducedMotion() {
 
 function nextHeroStop() {
   if (!hero) return;
-  const wide = heroStep % 2 === 0;
+  const wide = heroStep % 2 === 1;
   if (wide) {
     if (refs.length) hero.setRefs(tourRefs(true));
     hero.wideShot();
@@ -350,7 +350,7 @@ function setHeroActive(on) {
   }
   clearTimeout(heroTimer);
   if (on && hero && !prefersReducedMotion() && refs.length) {
-    heroTimer = setTimeout(nextHeroStop, 900);
+    nextHeroStop();
   }
 }
 
@@ -360,7 +360,7 @@ async function startHero() {
   try {
     hero = createMoonGlobe(heroCanvas, {
       interactive: false,
-      flyStep: 0.012,
+      flyStep: 0.016,
       zoomIn: 0.9,
       pinScale: 0.14,
     });
@@ -369,7 +369,6 @@ async function startHero() {
     try {
       await hero.ready;
     } catch (_) {}
-    hero.wideShot();
     hero.resize();
     const onHome = document.querySelector('[data-panel="home"]').classList.contains("is-active");
     setHeroActive(onHome);

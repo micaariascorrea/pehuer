@@ -25,7 +25,6 @@ export const STRINGS = {
     "home.obj2.title": "Veredicto de riesgo",
     "home.obj2.body":
       "Traducimos esa lectura a un veredicto sobre esta posición: RIESGO ACEPTABLE o RIESGO EXCEDIDO. El umbral es parametrizable por cada cliente.",
-    "home.roadmap.kicker": "Hoja de ruta",
     "home.roadmap.title": "Roadmap",
     "home.step1.title": "Simulador",
     "home.step1.body":
@@ -69,6 +68,8 @@ export const STRINGS = {
     "sys.api.4": "API de veredicto de riesgo",
     "sys.api.5": "API de ingestión de observaciones",
     "sys.api.6": "API de marco de referencia y época",
+    "sys.net.alt": "Red PEHUER: rover, baliza y módulo en la Luna, satélite de relé y entrega de la lectura en la Tierra.",
+    "sys.net.caption": "Los activos en la Luna operan con PEHUER. Entregamos la lectura en la Tierra.",
     "moon.title": "Referencias",
     "moon.hint":
       "Solo seis misiones tripuladas alunizaron (Apollo 11, 12, 14, 15, 16 y 17). El resto son robóticas. Órbitas y lugares indican su fuente.",
@@ -150,8 +151,7 @@ export const STRINGS = {
       "We fuse the available sources over time and model the structure of the error, including the component shared among nearby assets.",
     "home.obj2.title": "Risk verdict",
     "home.obj2.body":
-      "We translate that reading into a verdict on this position: ACCEPTABLE RISK or EXCEEDED RISK. The threshold is parametrizable for each client.",
-    "home.roadmap.kicker": "Roadmap",
+      "We translate that reading into a verdict on this position: RISK ACCEPTABLE or RISK EXCEEDED. The threshold is parametrizable for each client.",
     "home.roadmap.title": "Roadmap",
     "home.step1.title": "Simulator",
     "home.step1.body":
@@ -183,7 +183,7 @@ export const STRINGS = {
       "We provide the margin the operation works with on that estimate: a confidence reading for the decision.",
     "sys.ver.title": "Verdict",
     "sys.ver.body":
-      "ACCEPTABLE RISK or EXCEEDED RISK, on this position. The threshold is parametrizable for each client.",
+      "RISK ACCEPTABLE or RISK EXCEEDED, on this position. The threshold is parametrizable for each client.",
     "sys.obs.title": "Observations",
     "sys.obs.body":
       "We accept the measurements and working ephemerides the integrator already operates.",
@@ -195,6 +195,8 @@ export const STRINGS = {
     "sys.api.4": "Risk-verdict API",
     "sys.api.5": "Observation-ingest API",
     "sys.api.6": "Reference-frame and epoch API",
+    "sys.net.alt": "PEHUER network: rover, beacon and lander on the Moon, a relay satellite, and the reading delivered on Earth.",
+    "sys.net.caption": "Assets on the Moon operate with PEHUER. We deliver the reading on Earth.",
     "moon.title": "References",
     "moon.hint":
       "Only six crewed missions landed (Apollo 11, 12, 14, 15, 16 and 17). The rest are robotic. Orbits and sites cite their source.",
@@ -296,7 +298,9 @@ export function apply() {
     el.setAttribute("placeholder", t(el.getAttribute("data-i18n-placeholder")));
   });
   document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
-    el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria")));
+    const text = t(el.getAttribute("data-i18n-aria"));
+    el.setAttribute("aria-label", text);
+    if (el.tagName === "IMG") el.setAttribute("alt", text);
   });
   document.querySelectorAll("[data-set-lang]").forEach((btn) => {
     const on = btn.getAttribute("data-set-lang") === lang;
