@@ -491,32 +491,32 @@ h2 {
 .rail {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0 40px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 22px;
 }
 
 .rail::before {
   content: "";
   position: absolute;
-  left: calc(50% - 0.5px);
-  top: 8px;
-  bottom: 8px;
-  width: 1px;
+  left: 18px;
+  right: 18px;
+  top: 18px;
+  height: 1px;
   background: var(--pink-line);
 }
 
 .step {
-  display: grid;
-  grid-template-columns: 36px 1fr;
+  position: relative;
+  display: flex;
+  flex-direction: column;
   gap: 14px;
-  padding: 0 0 28px;
+  padding: 0;
   break-inside: avoid;
 }
 
-.step:nth-child(odd) { padding-right: 28px; }
-.step:nth-child(even) { padding-left: 28px; }
-
 .step-n {
+  position: relative;
+  z-index: 1;
   width: 36px;
   height: 36px;
   border: 1px solid var(--pink);
@@ -1136,8 +1136,6 @@ h2 {
   .api-list,
   .unite-grid { grid-template-columns: 1fr; }
   .rail::before { display: none; }
-  .step:nth-child(odd),
-  .step:nth-child(even) { padding-left: 0; padding-right: 0; }
   .hero { padding: 22px 20px; }
   .hero-cine {
     height: min(62vh, 520px);

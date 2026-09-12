@@ -26,20 +26,18 @@ export const STRINGS = {
     "home.obj2.body":
       "Traducimos esa lectura a un veredicto sobre esta posición: RIESGO ACEPTABLE o RIESGO EXCEDIDO. El umbral es parametrizable por cada cliente.",
     "home.roadmap.title": "Roadmap",
-    "home.step1.title": "Simulador",
+    "home.step1.title": "SDK y APIs",
     "home.step1.body":
-      "Brindamos un entorno de simulación para universidades y otros proyectos que ensayan la capa de posición.",
-    "home.step2.title": "Sistema PEHUER",
-    "home.step2.body": "Entregamos el software a clientes: estimación, incertidumbre y veredicto.",
-    "home.step3.title": "Balizas en la Luna",
-    "home.step3.body": "Desplegamos balizas en la Luna para mejorar la precisión del sistema.",
-    "home.step4.title": "Simulador Marte",
-    "home.step4.body": "Extendemos el entorno de simulación al caso marciano.",
-    "home.step5.title": "Balizas con cámaras",
-    "home.step5.body":
-      "Evolucionamos la red de balizas con captura visual de apoyo al posicionamiento.",
-    "home.step6.title": "Balizas en Marte",
-    "home.step6.body": "Expandimos la misma lógica de red más allá de la Luna.",
+      "Software para integrar en diferentes tipos de misiones. Mejora precisión y tiempo, combinando señales, mapa disponible y datos de riesgo PEHUER.",
+    "home.step2.title": "Simulador",
+    "home.step2.body":
+      "Entorno para diseñar, validar y entrenar misiones lunares previas a la ejecución.",
+    "home.step3.title": "Entorno de Red",
+    "home.step3.body":
+      "Cada activo que usa PEHUER aporta y recibe correcciones cruzadas. La red mejora con cada misión: cuantos más activos, más precisa para todos.",
+    "home.step4.title": "Infraestructura propia",
+    "home.step4.body":
+      "Donde la cobertura no alcance, desplegamos balizas y micro-control bajo demanda. El software abre el camino; el hardware lo consolida.",
     "sys.title": "Servicios PEHUER",
     "tour.30.desc": "Primer alunizaje tripulado, 1969.",
     "tour.80.desc": "Carroll cráter lunar nombrado provisionalmente por la tripulación de Artemis II 2026 en honor a Carroll Taylor Wiseman, la difunta esposa del comandante Reid Wiseman.",
@@ -152,20 +150,18 @@ export const STRINGS = {
     "home.obj2.body":
       "We translate that reading into a verdict on this position: RISK ACCEPTABLE or RISK EXCEEDED. The threshold is parametrizable for each client.",
     "home.roadmap.title": "Roadmap",
-    "home.step1.title": "Simulator",
+    "home.step1.title": "SDK and APIs",
     "home.step1.body":
-      "We provide a simulation environment for universities and other projects rehearsing the position layer.",
-    "home.step2.title": "PEHUER system",
-    "home.step2.body": "We deliver the software to clients: estimate, uncertainty and verdict.",
-    "home.step3.title": "Beacons on the Moon",
-    "home.step3.body": "We deploy lunar beacons to improve the precision of the system.",
-    "home.step4.title": "Mars simulator",
-    "home.step4.body": "We extend the simulation environment to the Martian case.",
-    "home.step5.title": "Beacons with cameras",
-    "home.step5.body":
-      "We evolve the beacon network with visual capture in support of positioning.",
-    "home.step6.title": "Beacons on Mars",
-    "home.step6.body": "We expand the same network logic beyond the Moon.",
+      "Software to integrate into different types of missions. It improves precision and time, combining signals, the available map and PEHUER risk data.",
+    "home.step2.title": "Simulator",
+    "home.step2.body":
+      "Environment to design, validate and train lunar missions before execution.",
+    "home.step3.title": "Network environment",
+    "home.step3.body":
+      "Each asset that uses PEHUER contributes and receives crossed corrections. The network improves with each mission: the more assets, the more precise for everyone.",
+    "home.step4.title": "Own infrastructure",
+    "home.step4.body":
+      "Where coverage does not reach, we deploy beacons and on-demand micro-control. Software opens the path; hardware consolidates it.",
     "sys.title": "PEHUER Services",
     "tour.30.desc": "First crewed lunar landing, 1969.",
     "tour.80.desc": "Carroll, a lunar crater provisionally named by the Artemis II crew in 2026 in honor of Carroll Taylor Wiseman, the late wife of commander Reid Wiseman.",
