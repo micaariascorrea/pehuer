@@ -1,5 +1,6 @@
 import { apply, setLang, t, locale } from "./i18n.js";
 import { createMoonGlobe } from "./moon-globe.js";
+import { createNetworkCine } from "./network-cine.js?v=cine19";
 
 apply();
 document.querySelectorAll("[data-set-lang]").forEach((btn) => {
@@ -33,6 +34,7 @@ const loader = document.getElementById("moon-loader");
 const loaderText = document.getElementById("moon-loader-text");
 const status = document.getElementById("moon-status");
 const heroCanvas = document.getElementById("hero-canvas");
+const cineCanvas = document.getElementById("sys-cine");
 const heroCard = document.getElementById("hero-card");
 const heroCardImg = document.getElementById("hero-card-img");
 const heroCardName = document.getElementById("hero-card-name");
@@ -49,6 +51,8 @@ let pendingFly = null;
 let statusTimer = 0;
 let hero = null;
 let heroStarting = false;
+let cine = null;
+let cineStarting = false;
 let heroTimer = 0;
 let heroStep = 0;
 let heroRef = null;
@@ -73,6 +77,9 @@ function openTab(id) {
     history.replaceState(null, "", "#" + id);
   }
   setHeroActive(id === "home");
+  setCineActive(id === "servicios");
+  if (moon) moon.setPaused(id !== "moon");
+  if (id === "servicios") startCine();
   if (id === "moon") {
     if (search) search.focus({ preventScroll: true });
     startMoon();
@@ -297,6 +304,8 @@ fetch("data/refs.json")
     countEl.textContent = t("moon.refsFail");
   });
 
+startCine();
+
 function tourRefs(wide) {
   const ids = new Set(HERO_TOUR.map((s) => s.i));
   return refs.filter((r) => ids.has(r.i) && (!wide || Math.abs(r.lat) < 70));
@@ -351,6 +360,30 @@ function setHeroActive(on) {
   clearTimeout(heroTimer);
   if (on && hero && !prefersReducedMotion() && refs.length) {
     nextHeroStop();
+  }
+}
+
+function setCineActive(on) {
+  if (cine) {
+    cine.setPaused(!on);
+    if (on) requestAnimationFrame(() => cine.resize());
+  }
+}
+
+async function startCine() {
+  if (!cineCanvas || cine || cineStarting) return;
+  cineStarting = true;
+  try {
+    cine = createNetworkCine(cineCanvas);
+    cine.resize();
+    try {
+      await cine.ready;
+    } catch (_) {}
+    cine.resize();
+    const onSys = document.querySelector('[data-panel="servicios"]').classList.contains("is-active");
+    setCineActive(onSys);
+  } catch (err) {
+    console.error(err);
   }
 }
 

@@ -53,6 +53,8 @@ class Handler(SimpleHTTPRequestHandler):
         ".woff": "font/woff",
         ".woff2": "font/woff2",
         ".ttf": "font/ttf",
+        ".wasm": "application/wasm",
+        ".glb": "model/gltf-binary",
     }
 
     def __init__(self, *args, **kwargs):

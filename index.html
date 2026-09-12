@@ -8,6 +8,9 @@
   <link rel="icon" href="assets/mark.png?v=5" type="image/png" />
   <link rel="preload" href="assets/moon-hi.jpg" as="image" />
   <link rel="preload" href="assets/moon-dem.png" as="image" />
+  <link rel="preload" href="assets/earth.jpg" as="image" />
+  <link rel="preload" href="assets/earth-clouds.png" as="image" />
+  <link rel="preload" href="assets/rover.glb" as="fetch" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=IBM+Plex+Sans:wght@400;500;600&family=Nunito:wght@500&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -16,7 +19,8 @@
   {
     "imports": {
       "three": "./vendor/three.module.js",
-      "three/addons/controls/OrbitControls.js": "./vendor/OrbitControls.js"
+      "three/addons/controls/OrbitControls.js": "./vendor/OrbitControls.js",
+      "three/addons/loaders/GLTFLoader.js": "./vendor/GLTFLoader.js"
     }
   }
   </script>
@@ -190,8 +194,7 @@
                 <li data-i18n="sys.api.6">API de marco de referencia y época</li>
               </ul>
               <figure class="sys-net">
-                <img src="assets/pehuer-network.png" alt="" data-i18n-aria="sys.net.alt" />
-                <figcaption data-i18n="sys.net.caption">Los activos en la Luna operan con PEHUER. Entregamos la lectura en la Tierra.</figcaption>
+                <canvas id="sys-cine" data-i18n-aria="sys.net.alt"></canvas>
               </figure>
             </article>
           </div>
@@ -284,6 +287,6 @@
       </span>
     </footer>
   </div>
-  <script type="module" src="js/site.js"></script>
+  <script type="module" src="js/site.js?v=cine19"></script>
 </body>
 </html>

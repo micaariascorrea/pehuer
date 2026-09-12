@@ -605,21 +605,27 @@ h2 {
 .sys-net {
   margin: 36px 0 8px;
   padding: 0;
-}
-
-.sys-net img {
-  display: block;
-  width: 100%;
-  height: auto;
-  background: #07080b;
+  position: relative;
+  height: min(62vh, 620px);
+  min-height: 340px;
+  background: #000;
   border: 1px solid var(--stroke);
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.sys-net figcaption {
-  margin: 14px 0 0;
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  color: var(--cream-mute);
+.sys-net canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.sys-net.is-ready canvas {
+  opacity: 1;
 }
 
 /* ——— Moon ——— */

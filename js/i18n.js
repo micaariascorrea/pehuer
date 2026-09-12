@@ -68,8 +68,7 @@ export const STRINGS = {
     "sys.api.4": "API de veredicto de riesgo",
     "sys.api.5": "API de ingestión de observaciones",
     "sys.api.6": "API de marco de referencia y época",
-    "sys.net.alt": "Red PEHUER: rover, baliza y módulo en la Luna, satélite de relé y entrega de la lectura en la Tierra.",
-    "sys.net.caption": "Los activos en la Luna operan con PEHUER. Entregamos la lectura en la Tierra.",
+    "sys.net.alt": "Rover en la Luna conectado por una línea a un satélite y a Argentina en la Tierra.",
     "moon.title": "Referencias",
     "moon.hint":
       "Solo seis misiones tripuladas alunizaron (Apollo 11, 12, 14, 15, 16 y 17). El resto son robóticas. Órbitas y lugares indican su fuente.",
@@ -137,7 +136,7 @@ export const STRINGS = {
     "nav.home": "Home",
     "nav.servicios": "Services",
     "nav.moon": "Moon",
-    "nav.unite": "Unite",
+    "nav.unite": "Join as",
     "nav.contacto": "Contact",
     "home.intro1":
       "We are PEHUER. We build software for positioning on the lunar surface, on the navigation and communications infrastructure now being deployed.",
@@ -195,8 +194,7 @@ export const STRINGS = {
     "sys.api.4": "Risk-verdict API",
     "sys.api.5": "Observation-ingest API",
     "sys.api.6": "Reference-frame and epoch API",
-    "sys.net.alt": "PEHUER network: rover, beacon and lander on the Moon, a relay satellite, and the reading delivered on Earth.",
-    "sys.net.caption": "Assets on the Moon operate with PEHUER. We deliver the reading on Earth.",
+    "sys.net.alt": "Rover on the Moon linked by a line to a satellite and to Argentina on Earth.",
     "moon.title": "References",
     "moon.hint":
       "Only six crewed missions landed (Apollo 11, 12, 14, 15, 16 and 17). The rest are robotic. Orbits and sites cite their source.",
