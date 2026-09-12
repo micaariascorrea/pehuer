@@ -99,12 +99,11 @@ export function createMoonGlobe(canvas, opts = {}) {
   const moon = new THREE.Mesh(
     new THREE.SphereGeometry(RADIUS, segsW, segsH),
     new THREE.MeshStandardMaterial({
-      color: 0x111111,
+      color: 0x7a7670,
       roughness: 1,
       metalness: 0,
     })
   );
-  moon.visible = false;
   scene.add(moon);
 
   const pins = new Map();
@@ -265,7 +264,6 @@ export function createMoonGlobe(canvas, opts = {}) {
     moon.material.bumpScale = 0.02;
     moon.material.color.set(0xffffff);
     moon.material.needsUpdate = true;
-    moon.visible = true;
     canvas.parentElement?.classList.add("is-ready");
   }
 
@@ -549,6 +547,7 @@ export function createMoonGlobe(canvas, opts = {}) {
   ro.observe(canvas.parentElement);
 
   sizeToStage();
+  canvas.parentElement?.classList.add("is-ready");
   if (opts.autoStart !== false) tick();
   pinReady.then(() => {
     if (pendingRefs) setRefs(pendingRefs);

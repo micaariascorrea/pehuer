@@ -6,6 +6,9 @@
   <title>PEHUER — Software para posicionamiento lunar</title>
   <meta name="description" content="Somos PEHUER. Construimos software para el posicionamiento en la superficie lunar. Desde Argentina." />
   <link rel="icon" href="assets/mark.png?v=5" type="image/png" />
+  <link rel="modulepreload" href="vendor/three.module.js" />
+  <link rel="modulepreload" href="js/moon-globe.js" />
+  <link rel="preload" href="assets/moon-hi.jpg" as="image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -50,7 +53,7 @@
           <button class="tab" data-tab="unite" type="button">
             <span class="tab-ear left"></span>
             <img class="tab-icon" src="assets/mark.png?v=5" alt="" />
-            <span class="tab-label" data-i18n="nav.unite">Unite</span>
+            <span class="tab-label" data-i18n="nav.unite">Sumate</span>
             <span class="tab-ear right"></span>
           </button>
           <button class="tab" data-tab="contacto" type="button">
@@ -230,13 +233,13 @@
       <section id="panel-unite" class="panel" data-panel="unite">
         <div class="page unite-page">
           <p class="kicker" data-i18n="unite.kicker">Comunidad</p>
-          <h1 data-i18n="unite.title">Unite a PEHUER</h1>
+          <h1 data-i18n="unite.title">Sumate a PEHUER</h1>
           <p class="lede" data-i18n="unite.lede">Construimos PEHUER juntos. Elegí cómo querés sumarte.</p>
           <div class="unite-grid">
             <article class="unite-card">
               <p class="unite-n">01</p>
               <h3 data-i18n="unite.community.title">Comunidad</h3>
-              <p data-i18n="unite.community.body">Unite a la comunidad para crear PEHUER juntos: talento, ideas y trabajo compartido.</p>
+              <p data-i18n="unite.community.body">Sumate a la comunidad para crear PEHUER juntos: talento, ideas y trabajo compartido.</p>
               <button class="unite-cta" type="button" data-go="contacto" data-i18n="unite.community.cta">Quiero unirme</button>
             </article>
             <article class="unite-card">
@@ -282,6 +285,6 @@
       </span>
     </footer>
   </div>
-  <script type="module" src="js/site.js?v=perf13"></script>
+  <script type="module" src="js/site.js?v=perf14"></script>
 </body>
 </html>

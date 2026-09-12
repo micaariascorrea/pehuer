@@ -65,8 +65,10 @@ class Handler(SimpleHTTPRequestHandler):
 
     def end_headers(self):
         path = self.path.split("?", 1)[0]
-        if path.endswith((".html", ".css", ".js", ".mjs", ".json", ".png", ".jpg")) or path == "/":
+        if path.endswith((".html", ".css", ".js", ".mjs", ".json")) or path == "/":
             self.send_header("Cache-Control", "no-cache")
+        elif path.endswith((".jpg", ".png", ".glb", ".wasm", ".woff2", ".woff")):
+            self.send_header("Cache-Control", "public, max-age=86400")
         super().end_headers()
 
 

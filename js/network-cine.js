@@ -99,8 +99,8 @@ function makeCanvas(w, h) {
 }
 
 function solarMaps() {
-  const w = 2048;
-  const h = 1024;
+  const w = 1024;
+  const h = 512;
   const albedoC = makeCanvas(w, h);
   const roughC = makeCanvas(w, h);
   const metalC = makeCanvas(w, h);
@@ -667,10 +667,12 @@ export function createNetworkCine(canvas) {
 
   const scene = new THREE.Scene();
   scene.fog = new THREE.Fog(0x000000, 20, 42);
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environmentIntensity = 0.38;
-  pmrem.dispose();
+  requestAnimationFrame(() => {
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environmentIntensity = 0.38;
+    pmrem.dispose();
+  });
 
   const camera = new THREE.PerspectiveCamera(30, 1, 0.08, 90);
   camera.position.set(0.05, 1.22, 6.15);
@@ -720,7 +722,6 @@ export function createNetworkCine(canvas) {
   );
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
-  ground.visible = false;
   scene.add(ground);
 
   const earthR = 1.26;
@@ -733,7 +734,6 @@ export function createNetworkCine(canvas) {
     })
   );
   earth.position.set(4.62, 2.02, -5.7);
-  earth.visible = false;
   scene.add(earth);
   earthFill.target.position.copy(earth.position);
   scene.add(earthFill.target);
@@ -768,10 +768,7 @@ export function createNetworkCine(canvas) {
   let roverB = new THREE.Group();
   const sat = makeSatellite();
   sat.position.set(0.48, 2.02, -0.42);
-  sat.visible = false;
   scene.add(roverA, roverB, sat);
-  linkA.line.visible = linkA.dots.visible = false;
-  linkB.line.visible = linkB.dots.visible = false;
 
   const a = new THREE.Vector3();
   const b = new THREE.Vector3();
@@ -789,66 +786,56 @@ export function createNetworkCine(canvas) {
     reveal = resolve;
   });
 
-  Promise.all([
-    loadTex(loader, "assets/moon-hi.jpg", THREE.SRGBColorSpace),
-    loadTex(loader, "assets/earth.jpg", THREE.SRGBColorSpace),
-    loadGltf("assets/rover.glb").catch(() => null),
-  ]).then(([moonMap, earthMap, roverGltf]) => {
-    const aniso = Math.min(4, renderer.capabilities.getMaxAnisotropy());
-    if (moonMap) {
-      moonMap.anisotropy = aniso;
-      moonMap.wrapS = moonMap.wrapT = THREE.RepeatWrapping;
-      moonMap.repeat.set(1.6, 1);
-      moonMap.offset.set(0.22, 0.18);
-      ground.material.map = moonMap;
-      ground.material.color.set(0x8a8478);
-      ground.material.needsUpdate = true;
-    }
-    if (earthMap) {
-      earthMap.anisotropy = aniso;
-      earthMap.generateMipmaps = true;
-      earthMap.minFilter = THREE.LinearMipmapLinearFilter;
-      earthMap.magFilter = THREE.LinearFilter;
-      earth.material.map = earthMap;
-      earth.material.color.set(0xd0d4d8);
-      earth.material.needsUpdate = true;
-    }
-    loadTex(loader, "assets/earth-spec.jpg", THREE.NoColorSpace).then((earthSpec) => {
-      if (!earthSpec) return;
-      earthSpec.anisotropy = aniso;
-      earth.material.specularMap = earthSpec;
-      earth.material.needsUpdate = true;
-    });
-    if (roverGltf) {
-      scene.remove(roverA, roverB);
-      roverA = prepareRover(roverGltf.scene, 1.02);
-      roverB = roverA.clone(true);
-      roverB.scale.multiplyScalar(0.52 / 1.02);
-      bindRover(roverB);
-      scene.add(roverA, roverB);
-    }
-    loadTex(loader, "assets/earth-clouds.png", THREE.SRGBColorSpace).then((cloudMap) => {
-      if (!cloudMap) return;
-      cloudMap.anisotropy = aniso;
-      clouds.material.map = cloudMap;
-      clouds.material.needsUpdate = true;
-    });
-    ground.visible = true;
-    earth.visible = true;
-    sat.visible = true;
-    linkA.line.visible = linkA.dots.visible = true;
-    linkB.line.visible = linkB.dots.visible = true;
+  const aniso = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+  function markReady() {
+    if (ready) return;
     ready = true;
     canvas.parentElement?.classList.add("is-ready");
     reveal();
-  }).catch(() => {
-    ground.visible = true;
-    earth.visible = true;
-    sat.visible = true;
-    ready = true;
-    canvas.parentElement?.classList.add("is-ready");
-    reveal();
+  }
+  markReady();
+
+  loadTex(loader, "assets/moon-hi.jpg", THREE.SRGBColorSpace).then((moonMap) => {
+    if (!moonMap) return;
+    moonMap.anisotropy = aniso;
+    moonMap.wrapS = moonMap.wrapT = THREE.RepeatWrapping;
+    moonMap.repeat.set(1.6, 1);
+    moonMap.offset.set(0.22, 0.18);
+    ground.material.map = moonMap;
+    ground.material.color.set(0x8a8478);
+    ground.material.needsUpdate = true;
   });
+  loadTex(loader, "assets/earth.jpg", THREE.SRGBColorSpace).then((earthMap) => {
+    if (!earthMap) return;
+    earthMap.anisotropy = aniso;
+    earthMap.generateMipmaps = true;
+    earthMap.minFilter = THREE.LinearMipmapLinearFilter;
+    earthMap.magFilter = THREE.LinearFilter;
+    earth.material.map = earthMap;
+    earth.material.color.set(0xd0d4d8);
+    earth.material.needsUpdate = true;
+  });
+  loadTex(loader, "assets/earth-spec.jpg", THREE.NoColorSpace).then((earthSpec) => {
+    if (!earthSpec) return;
+    earthSpec.anisotropy = aniso;
+    earth.material.specularMap = earthSpec;
+    earth.material.needsUpdate = true;
+  });
+  loadTex(loader, "assets/earth-clouds.png", THREE.SRGBColorSpace).then((cloudMap) => {
+    if (!cloudMap) return;
+    cloudMap.anisotropy = aniso;
+    clouds.material.map = cloudMap;
+    clouds.material.needsUpdate = true;
+  });
+  loadGltf("assets/rover.glb").then((roverGltf) => {
+    if (!roverGltf) return;
+    scene.remove(roverA, roverB);
+    roverA = prepareRover(roverGltf.scene, 1.02);
+    roverB = roverA.clone(true);
+    roverB.scale.multiplyScalar(0.52 / 1.02);
+    bindRover(roverB);
+    scene.add(roverA, roverB);
+  }).catch(() => {});
 
   let viewW = 0;
   let viewH = 0;

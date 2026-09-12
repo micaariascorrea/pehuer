@@ -10,7 +10,7 @@ export const STRINGS = {
     "nav.home": "Inicio",
     "nav.servicios": "Servicios",
     "nav.moon": "Luna",
-    "nav.unite": "Unite",
+    "nav.unite": "Sumate",
     "nav.contacto": "Contacto",
     "home.intro1":
       "Somos PEHUER. Construimos software para el posicionamiento en la superficie lunar, sobre la infraestructura de navegación y comunicaciones en despliegue.",
@@ -110,11 +110,11 @@ export const STRINGS = {
     "hero.credit": "NASA",
     "hero.caption": "{name}",
     "unite.kicker": "Comunidad",
-    "unite.title": "Unite a PEHUER",
+    "unite.title": "Sumate a PEHUER",
     "unite.lede": "Construimos PEHUER juntos. Elegí cómo querés sumarte.",
     "unite.community.title": "Comunidad",
     "unite.community.body":
-      "Unite a la comunidad para crear PEHUER juntos: talento, ideas y trabajo compartido.",
+      "Sumate a la comunidad para crear PEHUER juntos: talento, ideas y trabajo compartido.",
     "unite.community.cta": "Quiero unirme",
     "unite.investor.title": "Inversor",
     "unite.investor.body": "Si querés invertir en el posicionamiento lunar que construimos, escribinos.",

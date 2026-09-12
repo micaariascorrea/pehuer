@@ -1,7 +1,9 @@
 import { apply, setLang, t, locale } from "./i18n.js";
 
-const CINE_MOD = "./network-cine.js?v=cine32";
+const CINE_MOD = "./network-cine.js?v=cine33";
 const MOON_MOD = "./moon-globe.js";
+
+import(MOON_MOD);
 
 apply();
 document.querySelectorAll("[data-set-lang]").forEach((btn) => {
@@ -88,19 +90,22 @@ function openTab(id) {
   if (cine) cine.setPaused(id !== "servicios");
   if (moon) moon.setPaused(id !== "moon");
   if (id !== "home") clearTimeout(heroTimer);
+  if (id === "home") {
+    startHero();
+    setHeroActive(true);
+  } else if (id === "servicios") {
+    startCine();
+    if (cine) cine.resize();
+  } else if (id === "moon") {
+    if (search) search.focus({ preventScroll: true });
+    startMoon();
+    if (moon) moon.resize();
+  }
   afterPaint(() => {
     if (gen !== tabGen) return;
-    if (id === "home") {
-      startHero();
-      setHeroActive(true);
-    } else if (id === "servicios") {
-      startCine();
-      if (cine) cine.resize();
-    } else if (id === "moon") {
-      if (search) search.focus({ preventScroll: true });
-      startMoon();
-      if (moon) moon.resize();
-    }
+    if (id === "home" && hero) hero.resize();
+    else if (id === "servicios" && cine) cine.resize();
+    else if (id === "moon" && moon) moon.resize();
   });
 }
 
@@ -393,12 +398,9 @@ async function startCine() {
     const { createNetworkCine } = await import(CINE_MOD);
     cine = createNetworkCine(cineCanvas);
     cine.resize();
-    try {
-      await cine.ready;
-    } catch (_) {}
-    cine.resize();
     const onSys = document.querySelector('[data-panel="servicios"]').classList.contains("is-active");
     cine.setPaused(!onSys);
+    cine.ready.then(() => cine.resize()).catch(() => {});
   } catch (err) {
     console.error(err);
   }
@@ -419,12 +421,13 @@ async function startHero() {
     });
     if (refs.length) hero.setRefs(tourRefs(true));
     hero.resize();
-    try {
-      await hero.ready;
-    } catch (_) {}
-    hero.resize();
     const onHome = document.querySelector('[data-panel="home"]').classList.contains("is-active");
     setHeroActive(onHome);
+    import(CINE_MOD);
+    hero.ready.then(() => {
+      hero.resize();
+      if (!navigator.connection?.saveData) new Image().src = "assets/earth.jpg";
+    }).catch(() => {});
   } catch (err) {
     console.error(err);
   }

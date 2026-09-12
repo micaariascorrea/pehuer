@@ -248,7 +248,7 @@ img { max-width: 100%; display: block; background: transparent; }
   height: 100%;
   display: block;
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.18s ease;
 }
 
 .hero-cine.is-ready canvas {
@@ -621,7 +621,7 @@ h2 {
   height: 100%;
   display: block;
   opacity: 0;
-  transition: opacity 0.45s ease;
+  transition: opacity 0.18s ease;
 }
 
 .sys-net.is-ready canvas {
@@ -788,7 +788,7 @@ h2 {
   display: block;
   cursor: grab;
   opacity: 0;
-  transition: opacity 0.45s ease;
+  transition: opacity 0.18s ease;
 }
 
 .moon-stage.is-ready canvas {
@@ -943,7 +943,7 @@ h2 {
   display: none;
 }
 
-/* ——— Unite ——— */
+/* ——— Sumate ——— */
 .unite-page {
   padding-top: 48px;
 }
