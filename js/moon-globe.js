@@ -53,55 +53,47 @@ function orbitNormal(ref) {
   return new THREE.Vector3().crossVectors(a, b).normalize();
 }
 
-export function createMoonGlobe(canvas) {
+export function createMoonGlobe(canvas, opts = {}) {
+  const interactive = opts.interactive !== false;
+  const flyStep = opts.flyStep ?? 0.035;
+  const zoomIn = opts.zoomIn ?? 0.94;
+  const pinScale = opts.pinScale ?? 0.028;
+
   const renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: true,
     alpha: false,
+    premultipliedAlpha: false,
     powerPreference: "high-performance",
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(0x0a1018, 1);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, interactive ? 2 : 1.75));
+  renderer.setClearColor(0x000000, 1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42, 1, 0.08, 40);
-  camera.position.set(0.7, 0.55, CAM_DIST);
+  const camera = new THREE.PerspectiveCamera(interactive ? 42 : 38, 1, 0.08, 40);
+  camera.position.set(0.45, 0.12, CAM_DIST * (interactive ? 1 : 1.38));
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.06;
   controls.enablePan = false;
-  controls.minDistance = 2.15;
+  controls.minDistance = 2.58;
   controls.maxDistance = 12;
   controls.rotateSpeed = 0.55;
+  controls.enabled = interactive;
+  controls.target.set(0, 0, 0);
 
-  scene.add(new THREE.AmbientLight(0xb8c4d4, 0.42));
-  const sun = new THREE.DirectionalLight(0xfff4e8, 2.15);
-  sun.position.set(4.2, 1.4, 2.8);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.07));
+  const sun = new THREE.DirectionalLight(0xfff3e4, 3.35);
+  sun.position.set(5.1, 0.85, 2.2);
   scene.add(sun);
-
-  const stars = new THREE.BufferGeometry();
-  const starCount = 700;
-  const starPos = new Float32Array(starCount * 3);
-  for (let i = 0; i < starCount; i++) {
-    const r = 12 + Math.random() * 10;
-    const phi = Math.acos(2 * Math.random() - 1);
-    const theta = Math.random() * Math.PI * 2;
-    starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-    starPos[i * 3 + 1] = r * Math.cos(phi);
-    starPos[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
-  }
-  stars.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
-  scene.add(
-    new THREE.Points(
-      stars,
-      new THREE.PointsMaterial({ color: 0x8a9bb0, size: 0.018, sizeAttenuation: true })
-    )
-  );
+  const fill = new THREE.DirectionalLight(0x6b7380, 0.08);
+  fill.position.set(-3.4, -0.6, -2.4);
+  scene.add(fill);
 
   const moon = new THREE.Mesh(
-    new THREE.SphereGeometry(RADIUS, 96, 96),
+    new THREE.SphereGeometry(RADIUS, 192, 96),
     new THREE.MeshStandardMaterial({
       color: 0x888888,
       roughness: 1,
@@ -116,6 +108,19 @@ export function createMoonGlobe(canvas) {
   const orbits = new Map();
   const orbitGroup = new THREE.Group();
   scene.add(orbitGroup);
+  const selectRing = new THREE.Mesh(
+    new THREE.RingGeometry(0.05, 0.068, 64),
+    new THREE.MeshBasicMaterial({
+      color: 0xf0f1ea,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.95,
+      depthWrite: false,
+    })
+  );
+  selectRing.visible = false;
+  selectRing.renderOrder = 8;
+  scene.add(selectRing);
   const raycaster = new THREE.Raycaster();
   raycaster.params.Mesh = { threshold: 0.08 };
   raycaster.params.Line = { threshold: 0.04 };
@@ -242,23 +247,74 @@ export function createMoonGlobe(canvas) {
   }
 
   const loader = new THREE.TextureLoader();
-  const texPromise = new Promise((resolve, reject) => {
-    loader.load(
-      "assets/moon-color.jpg",
-      (tex) => {
-        tex.colorSpace = THREE.SRGBColorSpace;
-        tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-        moon.material.map = tex;
-        moon.material.bumpMap = tex;
-        moon.material.bumpScale = 0.035;
-        moon.material.color.set(0xffffff);
-        moon.material.needsUpdate = true;
-        resolve();
-      },
-      undefined,
-      reject
-    );
-  });
+  let pinTex = null;
+  const moonMap = opts.moonMap || "assets/moon-hi.jpg";
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+
+  function applyColor(tex) {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = maxAniso;
+    tex.minFilter = THREE.LinearMipmapLinearFilter;
+    moon.material.map = tex;
+    moon.material.bumpMap = tex;
+    moon.material.bumpScale = 0.02;
+    moon.material.color.set(0xffffff);
+    moon.material.needsUpdate = true;
+  }
+
+  const texPromise = Promise.all([
+    new Promise((resolve, reject) => {
+      loader.load(
+        moonMap,
+        (tex) => {
+          applyColor(tex);
+          resolve();
+        },
+        undefined,
+        () => {
+          loader.load(
+            "assets/moon-color.jpg",
+            (tex) => {
+              applyColor(tex);
+              resolve();
+            },
+            undefined,
+            reject
+          );
+        }
+      );
+    }),
+    new Promise((resolve) => {
+      loader.load(
+        "assets/moon-dem.png",
+        (tex) => {
+          tex.colorSpace = THREE.NoColorSpace;
+          tex.anisotropy = maxAniso;
+          moon.material.displacementMap = tex;
+          moon.material.displacementScale = 0.05;
+          moon.material.displacementBias = -0.018;
+          moon.material.needsUpdate = true;
+          resolve();
+        },
+        undefined,
+        () => resolve()
+      );
+    }),
+    new Promise((resolve, reject) => {
+      loader.load(
+        "assets/mark.png?v=5",
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.premultiplyAlpha = false;
+          tex.needsUpdate = true;
+          pinTex = tex;
+          resolve();
+        },
+        undefined,
+        reject
+      );
+    }),
+  ]);
 
   let fly = null;
   let selected = null;
@@ -273,25 +329,25 @@ export function createMoonGlobe(canvas) {
     renderer.setSize(w, h, false);
   }
 
-  function pinColor(ref, selectedNow) {
-    if (selectedNow) return 0xf0f1ea;
-    if (ref.kind === "mision" && ref.tripulada) return 0xf0f1ea;
-    if (ref.kind === "mision") return 0xf0c4a0;
-    if (ref.kind === "dato") return 0xe8d4a8;
-    return 0xde7a93;
-  }
-
-  function makePin(ref, selectedNow) {
+  function makePin(ref) {
     const group = new THREE.Group();
-    const bigger = ref.kind === "mision" || ref.kind === "dato";
-    const vis = new THREE.Mesh(
-      new THREE.SphereGeometry(selectedNow ? 0.03 : bigger ? 0.022 : 0.02, 14, 14),
-      new THREE.MeshBasicMaterial({
-        color: pinColor(ref, selectedNow),
+    const vis = new THREE.Sprite(
+      new THREE.SpriteMaterial({
+        map: pinTex,
+        color: 0xde7a93,
+        transparent: true,
+        opacity: 0.88,
+        depthWrite: false,
+        depthTest: true,
+        sizeAttenuation: true,
+        toneMapped: false,
       })
     );
+    vis.center.set(0.5, 0.5);
+    vis.scale.setScalar(pinScale);
+    vis.renderOrder = 10;
     const hit = new THREE.Mesh(
-      new THREE.SphereGeometry(0.07, 10, 10),
+      new THREE.SphereGeometry(0.055, 10, 10),
       new THREE.MeshBasicMaterial({
         transparent: true,
         opacity: 0,
@@ -300,13 +356,24 @@ export function createMoonGlobe(canvas) {
     );
     group.add(vis);
     group.add(hit);
-    group.position.copy(latLonToVec3(ref.lat, ref.lon, RADIUS + 0.025));
+    group.position.copy(latLonToVec3(ref.lat, ref.lon, RADIUS + 0.038));
     group.userData.i = ref.i;
     vis.userData.i = ref.i;
     hit.userData.i = ref.i;
     group.userData.vis = vis;
     group.userData.kind = ref.kind;
     return group;
+  }
+
+  function placeSelectRing(ref) {
+    if (!ref || ref.kind === "orbita") {
+      selectRing.visible = false;
+      return;
+    }
+    const n = latLonToVec3(ref.lat, ref.lon, 1).normalize();
+    selectRing.position.copy(n.clone().multiplyScalar(RADIUS + 0.014));
+    selectRing.lookAt(0, 0, 0);
+    selectRing.visible = true;
   }
 
   function makeOrbit(ref) {
@@ -333,7 +400,13 @@ export function createMoonGlobe(canvas) {
     return group;
   }
 
+  let pendingRefs = null;
+
   function setRefs(list) {
+    if (!pinTex) {
+      pendingRefs = list;
+      return;
+    }
     pinGroup.clear();
     orbitGroup.clear();
     pins.clear();
@@ -344,7 +417,7 @@ export function createMoonGlobe(canvas) {
         orbits.set(ref.i, { ref, mesh });
         orbitGroup.add(mesh);
       } else {
-        const mesh = makePin(ref, ref.i === selected);
+        const mesh = makePin(ref);
         pins.set(ref.i, { ref, mesh });
         pinGroup.add(mesh);
       }
@@ -354,17 +427,24 @@ export function createMoonGlobe(canvas) {
 
   function highlight(i) {
     selected = i;
+    const hasSel = i != null;
     pins.forEach((entry, key) => {
-      const vis = entry.mesh.userData.vis || entry.mesh;
-      vis.scale.setScalar(key === i ? 1.55 : 1);
-      vis.material.color.setHex(pinColor(entry.ref, key === i));
+      const vis = entry.mesh.userData.vis;
+      if (!vis) return;
+      const on = key === i;
+      vis.scale.setScalar(on ? pinScale * 1.85 : pinScale);
+      vis.material.color.setHex(on ? 0xf0f1ea : 0xde7a93);
+      vis.material.opacity = on ? 1 : hasSel ? 0.34 : 0.88;
+      vis.renderOrder = on ? 14 : 10;
     });
     orbits.forEach((entry, key) => {
       const tube = entry.mesh.userData.tube;
       const on = key === i;
       tube.material.color.setHex(on ? 0xf0f1ea : 0xde7a93);
-      tube.material.opacity = on ? 0.95 : 0.38;
+      tube.material.opacity = on ? 0.95 : hasSel ? 0.22 : 0.38;
     });
+    const picked = (hasSel && pins.get(i)?.ref) || (hasSel && orbits.get(i)?.ref) || null;
+    placeSelectRing(picked);
   }
 
   function flyTo(ref) {
@@ -384,55 +464,93 @@ export function createMoonGlobe(canvas) {
       return;
     }
     const look = latLonToVec3(ref.lat, ref.lon, RADIUS);
-    const dest = look.clone().normalize().multiplyScalar(CAM_DIST * 0.72);
+    const dest = look.clone().normalize().multiplyScalar(CAM_DIST * zoomIn);
+    const worldUp = new THREE.Vector3(0, 1, 0);
+    const right = new THREE.Vector3().crossVectors(worldUp, dest);
+    if (right.lengthSq() < 0.001) right.set(1, 0, 0);
+    right.normalize();
+    const camUp = new THREE.Vector3().crossVectors(dest, right).normalize();
+    dest.add(camUp.multiplyScalar(Math.abs(ref.lat) > 60 ? 0.02 : -0.06));
     fly = {
       from: camera.position.clone(),
       to: dest,
       t: 0,
       look,
     };
-    controls.target.copy(look.clone().multiplyScalar(0.18));
+    controls.target.copy(look.clone().multiplyScalar(0.04));
+  }
+
+  function wideShot() {
+    highlight(null);
+    fly = {
+      from: camera.position.clone(),
+      to: new THREE.Vector3(0.45, 0.12, CAM_DIST * 1.38),
+      t: 0,
+    };
+    controls.target.set(0, 0, 0);
+  }
+
+  let paused = false;
+
+  function setPaused(next) {
+    paused = !!next;
+    if (!paused && !raf) tick();
   }
 
   function tick() {
+    if (paused) {
+      raf = 0;
+      return;
+    }
     raf = requestAnimationFrame(tick);
     if (fly) {
-      fly.t = Math.min(1, fly.t + 0.035);
+      fly.t = Math.min(1, fly.t + flyStep);
       const e = 1 - Math.pow(1 - fly.t, 3);
       camera.position.lerpVectors(fly.from, fly.to, e);
       if (fly.t >= 1) fly = null;
+    } else if (!interactive) {
+      camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), 0.00055);
     }
     controls.update();
     renderer.render(scene, camera);
   }
 
-  renderer.domElement.addEventListener("pointermove", (e) => {
-    const ref = hitRef(e);
-    if (ref) showTip(ref, e.clientX, e.clientY);
-    else hideTip();
-  });
-  renderer.domElement.addEventListener("pointerleave", hideTip);
-  renderer.domElement.addEventListener("pointerdown", (e) => {
-    const ref = hitRef(e);
-    if (ref) {
-      flyTo(ref);
-      canvas.dispatchEvent(new CustomEvent("pehuer-pick", { detail: ref, bubbles: true }));
-    }
-  });
+  if (interactive) {
+    renderer.domElement.addEventListener("pointermove", (e) => {
+      const ref = hitRef(e);
+      if (ref) showTip(ref, e.clientX, e.clientY);
+      else hideTip();
+    });
+    renderer.domElement.addEventListener("pointerleave", hideTip);
+    renderer.domElement.addEventListener("pointerdown", (e) => {
+      const ref = hitRef(e);
+      if (ref) {
+        flyTo(ref);
+        canvas.dispatchEvent(new CustomEvent("pehuer-pick", { detail: ref, bubbles: true }));
+      }
+    });
+  }
 
   const ro = new ResizeObserver(() => sizeToStage());
   ro.observe(canvas.parentElement);
 
   sizeToStage();
   tick();
+  texPromise.then(() => {
+    if (pendingRefs) setRefs(pendingRefs);
+  });
 
   return {
     ready: texPromise,
     setRefs,
+    highlight,
     flyTo,
+    wideShot,
+    setPaused,
     resize: sizeToStage,
     dispose() {
       cancelAnimationFrame(raf);
+      raf = 0;
       ro.disconnect();
       renderer.dispose();
     },

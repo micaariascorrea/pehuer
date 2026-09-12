@@ -6,13 +6,22 @@ document.querySelectorAll("[data-set-lang]").forEach((btn) => {
   btn.addEventListener("click", () => {
     setLang(btn.getAttribute("data-set-lang"));
     renderList();
+    if (heroRef) setHeroCard(heroRef);
     if (loaderText && loader && !loader.classList.contains("is-hide") && !moonReady) {
       loaderText.textContent = t("moon.loading");
     }
   });
 });
 
-const TABS = ["home", "sistema", "moon", "contacto"];
+const TABS = ["home", "servicios", "moon", "unite", "contacto"];
+const TAB_ALIAS = { sistema: "servicios", system: "servicios" };
+const HERO_TOUR = [
+  { i: 30, img: "assets/tour/apollo11.jpg" },
+  { i: 80, img: "assets/tour/carroll.jpg" },
+  { i: 35, img: "assets/tour/apollo17.jpg" },
+  { i: 4, img: "assets/tour/shackleton.jpg" },
+  { i: 18, img: "assets/tour/tycho.jpg" },
+];
 
 const tabs = [...document.querySelectorAll(".tab")];
 const panels = [...document.querySelectorAll("[data-panel]")];
@@ -23,6 +32,11 @@ const canvas = document.getElementById("moon-canvas");
 const loader = document.getElementById("moon-loader");
 const loaderText = document.getElementById("moon-loader-text");
 const status = document.getElementById("moon-status");
+const heroCanvas = document.getElementById("hero-canvas");
+const heroCard = document.getElementById("hero-card");
+const heroCardImg = document.getElementById("hero-card-img");
+const heroCardName = document.getElementById("hero-card-name");
+const heroCardDesc = document.getElementById("hero-card-desc");
 
 let refs = [];
 let filtered = [];
@@ -33,6 +47,11 @@ let moonReady = false;
 let moonStarting = false;
 let pendingFly = null;
 let statusTimer = 0;
+let hero = null;
+let heroStarting = false;
+let heroTimer = 0;
+let heroStep = 0;
+let heroRef = null;
 
 function fold(s) {
   return s
@@ -41,13 +60,19 @@ function fold(s) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function resolveTab(id) {
+  if (TAB_ALIAS[id]) return TAB_ALIAS[id];
+  return TABS.includes(id) ? id : "home";
+}
+
 function openTab(id) {
-  if (!TABS.includes(id)) id = "home";
+  id = resolveTab(id);
   tabs.forEach((t) => t.classList.toggle("is-active", t.dataset.tab === id));
   panels.forEach((p) => p.classList.toggle("is-active", p.dataset.panel === id));
   if (location.hash.slice(1) !== id) {
     history.replaceState(null, "", "#" + id);
   }
+  setHeroActive(id === "home");
   if (id === "moon") {
     if (search) search.focus({ preventScroll: true });
     startMoon();
@@ -60,8 +85,11 @@ tabs.forEach((btn) => {
 });
 
 window.addEventListener("hashchange", () => {
-  const id = location.hash.slice(1);
-  if (TABS.includes(id)) openTab(id);
+  openTab(location.hash.slice(1));
+});
+
+document.querySelectorAll("[data-go]").forEach((btn) => {
+  btn.addEventListener("click", () => openTab(btn.getAttribute("data-go")));
 });
 
 function matches(r, q) {
@@ -185,7 +213,7 @@ async function startMoon() {
   if (moon || moonStarting) return;
   moonStarting = true;
   try {
-    moon = createMoonGlobe(canvas);
+    moon = createMoonGlobe(canvas, { pinScale: 0.12 });
     moon.setRefs(refs);
     moon.resize();
     try {
@@ -254,7 +282,7 @@ search.addEventListener("keydown", (e) => {
 });
 
 const initial = location.hash.slice(1);
-openTab(TABS.includes(initial) ? initial : "home");
+openTab(resolveTab(initial));
 
 fetch("data/refs.json")
   .then((r) => r.json())
@@ -262,7 +290,90 @@ fetch("data/refs.json")
     refs = data;
     renderList();
     if (moon) moon.setRefs(refs);
+    if (hero) hero.setRefs(tourRefs(true));
+    startHero();
   })
   .catch(() => {
     countEl.textContent = t("moon.refsFail");
   });
+
+function tourRefs(wide) {
+  const ids = new Set(HERO_TOUR.map((s) => s.i));
+  return refs.filter((r) => ids.has(r.i) && (!wide || Math.abs(r.lat) < 70));
+}
+
+function setHeroCard(r) {
+  if (!heroCard) return;
+  heroRef = r || null;
+  if (!r) {
+    heroCard.hidden = true;
+    return;
+  }
+  const stop = HERO_TOUR.find((s) => s.i === r.i);
+  heroCard.hidden = false;
+  if (heroCardName) heroCardName.textContent = r.name;
+  if (heroCardDesc) heroCardDesc.textContent = t(`tour.${r.i}.desc`);
+  if (heroCardImg && stop) {
+    heroCardImg.src = stop.img;
+    heroCardImg.alt = r.name;
+  }
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function nextHeroStop() {
+  if (!hero) return;
+  const wide = heroStep % 2 === 0;
+  if (wide) {
+    if (refs.length) hero.setRefs(tourRefs(true));
+    hero.wideShot();
+    setHeroCard(null);
+  } else {
+    const stop = HERO_TOUR[Math.floor(heroStep / 2) % HERO_TOUR.length];
+    const r = refs.find((x) => x.i === stop.i);
+    if (r) {
+      hero.setRefs([r]);
+      hero.flyTo(r);
+      setHeroCard(r);
+    }
+  }
+  heroStep += 1;
+  heroTimer = setTimeout(nextHeroStop, wide ? 3800 : 5600);
+}
+
+function setHeroActive(on) {
+  if (hero) {
+    hero.setPaused(!on);
+    if (on) requestAnimationFrame(() => hero.resize());
+  }
+  clearTimeout(heroTimer);
+  if (on && hero && !prefersReducedMotion() && refs.length) {
+    heroTimer = setTimeout(nextHeroStop, 900);
+  }
+}
+
+async function startHero() {
+  if (!heroCanvas || hero || heroStarting) return;
+  heroStarting = true;
+  try {
+    hero = createMoonGlobe(heroCanvas, {
+      interactive: false,
+      flyStep: 0.012,
+      zoomIn: 0.9,
+      pinScale: 0.14,
+    });
+    if (refs.length) hero.setRefs(tourRefs(true));
+    hero.resize();
+    try {
+      await hero.ready;
+    } catch (_) {}
+    hero.wideShot();
+    hero.resize();
+    const onHome = document.querySelector('[data-panel="home"]').classList.contains("is-active");
+    setHeroActive(onHome);
+  } catch (err) {
+    console.error(err);
+  }
+}
