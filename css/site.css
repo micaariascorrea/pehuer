@@ -103,7 +103,7 @@ img { max-width: 100%; display: block; background: transparent; }
 .tabs {
   display: flex;
   align-items: flex-end;
-  gap: 0;
+  gap: 6px;
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -120,8 +120,10 @@ img { max-width: 100%; display: block; background: transparent; }
   flex: 1 1 0;
   margin: 0;
   padding: 0 18px;
-  border: 0;
-  background: transparent;
+  border: 1px solid rgba(240, 241, 234, 0.22);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: #0c0e13;
   color: var(--cream-mute);
   font-family: var(--font-body);
   font-size: 13px;
@@ -130,19 +132,22 @@ img { max-width: 100%; display: block; background: transparent; }
 
 .tab:hover {
   color: var(--cream);
+  border-color: rgba(222, 122, 147, 0.5);
 }
 
 .tab.is-active {
   color: var(--cream);
+  background: #12151c;
+  border-color: var(--pink);
 }
 
 .tab.is-active::after {
   content: "";
   position: absolute;
-  left: 18px;
-  right: 18px;
+  left: 10px;
+  right: 10px;
   bottom: 0;
-  height: 1px;
+  height: 2px;
   background: var(--pink);
 }
 
@@ -1153,7 +1158,7 @@ h2 {
     flex: 1 1 0;
     max-width: none;
     padding: 0 8px;
-    margin: 0 -4px;
+    margin: 0;
     gap: 0;
     font-size: 12px;
   }
@@ -1184,12 +1189,12 @@ h2 {
   }
   .tab {
     padding: 0 3px;
-    margin: 0 -2px;
+    margin: 0;
     font-size: 10.5px;
   }
   .tab.is-active::after {
-    left: 8px;
-    right: 8px;
+    left: 6px;
+    right: 6px;
   }
   .tab-label {
     overflow: visible;
