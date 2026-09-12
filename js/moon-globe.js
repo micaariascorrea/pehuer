@@ -66,7 +66,7 @@ export function createMoonGlobe(canvas, opts = {}) {
     premultipliedAlpha: false,
     powerPreference: "high-performance",
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, interactive ? 2 : 1.75));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, interactive ? 1.5 : 1.25));
   renderer.setClearColor(0x000000, 1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
@@ -94,8 +94,10 @@ export function createMoonGlobe(canvas, opts = {}) {
   fill.position.set(-3.4, -0.6, -2.4);
   scene.add(fill);
 
+  const segsW = opts.segmentsW || (interactive ? 128 : 80);
+  const segsH = opts.segmentsH || (interactive ? 64 : 40);
   const moon = new THREE.Mesh(
-    new THREE.SphereGeometry(RADIUS, 192, 96),
+    new THREE.SphereGeometry(RADIUS, segsW, segsH),
     new THREE.MeshStandardMaterial({
       color: 0x111111,
       roughness: 1,
@@ -289,14 +291,16 @@ export function createMoonGlobe(canvas, opts = {}) {
     );
   });
 
-  loader.load("assets/moon-dem.png", (tex) => {
-    tex.colorSpace = THREE.NoColorSpace;
-    tex.anisotropy = maxAniso;
-    moon.material.displacementMap = tex;
-    moon.material.displacementScale = 0.05;
-    moon.material.displacementBias = -0.018;
-    moon.material.needsUpdate = true;
-  });
+  if (opts.dem !== false) {
+    loader.load("assets/moon-dem.png", (tex) => {
+      tex.colorSpace = THREE.NoColorSpace;
+      tex.anisotropy = Math.min(4, maxAniso);
+      moon.material.displacementMap = tex;
+      moon.material.displacementScale = 0.05;
+      moon.material.displacementBias = -0.018;
+      moon.material.needsUpdate = true;
+    });
+  }
 
   const pinReady = new Promise((resolve, reject) => {
     loader.load(
@@ -317,10 +321,16 @@ export function createMoonGlobe(canvas, opts = {}) {
   let selected = null;
   let raf = 0;
 
+  let viewW = 0;
+  let viewH = 0;
   function sizeToStage() {
     const parent = canvas.parentElement;
-    const w = Math.max(1, parent.clientWidth);
-    const h = Math.max(1, parent.clientHeight);
+    const w = parent.clientWidth;
+    const h = parent.clientHeight;
+    if (w < 8 || h < 8) return;
+    if (w === viewW && h === viewH) return;
+    viewW = w;
+    viewH = h;
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h, false);
@@ -539,7 +549,7 @@ export function createMoonGlobe(canvas, opts = {}) {
   ro.observe(canvas.parentElement);
 
   sizeToStage();
-  tick();
+  if (opts.autoStart !== false) tick();
   pinReady.then(() => {
     if (pendingRefs) setRefs(pendingRefs);
   });

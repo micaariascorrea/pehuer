@@ -1,6 +1,7 @@
 import { apply, setLang, t, locale } from "./i18n.js";
-import { createMoonGlobe } from "./moon-globe.js";
-import { createNetworkCine } from "./network-cine.js?v=cine19";
+
+const CINE_MOD = "./network-cine.js?v=cine32";
+const MOON_MOD = "./moon-globe.js";
 
 apply();
 document.querySelectorAll("[data-set-lang]").forEach((btn) => {
@@ -69,26 +70,48 @@ function resolveTab(id) {
   return TABS.includes(id) ? id : "home";
 }
 
+function afterPaint(fn) {
+  requestAnimationFrame(() => requestAnimationFrame(fn));
+}
+
+let tabGen = 0;
+
 function openTab(id) {
   id = resolveTab(id);
+  const gen = ++tabGen;
   tabs.forEach((t) => t.classList.toggle("is-active", t.dataset.tab === id));
   panels.forEach((p) => p.classList.toggle("is-active", p.dataset.panel === id));
   if (location.hash.slice(1) !== id) {
     history.replaceState(null, "", "#" + id);
   }
-  setHeroActive(id === "home");
-  setCineActive(id === "servicios");
+  if (hero) hero.setPaused(id !== "home");
+  if (cine) cine.setPaused(id !== "servicios");
   if (moon) moon.setPaused(id !== "moon");
-  if (id === "servicios") startCine();
-  if (id === "moon") {
-    if (search) search.focus({ preventScroll: true });
-    startMoon();
-    requestAnimationFrame(() => moon && moon.resize());
-  }
+  if (id !== "home") clearTimeout(heroTimer);
+  afterPaint(() => {
+    if (gen !== tabGen) return;
+    if (id === "home") {
+      startHero();
+      setHeroActive(true);
+    } else if (id === "servicios") {
+      startCine();
+      if (cine) cine.resize();
+    } else if (id === "moon") {
+      if (search) search.focus({ preventScroll: true });
+      startMoon();
+      if (moon) moon.resize();
+    }
+  });
+}
+
+function warmTab(id) {
+  if (id === "servicios") import(CINE_MOD);
+  else if (id === "moon" || id === "home") import(MOON_MOD);
 }
 
 tabs.forEach((btn) => {
   btn.addEventListener("click", () => openTab(btn.dataset.tab));
+  btn.addEventListener("pointerenter", () => warmTab(btn.dataset.tab), { once: true });
 });
 
 window.addEventListener("hashchange", () => {
@@ -220,7 +243,8 @@ async function startMoon() {
   if (moon || moonStarting) return;
   moonStarting = true;
   try {
-    moon = createMoonGlobe(canvas, { pinScale: 0.12 });
+    const { createMoonGlobe } = await import(MOON_MOD);
+    moon = createMoonGlobe(canvas, { pinScale: 0.12, autoStart: false });
     moon.setRefs(refs);
     moon.resize();
     try {
@@ -229,7 +253,9 @@ async function startMoon() {
     moonReady = true;
     loader.classList.add("is-hide");
     moon.resize();
-    if (pendingFly) {
+    const onMoon = document.querySelector('[data-panel="moon"]').classList.contains("is-active");
+    moon.setPaused(!onMoon);
+    if (pendingFly && onMoon) {
       const r = pendingFly;
       pendingFly = null;
       fly(r);
@@ -298,13 +324,10 @@ fetch("data/refs.json")
     renderList();
     if (moon) moon.setRefs(refs);
     if (hero) hero.setRefs(tourRefs(true));
-    startHero();
   })
   .catch(() => {
     countEl.textContent = t("moon.refsFail");
   });
-
-startCine();
 
 function tourRefs(wide) {
   const ids = new Set(HERO_TOUR.map((s) => s.i));
@@ -355,7 +378,7 @@ function nextHeroStop() {
 function setHeroActive(on) {
   if (hero) {
     hero.setPaused(!on);
-    if (on) requestAnimationFrame(() => hero.resize());
+    if (on) hero.resize();
   }
   clearTimeout(heroTimer);
   if (on && hero && !prefersReducedMotion() && refs.length) {
@@ -363,17 +386,11 @@ function setHeroActive(on) {
   }
 }
 
-function setCineActive(on) {
-  if (cine) {
-    cine.setPaused(!on);
-    if (on) requestAnimationFrame(() => cine.resize());
-  }
-}
-
 async function startCine() {
   if (!cineCanvas || cine || cineStarting) return;
   cineStarting = true;
   try {
+    const { createNetworkCine } = await import(CINE_MOD);
     cine = createNetworkCine(cineCanvas);
     cine.resize();
     try {
@@ -381,7 +398,7 @@ async function startCine() {
     } catch (_) {}
     cine.resize();
     const onSys = document.querySelector('[data-panel="servicios"]').classList.contains("is-active");
-    setCineActive(onSys);
+    cine.setPaused(!onSys);
   } catch (err) {
     console.error(err);
   }
@@ -391,8 +408,11 @@ async function startHero() {
   if (!heroCanvas || hero || heroStarting) return;
   heroStarting = true;
   try {
+    const { createMoonGlobe } = await import(MOON_MOD);
     hero = createMoonGlobe(heroCanvas, {
       interactive: false,
+      dem: false,
+      autoStart: false,
       flyStep: 0.016,
       zoomIn: 0.9,
       pinScale: 0.14,
