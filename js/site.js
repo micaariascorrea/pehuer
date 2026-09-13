@@ -17,8 +17,8 @@ document.querySelectorAll("[data-set-lang]").forEach((btn) => {
   });
 });
 
-const TABS = ["home", "servicios", "moon", "unite", "contacto"];
-const TAB_ALIAS = { sistema: "servicios", system: "servicios" };
+const TABS = ["home", "servicios", "moon", "unite"];
+const TAB_ALIAS = { sistema: "servicios", system: "servicios", contacto: "unite", contact: "unite" };
 const HERO_TOUR = [
   { i: 30, img: "assets/tour/apollo11.jpg" },
   { i: 80, img: "assets/tour/carroll.jpg" },
@@ -79,6 +79,7 @@ function afterPaint(fn) {
 let tabGen = 0;
 
 function openTab(id) {
+  const raw = id;
   id = resolveTab(id);
   const gen = ++tabGen;
   tabs.forEach((t) => t.classList.toggle("is-active", t.dataset.tab === id));
@@ -100,6 +101,11 @@ function openTab(id) {
     if (search) search.focus({ preventScroll: true });
     startMoon();
     if (moon) moon.resize();
+  } else if (id === "unite" && (raw === "contacto" || raw === "contact")) {
+    afterPaint(() => document.getElementById("unite-contact")?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    }));
   }
   afterPaint(() => {
     if (gen !== tabGen) return;
@@ -125,6 +131,15 @@ window.addEventListener("hashchange", () => {
 
 document.querySelectorAll("[data-go]").forEach((btn) => {
   btn.addEventListener("click", () => openTab(btn.getAttribute("data-go")));
+});
+
+document.querySelectorAll("[data-scroll]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelector(btn.getAttribute("data-scroll"))?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+  });
 });
 
 function matches(r, q) {

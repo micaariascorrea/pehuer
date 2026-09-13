@@ -56,12 +56,6 @@
             <span class="tab-label" data-i18n="nav.unite">Sumate</span>
             <span class="tab-ear right"></span>
           </button>
-          <button class="tab" data-tab="contacto" type="button">
-            <span class="tab-ear left"></span>
-            <img class="tab-icon" src="assets/mark.png?v=5" alt="" />
-            <span class="tab-label" data-i18n="nav.contacto">Contacto</span>
-            <span class="tab-ear right"></span>
-          </button>
         </nav>
         <div class="lang" role="group" aria-label="Idioma" data-i18n-aria="nav.lang">
           <button type="button" class="lang-btn is-on" data-set-lang="es" aria-pressed="true">ES</button>
@@ -77,7 +71,6 @@
           <canvas id="hero-canvas" aria-hidden="true"></canvas>
           <div class="hero-veil"></div>
           <div class="lockup">
-            <img class="lockup-mark" src="assets/mark.png?v=5" width="216" height="216" alt="PEHUER" decoding="async" />
             <p class="hero-spirit" data-i18n="hero.spirit">Explorar para ser libres</p>
           </div>
           <aside class="hero-card" id="hero-card" hidden>
@@ -89,7 +82,7 @@
         </div>
         <div class="page">
           <article class="intro">
-            <p data-i18n="home.intro1">Somos PEHUER. Construimos software para el posicionamiento en la superficie lunar, sobre la infraestructura de navegación y comunicaciones en despliegue.</p>
+            <p data-i18n="home.intro1">Software para el posicionamiento en la superficie lunar, sobre la infraestructura de navegación y comunicaciones en despliegue.</p>
             <p data-i18n="home.intro2">Sostenemos el servicio con el Marco Cuantitativo: describimos cómo se estima una posición lunar y cómo se cuantifica el riesgo de esa estimación. La estadística que ya maduró en las finanzas cuantitativas es complementaria a la navegación lunar.</p>
             <p data-i18n="home.intro3">Sobre la infraestructura de comunicaciones y navegación que despliegan las agencias, aportamos dos capacidades que aún no existen como producto independiente: una corrección de red que aísla y descuenta el error sistemático compartido entre activos, y la traducción de esa precisión a un veredicto operativo de riesgo, con el criterio de medición propio de los mercados financieros.</p>
           </article>
@@ -130,13 +123,6 @@
                 <div>
                   <h3 data-i18n="home.step3.title">Entorno de Red</h3>
                   <p data-i18n="home.step3.body">Cada activo que usa PEHUER aporta y recibe correcciones cruzadas. La red mejora con cada misión: cuantos más activos, más precisa para todos.</p>
-                </div>
-              </article>
-              <article class="step">
-                <div class="step-n">04</div>
-                <div>
-                  <h3 data-i18n="home.step4.title">Infraestructura propia</h3>
-                  <p data-i18n="home.step4.body">Donde la cobertura no alcance, desplegamos balizas y micro-control bajo demanda. El software abre el camino; el hardware lo consolida.</p>
                 </div>
               </article>
             </div>
@@ -194,10 +180,9 @@
 
       <section id="panel-moon" class="panel panel-moon" data-panel="moon">
         <aside class="moon-side">
-          <h2 data-i18n="moon.title">Referencias</h2>
-          <p class="hint" data-i18n="moon.hint">Solo seis misiones tripuladas alunizaron. El resto son robóticas. Órbitas y lugares indican su fuente.</p>
+          <h2 data-i18n="moon.title">Referencias y sus fuentes</h2>
           <div class="search-wrap">
-            <input id="ref-search" type="search" placeholder="Buscar cráter, misión, órbita, IBM…" data-i18n-placeholder="moon.search" autocomplete="off" />
+            <input id="ref-search" type="search" placeholder="Buscar cráter, órbita o misión" data-i18n-placeholder="moon.search" autocomplete="off" />
           </div>
           <div class="ref-meta" id="ref-count"></div>
           <div class="ref-list" id="ref-list"></div>
@@ -232,34 +217,31 @@
             <article class="unite-card">
               <p class="unite-n">01</p>
               <h3 data-i18n="unite.community.title">Comunidad</h3>
-              <p data-i18n="unite.community.body">Sumate a la comunidad para crear PEHUER juntos: talento, ideas y trabajo compartido.</p>
-              <button class="unite-cta" type="button" data-go="contacto" data-i18n="unite.community.cta">Quiero unirme</button>
+              <p class="unite-body" data-i18n="unite.community.body">Sumate a la comunidad para crear PEHUER juntos: talento, ideas y trabajo compartido.</p>
+              <button class="unite-cta" type="button" data-scroll="#unite-contact" data-i18n="unite.community.cta">Quiero unirme</button>
             </article>
             <article class="unite-card">
               <p class="unite-n">02</p>
               <h3 data-i18n="unite.investor.title">Inversor</h3>
-              <p data-i18n="unite.investor.body">Si querés invertir en el posicionamiento lunar que construimos, escribinos.</p>
-              <button class="unite-cta" type="button" data-go="contacto" data-i18n="unite.investor.cta">Quiero invertir</button>
+              <p class="unite-body" data-i18n="unite.investor.body">Si querés invertir en correr los límites del desarrollo de la humanidad y sus conocimientos, escribinos.</p>
+              <button class="unite-cta" type="button" data-scroll="#unite-contact" data-i18n="unite.investor.cta">Quiero invertir</button>
             </article>
             <article class="unite-card">
               <p class="unite-n">03</p>
               <h3 data-i18n="unite.partner.title">Socio estratégico</h3>
-              <p data-i18n="unite.partner.body">Buscamos socios estratégicos para integrar, desplegar y escalar el servicio.</p>
-              <button class="unite-cta" type="button" data-go="contacto" data-i18n="unite.partner.cta">Quiero ser socio</button>
+              <p class="unite-body" data-i18n="unite.partner.body">Buscamos socios estratégicos para integrar, desplegar y escalar el servicio.</p>
+              <button class="unite-cta" type="button" data-scroll="#unite-contact" data-i18n="unite.partner.cta">Quiero ser socio</button>
             </article>
           </div>
-        </div>
-      </section>
-
-      <section id="panel-contacto" class="panel" data-panel="contacto">
-        <div class="contact-wrap">
-          <div class="contact-card">
-            <h1 class="name-pehuer"><img src="assets/logo-lockup-pink.png" alt="PEHUER" loading="lazy" decoding="async" /></h1>
-            <p class="tag spirit" data-i18n="hero.spirit">Explorar para ser libres</p>
-            <a class="ig-logo" href="https://www.instagram.com/pehuer.space/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pehuer.space">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm11.25 1.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
-            </a>
-            <p class="contact-foot" data-i18n="contact.from">Desde Argentina</p>
+          <div class="contact-wrap" id="unite-contact">
+            <div class="contact-card">
+              <h1 class="name-pehuer"><img src="assets/logo-lockup-pink.png" alt="PEHUER" loading="lazy" decoding="async" /></h1>
+              <p class="tag spirit" data-i18n="hero.spirit">Explorar para ser libres</p>
+              <a class="ig-logo" href="https://www.instagram.com/pehuer.space/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pehuer.space">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm11.25 1.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+              </a>
+              <p class="contact-foot" data-i18n="contact.from">Desde Argentina</p>
+            </div>
           </div>
         </div>
       </section>
@@ -278,6 +260,6 @@
       </span>
     </footer>
   </div>
-  <script type="module" src="js/site.js?v=perf14"></script>
+  <script type="module" src="js/site.js?v=perf15"></script>
 </body>
 </html>

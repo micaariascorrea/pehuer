@@ -13,7 +13,7 @@ export const STRINGS = {
     "nav.unite": "Sumate",
     "nav.contacto": "Contacto",
     "home.intro1":
-      "Somos PEHUER. Construimos software para el posicionamiento en la superficie lunar, sobre la infraestructura de navegación y comunicaciones en despliegue.",
+      "Software para el posicionamiento en la superficie lunar, sobre la infraestructura de navegación y comunicaciones en despliegue.",
     "home.intro2":
       "Sostenemos el servicio con el Marco Cuantitativo: describimos cómo se estima una posición lunar y cómo se cuantifica el riesgo de esa estimación. La estadística que ya maduró en las finanzas cuantitativas es complementaria a la navegación lunar.",
     "home.intro3":
@@ -35,9 +35,6 @@ export const STRINGS = {
     "home.step3.title": "Entorno de Red",
     "home.step3.body":
       "Cada activo que usa PEHUER aporta y recibe correcciones cruzadas. La red mejora con cada misión: cuantos más activos, más precisa para todos.",
-    "home.step4.title": "Infraestructura propia",
-    "home.step4.body":
-      "Donde la cobertura no alcance, desplegamos balizas y micro-control bajo demanda. El software abre el camino; el hardware lo consolida.",
     "sys.title": "Servicios PEHUER",
     "tour.30.desc": "Primer alunizaje tripulado, 1969.",
     "tour.80.desc": "Carroll cráter lunar nombrado provisionalmente por la tripulación de Artemis II 2026 en honor a Carroll Taylor Wiseman, la difunta esposa del comandante Reid Wiseman.",
@@ -64,10 +61,8 @@ export const STRINGS = {
     "sys.integ.out.2": "margen",
     "sys.integ.out.3": "veredicto de riesgo sobre la posición",
     "sys.net.alt": "Rover en la Luna conectado por una línea a un satélite y a Argentina en la Tierra.",
-    "moon.title": "Referencias",
-    "moon.hint":
-      "Solo seis misiones tripuladas alunizaron. El resto son robóticas. Órbitas y lugares indican su fuente.",
-    "moon.search": "Buscar cráter, misión, órbita, IBM…",
+    "moon.title": "Referencias y sus fuentes",
+    "moon.search": "Buscar cráter, órbita o misión",
     "moon.loading": "Cargando globo lunar…",
     "moon.fail": "No se pudo iniciar el globo 3D.",
     "moon.refsFail": "No se pudieron cargar las referencias",
@@ -112,7 +107,8 @@ export const STRINGS = {
       "Sumate a la comunidad para crear PEHUER juntos: talento, ideas y trabajo compartido.",
     "unite.community.cta": "Quiero unirme",
     "unite.investor.title": "Inversor",
-    "unite.investor.body": "Si querés invertir en el posicionamiento lunar que construimos, escribinos.",
+    "unite.investor.body":
+      "Si querés invertir en correr los límites del desarrollo de la humanidad y sus conocimientos, escribinos.",
     "unite.investor.cta": "Quiero invertir",
     "unite.partner.title": "Socio estratégico",
     "unite.partner.body": "Buscamos socios estratégicos para integrar, desplegar y escalar el servicio.",
@@ -134,7 +130,7 @@ export const STRINGS = {
     "nav.unite": "Join as",
     "nav.contacto": "Contact",
     "home.intro1":
-      "We are PEHUER. We build software for positioning on the lunar surface, on the navigation and communications infrastructure now being deployed.",
+      "Software for positioning on the lunar surface, on the navigation and communications infrastructure now being deployed.",
     "home.intro2":
       "We underpin the service with the Quantitative Framework: we describe how a lunar position is estimated and how the risk of that estimate is quantified. Statistics that already matured in quantitative finance complement lunar navigation.",
     "home.intro3":
@@ -156,9 +152,6 @@ export const STRINGS = {
     "home.step3.title": "Network environment",
     "home.step3.body":
       "Each asset that uses PEHUER contributes and receives crossed corrections. The network improves with each mission: the more assets, the more precise for everyone.",
-    "home.step4.title": "Own infrastructure",
-    "home.step4.body":
-      "Where coverage does not reach, we deploy beacons and on-demand micro-control. Software opens the path; hardware consolidates it.",
     "sys.title": "PEHUER Services",
     "tour.30.desc": "First crewed lunar landing, 1969.",
     "tour.80.desc": "Carroll, a lunar crater provisionally named by the Artemis II crew in 2026 in honor of Carroll Taylor Wiseman, the late wife of commander Reid Wiseman.",
@@ -185,10 +178,8 @@ export const STRINGS = {
     "sys.integ.out.2": "margin",
     "sys.integ.out.3": "risk verdict on the position",
     "sys.net.alt": "Rover on the Moon linked by a line to a satellite and to Argentina on Earth.",
-    "moon.title": "References",
-    "moon.hint":
-      "Only six crewed missions landed. The rest are robotic. Orbits and sites cite their source.",
-    "moon.search": "Search crater, mission, orbit, IBM…",
+    "moon.title": "References and their sources",
+    "moon.search": "Search crater, orbit or mission",
     "moon.loading": "Loading lunar globe…",
     "moon.fail": "The 3D globe could not be started.",
     "moon.refsFail": "References could not be loaded",
@@ -233,7 +224,8 @@ export const STRINGS = {
       "Join the community to build PEHUER together: talent, ideas and shared work.",
     "unite.community.cta": "I want to join",
     "unite.investor.title": "Investor",
-    "unite.investor.body": "If you want to invest in the lunar positioning we are building, write to us.",
+    "unite.investor.body":
+      "If you want to invest in pushing the limits of humanity’s development and knowledge, write to us.",
     "unite.investor.cta": "I want to invest",
     "unite.partner.title": "Strategic partner",
     "unite.partner.body": "We look for strategic partners to integrate, deploy and scale the service.",

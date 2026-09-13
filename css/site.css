@@ -290,13 +290,13 @@ img { max-width: 100%; display: block; background: transparent; }
   font-family: var(--font-spirit);
   font-weight: 400;
   font-style: normal;
-  font-size: clamp(34px, 5.6vw, 64px);
+  font-size: clamp(42px, 6.6vw, 76px);
   letter-spacing: 0.04em;
   line-height: 1.2;
   color: var(--pink);
   text-transform: none;
   display: inline-block;
-  max-width: 16ch;
+  max-width: 18ch;
 }
 
 .hero-card {
@@ -500,7 +500,7 @@ h2 {
 .rail {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 22px;
 }
 
@@ -680,7 +680,7 @@ h2 {
 .moon-side h2 {
   font-size: 14px;
   color: var(--pink);
-  padding: 16px 16px 4px;
+  padding: 16px 16px 12px;
   letter-spacing: 0.04em;
 }
 
@@ -997,6 +997,7 @@ h2 {
 }
 
 .unite-n {
+  flex: 0 0 auto;
   margin: 0 0 10px;
   font-family: var(--font-display);
   font-size: 11px;
@@ -1005,15 +1006,18 @@ h2 {
 }
 
 .unite-card h3 {
+  flex: 0 0 auto;
   font-size: 18px;
-  margin-bottom: 10px;
+  line-height: 1.25;
+  min-height: calc(1.25em * 2);
+  margin: 0 0 10px;
 }
 
-.unite-card p {
+.unite-body {
+  flex: 1 1 auto;
   margin: 0;
   color: var(--cream-dim);
   font-size: 14.5px;
-  flex: 1;
 }
 
 .unite-cta {
@@ -1035,10 +1039,10 @@ h2 {
 
 /* ——— Contacto ——— */
 .contact-wrap {
-  min-height: 100%;
+  min-height: 0;
   display: grid;
   place-items: center;
-  padding: 48px 24px;
+  padding: 56px 0 24px;
 }
 
 .contact-card {
