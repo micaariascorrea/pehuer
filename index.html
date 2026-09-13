@@ -147,7 +147,7 @@
       <section id="panel-servicios" class="panel" data-panel="servicios">
         <div class="page sys-hero">
           <h1 data-i18n="sys.title">Servicios PEHUER</h1>
-          <p class="lede" data-i18n="sys.lede">Proveemos una lectura de posicionamiento estructurada: dónde está el activo, con qué margen y con qué veredicto de riesgo.</p>
+          <p class="lede" data-i18n="sys.lede">Proveemos una lectura de posicionamiento estructurada:</p>
 
           <div class="sys-grid">
             <article class="sys-block">
@@ -162,33 +162,40 @@
               <h3 data-i18n="sys.ver.title">Veredicto</h3>
               <p data-i18n="sys.ver.body">RIESGO ACEPTABLE o RIESGO EXCEDIDO, sobre esta posición. El umbral es parametrizable por cada cliente.</p>
             </article>
-            <article class="sys-block">
-              <h3 data-i18n="sys.obs.title">Observaciones</h3>
-              <p data-i18n="sys.obs.body">Admitimos las mediciones y las efemérides de trabajo que el integrador ya opera.</p>
-            </article>
-            <article class="sys-block wide">
-              <p class="kicker" data-i18n="sys.api.kicker">APIs</p>
-              <h3 data-i18n="sys.api.title">Brindamos una API por cada objetivo</h3>
-              <ul class="api-list">
-                <li data-i18n="sys.api.1">API de estimación de posición</li>
-                <li data-i18n="sys.api.2">API de incertidumbre</li>
-                <li data-i18n="sys.api.3">API de riesgo de la lectura</li>
-                <li data-i18n="sys.api.4">API de veredicto de riesgo</li>
-                <li data-i18n="sys.api.5">API de ingestión de observaciones</li>
-                <li data-i18n="sys.api.6">API de marco de referencia y época</li>
-              </ul>
-              <figure class="sys-net">
-                <canvas id="sys-cine" data-i18n-aria="sys.net.alt"></canvas>
-              </figure>
-            </article>
           </div>
+
+          <div class="sys-integ">
+            <h2 data-i18n="sys.integ.title">Integración</h2>
+            <div class="integ-cols">
+              <div>
+                <h3 data-i18n="sys.integ.in">input</h3>
+                <ul class="integ-list">
+                  <li data-i18n="sys.integ.in.1">observaciones</li>
+                  <li data-i18n="sys.integ.in.2">marco de referencia de la misión</li>
+                  <li data-i18n="sys.integ.in.3">umbral de riesgo parametrizado</li>
+                </ul>
+              </div>
+              <div>
+                <h3 data-i18n="sys.integ.out">output</h3>
+                <ul class="integ-list">
+                  <li data-i18n="sys.integ.out.1">posición del activo</li>
+                  <li data-i18n="sys.integ.out.2">margen</li>
+                  <li data-i18n="sys.integ.out.3">veredicto de riesgo sobre la posición</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <figure class="sys-net">
+            <canvas id="sys-cine" data-i18n-aria="sys.net.alt"></canvas>
+          </figure>
         </div>
       </section>
 
       <section id="panel-moon" class="panel panel-moon" data-panel="moon">
         <aside class="moon-side">
           <h2 data-i18n="moon.title">Referencias</h2>
-          <p class="hint" data-i18n="moon.hint">Solo seis misiones tripuladas alunizaron (Apollo 11, 12, 14, 15, 16 y 17). El resto son robóticas. Órbitas y lugares indican su fuente.</p>
+          <p class="hint" data-i18n="moon.hint">Solo seis misiones tripuladas alunizaron. El resto son robóticas. Órbitas y lugares indican su fuente.</p>
           <div class="search-wrap">
             <input id="ref-search" type="search" placeholder="Buscar cráter, misión, órbita, IBM…" data-i18n-placeholder="moon.search" autocomplete="off" />
           </div>
