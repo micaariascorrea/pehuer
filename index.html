@@ -11,8 +11,8 @@
   <link rel="preload" href="assets/moon-hi.jpg" as="image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/site.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/site.css?v=demo10" />
   <script type="importmap">
   {
     "imports": {
@@ -154,26 +154,123 @@
             <h2 data-i18n="sys.integ.title">Integración</h2>
             <div class="integ-cols">
               <div>
-                <h3 data-i18n="sys.integ.in">input</h3>
+                <h3 data-i18n="sys.integ.in">Input</h3>
                 <ul class="integ-list">
-                  <li data-i18n="sys.integ.in.1">observaciones</li>
-                  <li data-i18n="sys.integ.in.2">marco de referencia de la misión</li>
-                  <li data-i18n="sys.integ.in.3">umbral de riesgo parametrizado</li>
+                  <li data-i18n="sys.integ.in.1">Observaciones</li>
+                  <li data-i18n="sys.integ.in.2">Marco de referencia de la misión</li>
+                  <li data-i18n="sys.integ.in.3">Umbral de riesgo parametrizado</li>
                 </ul>
               </div>
               <div>
-                <h3 data-i18n="sys.integ.out">output</h3>
+                <h3 data-i18n="sys.integ.out">Output</h3>
                 <ul class="integ-list">
-                  <li data-i18n="sys.integ.out.1">posición del activo</li>
-                  <li data-i18n="sys.integ.out.2">margen</li>
-                  <li data-i18n="sys.integ.out.3">veredicto de riesgo sobre la posición</li>
+                  <li data-i18n="sys.integ.out.1">Posición del activo</li>
+                  <li data-i18n="sys.integ.out.2">Aforo</li>
+                  <li data-i18n="sys.integ.out.3">Veredicto de riesgo sobre la posición</li>
                 </ul>
               </div>
             </div>
           </div>
 
-          <figure class="sys-net">
-            <canvas id="sys-cine" data-i18n-aria="sys.net.alt"></canvas>
+          <figure class="sys-demo" id="sys-demo">
+            <div class="sys-demo-stage">
+              <svg viewBox="0 0 1200 780" preserveAspectRatio="xMidYMid slice" data-i18n-aria="sys.demo.alt">
+                <defs>
+                  <radialGradient id="sys-crater" cx="42%" cy="38%" r="62%">
+                    <stop offset="0%" stop-color="#1a1d24" />
+                    <stop offset="55%" stop-color="#101218" />
+                    <stop offset="100%" stop-color="#07080b" />
+                  </radialGradient>
+                  <g id="pehuer-mark">
+                    <path d="M0,-10 L2.15,-2.85 L-2.15,-2.85 Z" />
+                    <path d="M10,0 L2.85,-2.15 L2.85,2.15 Z" />
+                    <path d="M0,10 L2.15,2.85 L-2.15,2.85 Z" />
+                    <path d="M-10,0 L-2.85,-2.15 L-2.85,2.15 Z" />
+                    <circle r="2.9" />
+                    <circle class="sys-mark-core" r="1.15" />
+                  </g>
+                </defs>
+                <g class="sys-demo-grid">
+                  <line x1="200" y1="0" x2="200" y2="780" />
+                  <line x1="400" y1="0" x2="400" y2="780" />
+                  <line x1="600" y1="0" x2="600" y2="780" />
+                  <line x1="800" y1="0" x2="800" y2="780" />
+                  <line x1="1000" y1="0" x2="1000" y2="780" />
+                  <line x1="0" y1="200" x2="1200" y2="200" />
+                  <line x1="0" y1="400" x2="1200" y2="400" />
+                  <line x1="0" y1="600" x2="1200" y2="600" />
+                </g>
+                <g class="sys-zone">
+                  <ellipse cx="640" cy="330" rx="500" ry="286" />
+                </g>
+                <g id="sys-links" class="sys-demo-links"></g>
+                <g class="sys-demo-assets" font-size="12">
+                  <g class="sys-asset" data-e="-160" data-n="110" data-x="280" data-y="180" transform="translate(280 180)">
+                    <circle class="sys-asset-pulse" r="16" />
+                    <use href="#pehuer-mark" />
+                    <text x="14" y="-8" data-i18n="sys.demo.asset2">ACTIVO 2</text>
+                  </g>
+                  <g class="sys-asset" data-e="30" data-n="130" data-x="660" data-y="140" transform="translate(660 140)">
+                    <circle class="sys-asset-pulse" r="16" style="animation-delay:.3s" />
+                    <use href="#pehuer-mark" />
+                    <text x="14" y="-8" data-i18n="sys.demo.asset3">ACTIVO 3</text>
+                  </g>
+                  <g class="sys-asset" data-e="190" data-n="85" data-x="980" data-y="230" transform="translate(980 230)">
+                    <circle class="sys-asset-pulse" r="16" style="animation-delay:.6s" />
+                    <use href="#pehuer-mark" />
+                    <text x="14" y="-8" data-i18n="sys.demo.asset4">ACTIVO 4</text>
+                  </g>
+                  <g class="sys-asset" data-e="230" data-n="-30" data-x="1060" data-y="460" transform="translate(1060 460)">
+                    <circle class="sys-asset-pulse" r="16" style="animation-delay:.9s" />
+                    <use href="#pehuer-mark" />
+                    <text x="14" y="-8" data-i18n="sys.demo.asset5">ACTIVO 5</text>
+                  </g>
+                </g>
+                <g id="sys-track">
+                  <path id="sys-path" class="sys-path" />
+                  <circle id="sys-aforo" class="is-ok" cx="650" cy="370" r="48" />
+                  <circle id="sys-est" cx="650" cy="370" r="3.2" />
+                  <g id="sys-a1" transform="translate(650 370)">
+                    <circle class="sys-asset-pulse sys-a1-pulse" r="26" />
+                    <circle class="sys-a1-disk" r="16" />
+                    <path id="sys-rover" d="M0,-13 L8.4,11 -8.4,11 Z" />
+                  </g>
+                  <text id="sys-lbl-asset" x="586" y="354" data-i18n="sys.demo.asset1">ACTIVO 1</text>
+                </g>
+              </svg>
+              <div class="sys-demo-hud sys-demo-hud-tl">
+                <span data-i18n="sys.demo.place">Polo sur · Shackleton</span>
+                <span id="sys-demo-utc">—</span>
+              </div>
+              <div class="sys-demo-hud sys-demo-hud-tr">
+                <span class="sys-live" data-i18n="sys.demo.live">EN LÍNEA</span>
+              </div>
+            </div>
+            <div class="sys-demo-out">
+              <div class="sys-demo-out-grid">
+                <div>
+                  <span data-i18n="sys.integ.out.1">Posición del activo</span>
+                  <strong id="sys-out-pos">—</strong>
+                  <em id="sys-out-local">—</em>
+                </div>
+                <div>
+                  <span data-i18n="sys.demo.pehuer">Aforo PEHUER</span>
+                  <strong id="sys-out-pehuer" class="is-ok">—</strong>
+                </div>
+                <div>
+                  <span data-i18n="sys.integ.out.3">Veredicto de riesgo sobre la posición</span>
+                  <strong id="sys-out-verdict" class="is-ok">—</strong>
+                </div>
+                <div>
+                  <span data-i18n="sys.demo.threshold">umbral del cliente</span>
+                  <strong id="sys-out-threshold">—</strong>
+                </div>
+                <div>
+                  <span data-i18n="sys.demo.headroom">margen del umbral</span>
+                  <strong id="sys-out-headroom">—</strong>
+                </div>
+              </div>
+            </div>
           </figure>
         </div>
       </section>
@@ -260,6 +357,6 @@
       </span>
     </footer>
   </div>
-  <script type="module" src="js/site.js?v=perf15"></script>
+  <script type="module" src="js/site.js?v=perf32"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 import { apply, setLang, t, locale } from "./i18n.js";
 
-const CINE_MOD = "./network-cine.js?v=cine33";
 const MOON_MOD = "./moon-globe.js";
+const DEMO_MOD = "./sys-demo.js?v=demo12";
 
 import(MOON_MOD);
 
@@ -37,7 +37,6 @@ const loader = document.getElementById("moon-loader");
 const loaderText = document.getElementById("moon-loader-text");
 const status = document.getElementById("moon-status");
 const heroCanvas = document.getElementById("hero-canvas");
-const cineCanvas = document.getElementById("sys-cine");
 const heroCard = document.getElementById("hero-card");
 const heroCardImg = document.getElementById("hero-card-img");
 const heroCardName = document.getElementById("hero-card-name");
@@ -54,8 +53,8 @@ let pendingFly = null;
 let statusTimer = 0;
 let hero = null;
 let heroStarting = false;
-let cine = null;
-let cineStarting = false;
+let demo = null;
+let demoStarting = false;
 let heroTimer = 0;
 let heroStep = 0;
 let heroRef = null;
@@ -88,15 +87,14 @@ function openTab(id) {
     history.replaceState(null, "", "#" + id);
   }
   if (hero) hero.setPaused(id !== "home");
-  if (cine) cine.setPaused(id !== "servicios");
+  if (demo) demo.setPaused(id !== "servicios");
   if (moon) moon.setPaused(id !== "moon");
   if (id !== "home") clearTimeout(heroTimer);
   if (id === "home") {
     startHero();
     setHeroActive(true);
   } else if (id === "servicios") {
-    startCine();
-    if (cine) cine.resize();
+    startDemo();
   } else if (id === "moon") {
     if (search) search.focus({ preventScroll: true });
     startMoon();
@@ -110,13 +108,12 @@ function openTab(id) {
   afterPaint(() => {
     if (gen !== tabGen) return;
     if (id === "home" && hero) hero.resize();
-    else if (id === "servicios" && cine) cine.resize();
     else if (id === "moon" && moon) moon.resize();
   });
 }
 
 function warmTab(id) {
-  if (id === "servicios") import(CINE_MOD);
+  if (id === "servicios") import(DEMO_MOD);
   else if (id === "moon" || id === "home") import(MOON_MOD);
 }
 
@@ -406,16 +403,15 @@ function setHeroActive(on) {
   }
 }
 
-async function startCine() {
-  if (!cineCanvas || cine || cineStarting) return;
-  cineStarting = true;
+async function startDemo() {
+  const root = document.getElementById("sys-demo");
+  if (!root || demo || demoStarting) return;
+  demoStarting = true;
   try {
-    const { createNetworkCine } = await import(CINE_MOD);
-    cine = createNetworkCine(cineCanvas);
-    cine.resize();
+    const { createSysDemo } = await import(DEMO_MOD);
+    demo = createSysDemo(root);
     const onSys = document.querySelector('[data-panel="servicios"]').classList.contains("is-active");
-    cine.setPaused(!onSys);
-    cine.ready.then(() => cine.resize()).catch(() => {});
+    demo.setPaused(!onSys);
   } catch (err) {
     console.error(err);
   }
@@ -438,7 +434,6 @@ async function startHero() {
     hero.resize();
     const onHome = document.querySelector('[data-panel="home"]').classList.contains("is-active");
     setHeroActive(onHome);
-    import(CINE_MOD);
     hero.ready.then(() => {
       hero.resize();
       if (!navigator.connection?.saveData) new Image().src = "assets/earth.jpg";
