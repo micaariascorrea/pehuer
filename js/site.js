@@ -1,7 +1,7 @@
 import { apply, setLang, t, locale } from "./i18n.js";
 
 const MOON_MOD = "./moon-globe.js";
-const DEMO_MOD = "./sys-demo.js?v=demo12";
+const DEMO_MOD = "./sys-demo.js?v=demo14";
 
 import(MOON_MOD);
 

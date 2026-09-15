@@ -6,7 +6,7 @@ const R_MOON_KM = 1737.4;
 const PX_PER_M = 2.8;
 const OX = 600;
 const OY = 400;
-const PERIOD = 8;
+const PERIOD = 18;
 const THRESHOLD_M = 22;
 const GOOD = { e: 48, n: 28 };
 const BAD = { e: 62, n: -18 };
@@ -61,11 +61,8 @@ function clamp01(v) {
 }
 
 function phaseU(t) {
-  const x = ((t % PERIOD) + PERIOD) % PERIOD / PERIOD;
-  if (x < 0.38) return 0;
-  if (x < 0.5) return (x - 0.38) / 0.12;
-  if (x < 0.88) return 1;
-  return 1 - (x - 0.88) / 0.12;
+  const x = (((t % PERIOD) + PERIOD) % PERIOD) / PERIOD;
+  return x < 0.5 ? x * 2 : 2 - x * 2;
 }
 
 function pathAt(u) {
