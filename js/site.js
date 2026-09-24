@@ -84,7 +84,7 @@ function afterPaint(fn) {
 
 let tabGen = 0;
 
-function openTab(id) {
+function openTab(id, opts = {}) {
   const raw = id;
   id = resolveTab(id);
   const gen = ++tabGen;
@@ -108,7 +108,7 @@ function openTab(id) {
   } else if (id === "servicios") {
     startDemo();
   } else if (id === "moon") {
-    if (search) search.focus({ preventScroll: true });
+    if (!opts.focusTab && search) search.focus({ preventScroll: true });
     startMoon();
     if (moon) moon.resize();
   } else if (id === "sumate" && (raw === "contacto" || raw === "contact")) {
@@ -116,6 +116,9 @@ function openTab(id) {
       behavior: "smooth",
       block: "nearest",
     }));
+  }
+  if (opts.focusTab) {
+    tabs.find((tab) => tab.dataset.tab === id)?.focus();
   }
   afterPaint(() => {
     if (gen !== tabGen) return;
@@ -132,6 +135,20 @@ function warmTab(id) {
 tabs.forEach((btn) => {
   btn.addEventListener("click", () => openTab(btn.dataset.tab));
   btn.addEventListener("pointerenter", () => warmTab(btn.dataset.tab), { once: true });
+});
+
+document.querySelector(".tabs")?.addEventListener("keydown", (e) => {
+  const i = tabs.indexOf(document.activeElement);
+  if (i < 0) return;
+  let next = -1;
+  if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (i + 1) % tabs.length;
+  else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (i - 1 + tabs.length) % tabs.length;
+  else if (e.key === "Home") next = 0;
+  else if (e.key === "End") next = tabs.length - 1;
+  else return;
+  e.preventDefault();
+  openTab(tabs[next].dataset.tab, { focusTab: true });
+  warmTab(tabs[next].dataset.tab);
 });
 
 window.addEventListener("hashchange", () => {

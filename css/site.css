@@ -286,6 +286,7 @@ img { max-width: 100%; display: block; background: transparent; }
 }
 
 h1.hero-spirit {
+  position: relative;
   margin: 0;
   font-family: var(--font-spirit);
   font-weight: 400;
@@ -297,6 +298,18 @@ h1.hero-spirit {
   text-transform: none;
   display: inline-block;
   max-width: 18ch;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .hero-card {
@@ -849,6 +862,11 @@ h2 {
   text-transform: none;
   letter-spacing: 0.04em;
   color: rgba(154, 208, 220, 0.7);
+}
+
+.sys-demo-hud-tr {
+  top: 16px;
+  right: 22px;
 }
 
 .sys-demo-out {
