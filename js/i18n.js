@@ -37,7 +37,7 @@ export const STRINGS = {
       "Cada activo que usa PEHUER aporta y recibe correcciones cruzadas. La red mejora con cada misión: cuantos más activos, más precisa para todos.",
     "sys.title": "Servicios PEHUER",
     "tour.30.desc": "Primer alunizaje tripulado, 1969.",
-    "tour.80.desc": "Carroll cráter lunar nombrado provisionalmente por la tripulación de Artemis II 2026 en honor a Carroll Taylor Wiseman, la difunta esposa del comandante Reid Wiseman.",
+    "tour.80.desc": "Carroll, cráter lunar nombrado provisionalmente por la tripulación de Artemis II 2026 en honor a Carroll Taylor Wiseman, la difunta esposa del comandante Reid Wiseman.",
     "tour.35.desc": "Último alunizaje tripulado, 1972.",
     "tour.4.desc": "Cráter del polo sur, referencia de las misiones actuales.",
     "tour.18.desc": "Cráter de rayos; Surveyor 7 alunizó en su borde norte.",
@@ -62,7 +62,6 @@ export const STRINGS = {
     "sys.integ.out.3": "Veredicto de riesgo sobre la posición",
     "sys.demo.alt": "Demo del sistema PEHUER en el polo sur lunar, con activos y referencias mapeadas.",
     "sys.demo.place": "Polo sur · Shackleton",
-    "sys.demo.live": "EN LÍNEA",
     "sys.demo.v.ok": "RIESGO ACEPTABLE",
     "sys.demo.v.bad": "RIESGO EXCEDIDO",
     "sys.demo.pehuer": "Aforo PEHUER",
@@ -204,7 +203,6 @@ export const STRINGS = {
     "sys.integ.out.3": "Risk verdict on the position",
     "sys.demo.alt": "PEHUER system demo at the lunar south pole, with assets and mapped references.",
     "sys.demo.place": "South pole · Shackleton",
-    "sys.demo.live": "LIVE",
     "sys.demo.v.ok": "RISK ACCEPTABLE",
     "sys.demo.v.bad": "RISK EXCEEDED",
     "sys.demo.pehuer": "PEHUER aforo",
@@ -289,15 +287,44 @@ export const STRINGS = {
 
 let lang = "es";
 
+export const ROOT = document.documentElement.getAttribute("data-root") || ".";
+
+export function pathIsEn() {
+  return /(?:^|\/)en(?:\/|$)/.test(location.pathname);
+}
+
 function readStored() {
   try {
     const v = localStorage.getItem(KEY);
     if (v === "en" || v === "es") return v;
   } catch (_) {}
-  return "es";
+  return null;
 }
 
-lang = readStored();
+lang = pathIsEn() ? "en" : "es";
+
+export function maybeDetectLang() {
+  if (pathIsEn()) return;
+  if (/bot|crawl|spider|google|bing|slurp|duckduck/i.test(navigator.userAgent || "")) return;
+  if (readStored()) return;
+  const nav = navigator.language || "";
+  if (!/^en\b/i.test(nav)) return;
+  const dest = (ROOT === "." ? "en/" : `${ROOT}/en/`) + (location.hash || "");
+  location.replace(dest);
+}
+
+export function langHref(next) {
+  const hash = location.hash || "";
+  const p = location.pathname;
+  if (next === "en") {
+    if (p.includes("privacidad")) return `${ROOT}/en/privacy/`.replace(/\/\.\//g, "/");
+    if (/\/cookies\/?$/.test(p) && !p.includes("/en/")) return `${ROOT}/en/cookies/`.replace(/\/\.\//g, "/");
+    return (ROOT === "." ? "en/" : `${ROOT}/en/`) + hash;
+  }
+  if (p.includes("/privacy")) return `${ROOT}/privacidad/`;
+  if (p.includes("/en/") && p.includes("cookies")) return `${ROOT}/cookies/`;
+  return (ROOT === "." ? "./" : `${ROOT}/`) + hash;
+}
 
 export function getLang() {
   return lang;
@@ -341,10 +368,13 @@ export function apply() {
 
 export function setLang(next) {
   if (next !== "en" && next !== "es") return;
-  lang = next;
   try {
-    localStorage.setItem(KEY, lang);
+    localStorage.setItem(KEY, next);
   } catch (_) {}
-  apply();
-  window.dispatchEvent(new CustomEvent("pehuer-lang", { detail: lang }));
+  if (next === lang) {
+    apply();
+    window.dispatchEvent(new CustomEvent("pehuer-lang", { detail: lang }));
+    return;
+  }
+  location.href = langHref(next);
 }

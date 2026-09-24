@@ -1,0 +1,146 @@
+import { getLang } from "./i18n.js";
+
+const TIPO = {
+  "punto de iluminación": "illumination point",
+  referencia: "reference",
+  cráter: "crater",
+  mons: "mons",
+  mare: "mare",
+  oceanus: "oceanus",
+  cuenca: "basin",
+  "capa de datos abierta": "open data layer",
+  "alunizaje tripulado": "crewed landing",
+  "alunizaje no tripulado": "uncrewed landing",
+  "alunizaje no tripulado / rover": "uncrewed landing / rover",
+  "impacto no tripulado": "uncrewed impact",
+  "intento no tripulado": "uncrewed attempt",
+  "retorno de muestras no tripulado": "uncrewed sample return",
+  "órbita polar baja": "low polar orbit",
+  "órbita polar": "polar orbit",
+  "órbita congelada": "frozen orbit",
+  "órbita elíptica congelada": "frozen elliptical orbit",
+  "órbita halo cuasi-rectilínea": "near-rectilinear halo orbit",
+  "órbita retrógrada distante": "distant retrograde orbit",
+};
+
+const ORIGEN = {
+  "Estudio de iluminación polar (2011)": "Polar illumination study (2011)",
+  "Atlas polar lunar": "Lunar polar atlas",
+  "Nomenclatura oficial lunar": "Official lunar nomenclature",
+  "Artemis II · 2026 · nombre provisional": "Artemis II · 2026 · provisional name",
+  "Polo sur · Cabeus · Mons Mouton": "South pole · Cabeus · Mons Mouton",
+  "Statio Tranquillitatis": "Statio Tranquillitatis",
+  "Oceanus Procellarum": "Oceanus Procellarum",
+  "Fra Mauro": "Fra Mauro",
+  "Hadley–Apennine": "Hadley–Apennine",
+  Descartes: "Descartes",
+  "Taurus–Littrow": "Taurus–Littrow",
+  "Borde norte de Tycho": "North rim of Tycho",
+  "Piso de Cabeus": "Floor of Cabeus",
+  "Mare Imbrium": "Mare Imbrium",
+  "Mare Tranquillitatis": "Mare Tranquillitatis",
+  "Mare Serenitatis": "Mare Serenitatis",
+  "Mare Crisium": "Mare Crisium",
+  "Mare Fecunditatis": "Mare Fecunditatis",
+  "Tierra de Apolonio": "Terra Apollonis",
+  "Le Monnier": "Le Monnier",
+  "Cerca de Pontécoulant G": "Near Pontécoulant G",
+  "Von Kármán · cara oculta": "Von Kármán · far side",
+  "Cuenca Apolo · cara oculta": "Apollo basin · far side",
+  "Statio Shiv Shakti": "Statio Shiv Shakti",
+  "Cerca de Shioli": "Near Shioli",
+  "Lacus Excellentiae": "Lacus Excellentiae",
+  "Cerca de Malapert A": "Near Malapert A",
+  "Mons Mouton": "Mons Mouton",
+  Atlas: "Atlas",
+  "Clase de órbita de mapeo polar": "Polar mapping orbit class",
+  "Clase de órbita polar baja": "Low polar orbit class",
+  "Familia de diseño orbital": "Orbital design family",
+  "Clase de órbita retrógrada elíptica": "Retrograde elliptical orbit class",
+  "Clase de órbita cislunar": "Cislunar orbit class",
+  "Sinus Medii": "Sinus Medii",
+};
+
+const FUENTE = {
+  "Mazarico et al. · iluminación polar (2011)": "Mazarico et al. · polar illumination (2011)",
+  "Convención selenográfica (lat −90°)": "Selenographic convention (lat −90°)",
+  "IAU Gazetteer of Planetary Nomenclature": "IAU Gazetteer of Planetary Nomenclature",
+  "NASA SVS · Artemis II · 8 may 2026": "NASA SVS · Artemis II · 8 May 2026",
+  "IBM Research / NASA Science · 10 sep 2026 · Apache-2.0": "IBM Research / NASA Science · 10 Sep 2026 · Apache-2.0",
+  "LROC / ASU · sitios antropogénicos": "LROC / ASU · anthropogenic sites",
+  "NASA LCROSS / LROC": "NASA LCROSS / LROC",
+  "Roscosmos / NASA LRO": "Roscosmos / NASA LRO",
+  "LROC / CNSA": "LROC / CNSA",
+  "LROC / ISRO": "LROC / ISRO",
+  "LROC / JAXA": "LROC / JAXA",
+  "ESA / LROC": "ESA / LROC",
+  "LROC / Intuitive Machines": "LROC / Intuitive Machines",
+  "LROC / Firefly Aerospace": "LROC / Firefly Aerospace",
+  "LROC / SpaceIL": "LROC / SpaceIL",
+  "LROC / ispace": "LROC / ispace",
+  "NASA / JAXA / ISRO · dinámicas de vuelo lunar": "NASA / JAXA / ISRO · lunar flight dynamics",
+  "NASA GSFC · LRO flight dynamics (NTRS)": "NASA GSFC · LRO flight dynamics (NTRS)",
+  "NASA NTRS · órbitas congeladas lunares": "NASA NTRS · lunar frozen orbits",
+  "ISRO · Chandrayaan-2": "ISRO · Chandrayaan-2",
+  "CNSA · Queqiao-2": "CNSA · Queqiao-2",
+  "NASA · CAPSTONE / Gateway": "NASA · CAPSTONE / Gateway",
+  "NASA · Artemis I": "NASA · Artemis I",
+};
+
+const DETALLE = {
+  3: "Region covered by LRO layers. NASA–IBM Lunar FM (2026) adds context on ice, craters and polar shadows.",
+  4: "Polar reference. No landing on the crater floor.",
+  8: "IM-1 Odysseus (uncrewed, 2024) landed near Malapert A.",
+  9: "IM-2 Athena (uncrewed, 2025) landed on this massif. NASA–IBM Lunar FM (2026) publishes ice prospectivity maps for this area.",
+  10: "LCROSS impact (NASA, uncrewed, 2009) on the crater floor. NASA–IBM Lunar FM (2026) is used to prospect ice in polar craters of this type.",
+  12: "Luna 17 and Chang'e 3 (both uncrewed) landed in this mare.",
+  13: "Apollo 11 (crewed, 1969) landed at Statio Tranquillitatis.",
+  14: "Beresheet (uncrewed, 2019) impacted in this mare.",
+  15: "Luna 9, Surveyor 1 and 3 and Chang'e 5 (uncrewed) and Apollo 12 (crewed) operated on this plain.",
+  16: "Luna 24 (1976) and Blue Ghost M1 (2025), both uncrewed.",
+  18: "Surveyor 7 (uncrewed, 1968) landed on the north rim.",
+  27: "Chang'e 4 (2019) and Chang'e 6 (2024), uncrewed, on the far side.",
+  80: "Carroll, a lunar crater provisionally named by the Artemis II crew in 2026 in honor of Carroll Taylor Wiseman, the late wife of commander Reid Wiseman. Pending IAU approval. It is not a landing site.",
+  70: "Surface context (LRO, GRAIL, Kaguya): craters, polar ice and shadows. It does not estimate PEHUER position or risk. It covers the south pole and areas such as Cabeus and Mons Mouton.",
+  30: "One of the six crewed missions that landed (Apollo 11, 12, 14, 15, 16 and 17; 1969–1972). Apollo 13 did not land.",
+  31: "One of the six crewed missions that landed. Next to Surveyor 3.",
+  32: "One of the six crewed missions that landed.",
+  33: "One of the six crewed missions that landed.",
+  34: "One of the six crewed missions that landed.",
+  35: "Last of the six crewed missions that landed.",
+  41: "Impact to measure ice in permanent shadow.",
+  42: "First soft landing. Uncrewed.",
+  44: "Lunokhod 1.",
+  46: "Lunokhod 2.",
+  48: "Impact; it did not complete the landing.",
+  49: "Yutu.",
+  50: "Yutu-2. First landing on the far side. Uncrewed.",
+  51: "Statio Tianchuan.",
+  53: "Vikram. Soft landing near the south pole. Uncrewed.",
+  59: "Impact on approach.",
+  60: "Impact on approach.",
+  200: "Typical mapping plane, i ≈ 90°, ~50–100 km. It is not a landing.",
+  201: "Initial science ~50 km; later drifts toward ~90 km.",
+  202: "Orbit class, not a mission.",
+  203: "Orbit class, not a mission.",
+  204: "Orbit class, not a mission.",
+  205: "Polar orbit of ~100 km. The Vikram lander is Chandrayaan-3, not this orbit.",
+  206: "254 × 16,941 km, i = 119.25°. Relay satellite, not a landing.",
+  207: "Orbit, not a landing. Perilune ~3,200 km; apolune ~70,000 km.",
+  208: "Artemis I was an uncrewed DRO flight; it did not land.",
+};
+
+function pick(map, value) {
+  if (!value) return "";
+  return map[value] || value;
+}
+
+export function refText(r, key) {
+  if (!r) return "";
+  if (getLang() !== "en") return r[key] || "";
+  if (key === "tipo") return pick(TIPO, r.tipo);
+  if (key === "origen") return pick(ORIGEN, r.origen);
+  if (key === "fuente") return pick(FUENTE, r.fuente);
+  if (key === "detalle") return DETALLE[r.i] || r.detalle || "";
+  return r[key] || "";
+}

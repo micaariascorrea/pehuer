@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://www.pehuer.com/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.pehuer.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.pehuer.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.pehuer.com/"/>
+  </url>
+  <url>
+    <loc>https://www.pehuer.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.pehuer.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.pehuer.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.pehuer.com/"/>
+  </url>
+  <url>
+    <loc>https://www.pehuer.com/privacidad/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.pehuer.com/privacidad/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.pehuer.com/en/privacy/"/>
+  </url>
+  <url>
+    <loc>https://www.pehuer.com/en/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.pehuer.com/privacidad/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.pehuer.com/en/privacy/"/>
+  </url>
+  <url>
+    <loc>https://www.pehuer.com/cookies/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.pehuer.com/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.pehuer.com/en/cookies/"/>
+  </url>
+  <url>
+    <loc>https://www.pehuer.com/en/cookies/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.pehuer.com/cookies/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.pehuer.com/en/cookies/"/>
+  </url>
+</urlset>

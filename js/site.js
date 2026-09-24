@@ -1,10 +1,10 @@
-import { apply, setLang, t, locale } from "./i18n.js";
+import { apply, setLang, t, locale, ROOT, maybeDetectLang } from "./i18n.js";
+import { refText } from "./ref-text.js";
 
 const MOON_MOD = "./moon-globe.js";
 const DEMO_MOD = "./sys-demo.js?v=demo14";
 
-import(MOON_MOD);
-
+maybeDetectLang();
 apply();
 document.querySelectorAll("[data-set-lang]").forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -27,11 +27,11 @@ const TAB_ALIAS = {
   contact: "sumate",
 };
 const HERO_TOUR = [
-  { i: 30, img: "assets/tour/apollo11.jpg" },
-  { i: 80, img: "assets/tour/carroll.jpg" },
-  { i: 35, img: "assets/tour/apollo17.jpg" },
-  { i: 4, img: "assets/tour/shackleton.jpg" },
-  { i: 18, img: "assets/tour/tycho.jpg" },
+  { i: 30, img: `${ROOT}/assets/tour/apollo11.jpg` },
+  { i: 80, img: `${ROOT}/assets/tour/carroll.jpg` },
+  { i: 35, img: `${ROOT}/assets/tour/apollo17.jpg` },
+  { i: 4, img: `${ROOT}/assets/tour/shackleton.jpg` },
+  { i: 18, img: `${ROOT}/assets/tour/tycho.jpg` },
 ];
 
 const tabs = [...document.querySelectorAll(".tab")];
@@ -88,7 +88,12 @@ function openTab(id) {
   const raw = id;
   id = resolveTab(id);
   const gen = ++tabGen;
-  tabs.forEach((t) => t.classList.toggle("is-active", t.dataset.tab === id));
+  tabs.forEach((tab) => {
+    const on = tab.dataset.tab === id;
+    tab.classList.toggle("is-active", on);
+    tab.setAttribute("aria-selected", on ? "true" : "false");
+    tab.tabIndex = on ? 0 : -1;
+  });
   panels.forEach((p) => p.classList.toggle("is-active", p.dataset.panel === id));
   if (location.hash.slice(1) !== id) {
     history.replaceState(null, "", "#" + id);
@@ -98,7 +103,7 @@ function openTab(id) {
   if (moon) moon.setPaused(id !== "moon");
   if (id !== "home") clearTimeout(heroTimer);
   if (id === "home") {
-    startHero();
+    scheduleHero();
     setHeroActive(true);
   } else if (id === "servicios") {
     startDemo();
@@ -163,14 +168,26 @@ function setJoinStatus(kind, text) {
   joinStatus.classList.toggle("is-err", kind === "err");
 }
 
+function joinFocusables() {
+  if (!joinOverlay) return [];
+  return [...joinOverlay.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])")].filter(
+    (el) => !el.hidden && !el.classList.contains("form-honey") && el.tabIndex !== -1
+  );
+}
+
 function closeJoin() {
   if (!joinOverlay) return;
   joinOverlay.hidden = true;
   document.body.classList.remove("form-open");
+  document.querySelector(".app")?.removeAttribute("inert");
+  joinOpener?.focus();
 }
 
-function openJoin(key) {
+let joinOpener = null;
+
+function openJoin(key, opener) {
   joinKey = key;
+  joinOpener = opener || document.activeElement;
   if (!joinOverlay || !joinForm) return;
   joinForm.reset();
   joinSubject.value = t(key);
@@ -178,11 +195,12 @@ function openJoin(key) {
   if (joinSubmit) joinSubmit.disabled = false;
   joinOverlay.hidden = false;
   document.body.classList.add("form-open");
+  document.querySelector(".app")?.setAttribute("inert", "");
   joinEmail?.focus();
 }
 
 document.querySelectorAll("[data-form]").forEach((btn) => {
-  btn.addEventListener("click", () => openJoin(btn.getAttribute("data-form")));
+  btn.addEventListener("click", () => openJoin(btn.getAttribute("data-form"), btn));
 });
 
 joinOverlay?.querySelector(".form-close")?.addEventListener("click", closeJoin);
@@ -190,7 +208,23 @@ joinOverlay?.addEventListener("click", (e) => {
   if (e.target === joinOverlay) closeJoin();
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && joinOverlay && !joinOverlay.hidden) closeJoin();
+  if (!joinOverlay || joinOverlay.hidden) return;
+  if (e.key === "Escape") {
+    closeJoin();
+    return;
+  }
+  if (e.key !== "Tab") return;
+  const nodes = joinFocusables();
+  if (!nodes.length) return;
+  const first = nodes[0];
+  const last = nodes[nodes.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
 });
 window.addEventListener("pehuer-lang", () => {
   if (joinKey && joinSubject && joinOverlay && !joinOverlay.hidden) {
@@ -234,7 +268,7 @@ joinForm?.addEventListener("submit", async (e) => {
 });
 
 function matches(r, q) {
-  const blob = [r.name, r.tipo, r.agencia, r.origen, r.detalle, r.kind, r.misiones, r.anio, r.fuente]
+  const blob = [r.name, refText(r, "tipo"), r.agencia, refText(r, "origen"), refText(r, "detalle"), r.kind, r.misiones, r.anio, refText(r, "fuente")]
     .filter((v) => v != null && v !== "")
     .join(" ");
   return fold(blob).includes(q);
@@ -291,7 +325,7 @@ function renderList() {
 function listMeta(r) {
   if (r.kind === "orbita") {
     const loc = locale();
-    const inc = r.inclinacion != null ? "i = " + Number(r.inclinacion).toLocaleString(loc) + "°" : r.tipo;
+    const inc = r.inclinacion != null ? "i = " + Number(r.inclinacion).toLocaleString(loc) + "°" : refText(r, "tipo");
     const alt =
       r.perilune_km != null && r.apolune_km != null
         ? r.perilune_km.toLocaleString(loc) + " × " + r.apolune_km.toLocaleString(loc) + " km"
@@ -301,20 +335,20 @@ function listMeta(r) {
     const used = r.misiones
       ? t("moon.meta.missions", { v: r.misiones })
       : t("moon.meta.orbitClass");
-    const src = r.fuente ? t("moon.meta.source", { v: r.fuente }) : "";
-    return [r.tipo, inc, alt, used, src].filter(Boolean).join(" · ");
+    const src = refText(r, "fuente") ? t("moon.meta.source", { v: refText(r, "fuente") }) : "";
+    return [refText(r, "tipo"), inc, alt, used, src].filter(Boolean).join(" · ");
   }
   if (r.kind === "mision") {
     const crew = r.tripulada ? t("moon.meta.crew") : t("moon.meta.uncrewed");
-    const src = r.fuente ? t("moon.meta.source", { v: r.fuente }) : "";
-    return [r.agencia || r.tipo, crew, fmtCoord(r), src].filter(Boolean).join(" · ");
+    const src = refText(r, "fuente") ? t("moon.meta.source", { v: refText(r, "fuente") }) : "";
+    return [r.agencia || refText(r, "tipo"), crew, fmtCoord(r), src].filter(Boolean).join(" · ");
   }
   if (r.kind === "dato") {
-    const src = r.fuente ? t("moon.meta.source", { v: r.fuente }) : "";
-    return [r.tipo, r.agencia, r.origen, src].filter(Boolean).join(" · ");
+    const src = refText(r, "fuente") ? t("moon.meta.source", { v: refText(r, "fuente") }) : "";
+    return [refText(r, "tipo"), r.agencia, refText(r, "origen"), src].filter(Boolean).join(" · ");
   }
-  const src = r.fuente ? t("moon.meta.source", { v: r.fuente }) : "";
-  return [r.tipo, fmtCoord(r), src].filter(Boolean).join(" · ");
+  const src = refText(r, "fuente") ? t("moon.meta.source", { v: refText(r, "fuente") }) : "";
+  return [refText(r, "tipo"), fmtCoord(r), src].filter(Boolean).join(" · ");
 }
 
 function fmtCoord(r) {
@@ -355,7 +389,13 @@ async function startMoon() {
   moonStarting = true;
   try {
     const { createMoonGlobe } = await import(MOON_MOD);
-    moon = createMoonGlobe(canvas, { pinScale: 0.12, autoStart: false });
+    moon = createMoonGlobe(canvas, {
+      pinScale: 0.12,
+      autoStart: false,
+      moonMap: `${ROOT}/assets/moon-hi.jpg`,
+      pinMap: `${ROOT}/assets/mark.png?v=5`,
+      demMap: `${ROOT}/assets/moon-dem.png`,
+    });
     moon.setRefs(refs);
     moon.resize();
     try {
@@ -428,7 +468,7 @@ search.addEventListener("keydown", (e) => {
 const initial = location.hash.slice(1);
 openTab(resolveTab(initial));
 
-fetch("data/refs.json")
+fetch(`${ROOT}/data/refs.json`)
   .then((r) => r.json())
   .then((data) => {
     refs = data;
@@ -511,6 +551,13 @@ async function startDemo() {
   }
 }
 
+function scheduleHero() {
+  if (hero || heroStarting) return;
+  const run = () => startHero();
+  if ("requestIdleCallback" in window) requestIdleCallback(run, { timeout: 1500 });
+  else setTimeout(run, 50);
+}
+
 async function startHero() {
   if (!heroCanvas || hero || heroStarting) return;
   heroStarting = true;
@@ -523,6 +570,8 @@ async function startHero() {
       flyStep: 0.016,
       zoomIn: 0.9,
       pinScale: 0.14,
+      moonMap: `${ROOT}/assets/moon-hi.jpg`,
+      pinMap: `${ROOT}/assets/mark.png?v=5`,
     });
     if (refs.length) hero.setRefs(tourRefs(true));
     hero.resize();
@@ -530,7 +579,6 @@ async function startHero() {
     setHeroActive(onHome);
     hero.ready.then(() => {
       hero.resize();
-      if (!navigator.connection?.saveData) new Image().src = "assets/earth.jpg";
     }).catch(() => {});
   } catch (err) {
     console.error(err);

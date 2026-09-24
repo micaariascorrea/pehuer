@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { locale, t } from "./i18n.js";
+import { refText } from "./ref-text.js";
 
 const RADIUS = 1.85;
 const CAM_DIST = 4.15;
@@ -187,7 +188,7 @@ export function createMoonGlobe(canvas, opts = {}) {
         ? ref.name + " · " + ref.anio
         : ref.name;
     tip.querySelector(".moon-tip-name").textContent = title;
-    tip.querySelector(".moon-tip-tipo").textContent = t("moon.tip.type", { v: ref.tipo });
+    tip.querySelector(".moon-tip-tipo").textContent = t("moon.tip.type", { v: refText(ref, "tipo") });
     const coordEl = tip.querySelector(".moon-tip-coord");
     if (ref.kind === "orbita") {
       coordEl.textContent = fmtOrbit(ref);
@@ -204,10 +205,10 @@ export function createMoonGlobe(canvas, opts = {}) {
     }
     setText(".moon-tip-misiones", misiones, true);
     const origenEl = tip.querySelector(".moon-tip-origen");
-    origenEl.textContent = ref.origen ? t("moon.tip.origin", { v: ref.origen }) : "";
-    origenEl.hidden = !ref.origen;
-    setText(".moon-tip-fuente", ref.fuente ? t("moon.tip.source", { v: ref.fuente }) : "", true);
-    setText(".moon-tip-detalle", ref.detalle || "", true);
+    origenEl.textContent = refText(ref, "origen") ? t("moon.tip.origin", { v: refText(ref, "origen") }) : "";
+    origenEl.hidden = !refText(ref, "origen");
+    setText(".moon-tip-fuente", refText(ref, "fuente") ? t("moon.tip.source", { v: refText(ref, "fuente") }) : "", true);
+    setText(".moon-tip-detalle", refText(ref, "detalle") || "", true);
     const stage = canvas.parentElement.getBoundingClientRect();
     let left = clientX - stage.left + 12;
     let top = clientY - stage.top + 14;
@@ -253,6 +254,8 @@ export function createMoonGlobe(canvas, opts = {}) {
   const loader = new THREE.TextureLoader();
   let pinTex = null;
   const moonMap = opts.moonMap || "assets/moon-hi.jpg";
+  const pinMap = opts.pinMap || "assets/mark.png?v=5";
+  const demMap = opts.demMap || "assets/moon-dem.png";
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
 
   function applyColor(tex) {
@@ -275,22 +278,12 @@ export function createMoonGlobe(canvas, opts = {}) {
         resolve();
       },
       undefined,
-      () => {
-        loader.load(
-          "assets/moon-color.jpg",
-          (tex) => {
-            applyColor(tex);
-            resolve();
-          },
-          undefined,
-          reject
-        );
-      }
+      reject
     );
   });
 
   if (opts.dem !== false) {
-    loader.load("assets/moon-dem.png", (tex) => {
+    loader.load(demMap, (tex) => {
       tex.colorSpace = THREE.NoColorSpace;
       tex.anisotropy = Math.min(4, maxAniso);
       moon.material.displacementMap = tex;
@@ -302,7 +295,7 @@ export function createMoonGlobe(canvas, opts = {}) {
 
   const pinReady = new Promise((resolve, reject) => {
     loader.load(
-      "assets/mark.png?v=5",
+      pinMap,
       (tex) => {
         tex.colorSpace = THREE.SRGBColorSpace;
         tex.premultiplyAlpha = false;

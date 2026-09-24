@@ -285,7 +285,7 @@ img { max-width: 100%; display: block; background: transparent; }
   z-index: 2;
 }
 
-.hero-spirit {
+h1.hero-spirit {
   margin: 0;
   font-family: var(--font-spirit);
   font-weight: 400;
@@ -553,8 +553,14 @@ h2 {
   padding: 48px 0 8px;
 }
 
-.sys-hero h1 {
+.sys-hero h1,
+.sys-hero h2,
+.unite-page h1,
+.unite-page h2 {
   max-width: none;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.15;
+  color: var(--cream);
 }
 
 .sys-grid {
@@ -696,7 +702,7 @@ h2 {
 .sys-zone-kicker,
 .sys-zone-name {
   fill: rgba(154, 208, 220, 0.82);
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -715,7 +721,7 @@ h2 {
 .sys-demo-refs text,
 .sys-demo-assets text {
   fill: rgba(154, 208, 220, 0.72);
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
   font-size: 12px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -816,14 +822,14 @@ h2 {
 
 #sys-lbl-asset {
   fill: var(--hud);
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
   font-size: 15px;
 }
 
 .sys-demo-hud {
   position: absolute;
   z-index: 2;
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
   font-size: 11px;
   color: var(--hud);
   letter-spacing: 0.08em;
@@ -845,21 +851,11 @@ h2 {
   color: rgba(154, 208, 220, 0.7);
 }
 
-.sys-demo-hud-tr {
-  top: 16px;
-  right: 22px;
-}
-
-.sys-live {
-  color: #7dba9a;
-  animation: sys-pulse 1.6s ease-in-out infinite;
-}
-
 .sys-demo-out {
   padding: 14px 20px 16px;
   border-top: 1px solid rgba(154, 208, 220, 0.18);
   background: #070b10;
-  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
 }
 
 .sys-demo-out-grid {
@@ -910,8 +906,7 @@ h2 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sys-asset-pulse,
-  .sys-live { animation: none; }
+  .sys-asset-pulse { animation: none; }
 }
 
 /* ——— Moon ——— */
@@ -1234,10 +1229,6 @@ h2 {
   padding-top: 48px;
 }
 
-.unite-page h1 {
-  max-width: none;
-}
-
 .unite-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1311,12 +1302,12 @@ h2 {
   align-items: center;
 }
 
-.contact-card h1 {
+.contact-card .name-pehuer {
   max-width: none;
   margin: 0 auto 16px;
 }
 
-.contact-card h1 img {
+.contact-card .name-pehuer img {
   height: auto;
   width: min(420px, 100%);
   margin: 0 auto;
