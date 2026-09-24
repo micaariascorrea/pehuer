@@ -1676,7 +1676,6 @@ body.form-open {
   .sys-grid,
   .rail,
   .unite-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .integ-cols { grid-template-columns: 1fr; }
   .unite-grid { gap: 8px; }
   .unite-card { padding: 14px 10px 16px; }
   .unite-card h3 {
