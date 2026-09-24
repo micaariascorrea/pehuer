@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/site.css?v=demo12" />
+  <link rel="stylesheet" href="css/site.css?v=demo16" />
   <script type="importmap">
   {
     "imports": {
@@ -50,7 +50,7 @@
             <span class="tab-label" data-i18n="nav.moon">Luna</span>
             <span class="tab-ear right"></span>
           </button>
-          <button class="tab" data-tab="unite" type="button">
+          <button class="tab" data-tab="sumate" type="button">
             <span class="tab-ear left"></span>
             <img class="tab-icon" src="assets/mark.png?v=5" alt="" />
             <span class="tab-label" data-i18n="nav.unite">Sumate</span>
@@ -305,7 +305,7 @@
         </div>
       </section>
 
-      <section id="panel-unite" class="panel" data-panel="unite">
+      <section id="panel-unite" class="panel" data-panel="sumate">
         <div class="page unite-page">
           <p class="kicker" data-i18n="unite.kicker">Comunidad</p>
           <h1 data-i18n="unite.title">Sumate a PEHUER</h1>
@@ -315,28 +315,33 @@
               <p class="unite-n">01</p>
               <h3 data-i18n="unite.community.title">Comunidad</h3>
               <p class="unite-body" data-i18n="unite.community.body">Sumate a la comunidad para crear PEHUER juntos: talento, ideas y trabajo compartido.</p>
-              <button class="unite-cta" type="button" data-scroll="#unite-contact" data-i18n="unite.community.cta">Quiero unirme</button>
+              <button class="unite-cta" type="button" data-form="unite.community.cta" data-i18n="unite.community.cta">Quiero unirme</button>
             </article>
             <article class="unite-card">
               <p class="unite-n">02</p>
               <h3 data-i18n="unite.investor.title">Inversor</h3>
               <p class="unite-body" data-i18n="unite.investor.body">Si querés invertir en correr los límites del desarrollo de la humanidad y sus conocimientos, escribinos.</p>
-              <button class="unite-cta" type="button" data-scroll="#unite-contact" data-i18n="unite.investor.cta">Quiero invertir</button>
+              <button class="unite-cta" type="button" data-form="unite.investor.cta" data-i18n="unite.investor.cta">Quiero invertir</button>
             </article>
             <article class="unite-card">
               <p class="unite-n">03</p>
               <h3 data-i18n="unite.partner.title">Socio estratégico</h3>
               <p class="unite-body" data-i18n="unite.partner.body">Buscamos socios estratégicos para integrar, desplegar y escalar el servicio.</p>
-              <button class="unite-cta" type="button" data-scroll="#unite-contact" data-i18n="unite.partner.cta">Quiero ser socio</button>
+              <button class="unite-cta" type="button" data-form="unite.partner.cta" data-i18n="unite.partner.cta">Quiero ser socio</button>
             </article>
           </div>
           <div class="contact-wrap" id="unite-contact">
             <div class="contact-card">
               <h1 class="name-pehuer"><img src="assets/logo-lockup-pink.png" alt="PEHUER" loading="lazy" decoding="async" /></h1>
               <p class="tag spirit" data-i18n="hero.spirit">Explorar para ser libres</p>
-              <a class="ig-logo" href="https://www.instagram.com/pehuer.space/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pehuer.space">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm11.25 1.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
-              </a>
+              <div class="contact-socials">
+                <a class="ig-logo" href="https://www.instagram.com/pehuer.space/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pehuer.space">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm11.25 1.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+                </a>
+                <a class="ig-logo" href="https://x.com/pehuerspace" target="_blank" rel="noopener noreferrer" aria-label="X @pehuerspace">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.852L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+                </a>
+              </div>
               <a class="mail-link" href="mailto:info@pehuer.com">info@pehuer.com</a>
               <p class="contact-foot" data-i18n="contact.from">Desde Argentina</p>
             </div>
@@ -345,20 +350,48 @@
       </section>
     </main>
     <footer class="site-footer">
-      <p class="copy" data-i18n="footer.copy">© PEHUER SPACE. Todos los derechos reservados.</p>
-      <a class="mail-link footer-mail" href="mailto:info@pehuer.com">info@pehuer.com</a>
-      <a class="ig-logo footer-ig" href="https://www.instagram.com/pehuer.space/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @pehuer.space">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm11.25 1.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
-      </a>
-      <span class="ar-flag" title="Argentina" aria-label="Argentina">
-        <svg viewBox="0 0 18 12" width="18" height="12" aria-hidden="true">
-          <rect width="18" height="12" fill="#74acdf"/>
-          <rect y="4" width="18" height="4" fill="#fff"/>
-          <circle cx="9" cy="6" r="1.35" fill="#f6b40e"/>
-        </svg>
-      </span>
+      <div class="footer-left">
+        <p class="copy" data-i18n="footer.copy">© PEHUER SPACE. Todos los derechos reservados.</p>
+        <nav class="footer-legal" aria-label="Legal">
+          <a href="privacidad/" data-i18n="footer.privacy">Privacidad</a>
+          <a href="cookies/" data-i18n="footer.cookies">Cookies</a>
+        </nav>
+      </div>
+      <div class="footer-right">
+        <a class="mail-link footer-mail" href="mailto:info@pehuer.com">info@pehuer.com</a>
+        <span class="ar-flag" title="Argentina" aria-label="Argentina">
+          <svg viewBox="0 0 18 12" width="18" height="12" aria-hidden="true">
+            <rect width="18" height="12" fill="#74acdf"/>
+            <rect y="4" width="18" height="4" fill="#fff"/>
+            <circle cx="9" cy="6" r="1.35" fill="#f6b40e"/>
+          </svg>
+        </span>
+      </div>
     </footer>
   </div>
-  <script type="module" src="js/site.js?v=perf34"></script>
+  <div class="form-overlay" id="join-overlay" hidden>
+    <div class="form-modal" role="dialog" aria-modal="true" aria-labelledby="join-title">
+      <button class="form-close" type="button" data-i18n-aria="form.close" aria-label="Cerrar">×</button>
+      <h2 id="join-title" data-i18n="form.title">Escribinos</h2>
+      <form id="join-form" novalidate>
+        <input type="text" name="_gotcha" class="form-honey" tabindex="-1" autocomplete="off" />
+        <label>
+          <span data-i18n="form.email">Correo</span>
+          <input id="join-email" name="email" type="email" required autocomplete="email" />
+        </label>
+        <label>
+          <span data-i18n="form.subject">Asunto</span>
+          <input id="join-subject" name="_subject" type="text" readonly />
+        </label>
+        <label>
+          <span data-i18n="form.message">Mensaje</span>
+          <textarea id="join-message" name="message" rows="6" required></textarea>
+        </label>
+        <p class="form-status" id="join-status" hidden></p>
+        <button class="form-submit" type="submit" data-i18n="form.send">Enviar</button>
+      </form>
+    </div>
+  </div>
+  <script type="module" src="js/site.js?v=perf36"></script>
 </body>
 </html>

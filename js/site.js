@@ -17,8 +17,15 @@ document.querySelectorAll("[data-set-lang]").forEach((btn) => {
   });
 });
 
-const TABS = ["home", "servicios", "moon", "unite"];
-const TAB_ALIAS = { sistema: "servicios", system: "servicios", contacto: "unite", contact: "unite" };
+const TABS = ["home", "servicios", "moon", "sumate"];
+const TAB_ALIAS = {
+  sistema: "servicios",
+  system: "servicios",
+  unite: "sumate",
+  join: "sumate",
+  contacto: "sumate",
+  contact: "sumate",
+};
 const HERO_TOUR = [
   { i: 30, img: "assets/tour/apollo11.jpg" },
   { i: 80, img: "assets/tour/carroll.jpg" },
@@ -99,7 +106,7 @@ function openTab(id) {
     if (search) search.focus({ preventScroll: true });
     startMoon();
     if (moon) moon.resize();
-  } else if (id === "unite" && (raw === "contacto" || raw === "contact")) {
+  } else if (id === "sumate" && (raw === "contacto" || raw === "contact")) {
     afterPaint(() => document.getElementById("unite-contact")?.scrollIntoView({
       behavior: "smooth",
       block: "nearest",
@@ -137,6 +144,93 @@ document.querySelectorAll("[data-scroll]").forEach((btn) => {
       block: "nearest",
     });
   });
+});
+
+const joinOverlay = document.getElementById("join-overlay");
+const joinForm = document.getElementById("join-form");
+const joinSubject = document.getElementById("join-subject");
+const joinEmail = document.getElementById("join-email");
+const joinMessage = document.getElementById("join-message");
+const joinStatus = document.getElementById("join-status");
+const joinSubmit = joinForm?.querySelector(".form-submit");
+let joinKey = "";
+
+function setJoinStatus(kind, text) {
+  if (!joinStatus) return;
+  joinStatus.hidden = !text;
+  joinStatus.textContent = text || "";
+  joinStatus.classList.toggle("is-ok", kind === "ok");
+  joinStatus.classList.toggle("is-err", kind === "err");
+}
+
+function closeJoin() {
+  if (!joinOverlay) return;
+  joinOverlay.hidden = true;
+  document.body.classList.remove("form-open");
+}
+
+function openJoin(key) {
+  joinKey = key;
+  if (!joinOverlay || !joinForm) return;
+  joinForm.reset();
+  joinSubject.value = t(key);
+  setJoinStatus("", "");
+  if (joinSubmit) joinSubmit.disabled = false;
+  joinOverlay.hidden = false;
+  document.body.classList.add("form-open");
+  joinEmail?.focus();
+}
+
+document.querySelectorAll("[data-form]").forEach((btn) => {
+  btn.addEventListener("click", () => openJoin(btn.getAttribute("data-form")));
+});
+
+joinOverlay?.querySelector(".form-close")?.addEventListener("click", closeJoin);
+joinOverlay?.addEventListener("click", (e) => {
+  if (e.target === joinOverlay) closeJoin();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && joinOverlay && !joinOverlay.hidden) closeJoin();
+});
+window.addEventListener("pehuer-lang", () => {
+  if (joinKey && joinSubject && joinOverlay && !joinOverlay.hidden) {
+    joinSubject.value = t(joinKey);
+  }
+});
+
+joinForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = joinEmail.value.trim();
+  const message = joinMessage.value.trim();
+  const subject = joinSubject.value.trim();
+  if (!email || !message || !subject) {
+    setJoinStatus("err", t("form.err"));
+    return;
+  }
+  if (joinSubmit) joinSubmit.disabled = true;
+  setJoinStatus("", t("form.sending"));
+  try {
+    const res = await fetch("https://formsubmit.co/ajax/info@pehuer.com", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        email,
+        _replyto: email,
+        _subject: subject,
+        message,
+        opcion: subject,
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.success === "false") throw new Error("send");
+    setJoinStatus("ok", t("form.ok"));
+    joinForm.reset();
+    joinSubject.value = t(joinKey);
+  } catch (_) {
+    setJoinStatus("err", t("form.err"));
+  } finally {
+    if (joinSubmit) joinSubmit.disabled = false;
+  }
 });
 
 function matches(r, q) {

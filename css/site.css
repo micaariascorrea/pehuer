@@ -293,7 +293,7 @@ img { max-width: 100%; display: block; background: transparent; }
   font-size: clamp(42px, 6.6vw, 76px);
   letter-spacing: 0.04em;
   line-height: 1.2;
-  color: var(--pink);
+  color: var(--cream);
   text-transform: none;
   display: inline-block;
   max-width: 18ch;
@@ -1342,6 +1342,13 @@ h2 {
   margin: 0 auto 28px;
 }
 
+.contact-socials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
 .ig-logo {
   display: inline-flex;
   align-items: center;
@@ -1385,7 +1392,8 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 10px 16px;
   padding: 10px 20px;
   background: #07080b;
   border-top: 1px solid var(--stroke);
@@ -1395,6 +1403,18 @@ h2 {
 
 .site-footer .copy {
   margin: 0;
+}
+
+.footer-left,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.footer-right {
+  margin-left: auto;
 }
 
 .footer-mail {
@@ -1407,14 +1427,220 @@ h2 {
   color: var(--pink);
 }
 
-.footer-ig {
-  width: 28px;
-  height: 28px;
+.footer-legal {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.footer-ig svg {
-  width: 18px;
-  height: 18px;
+.footer-legal a {
+  color: var(--cream-mute);
+  letter-spacing: 0.04em;
+}
+
+.footer-legal a:hover {
+  color: var(--pink);
+}
+
+.form-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(7, 8, 11, 0.78);
+}
+
+.form-overlay[hidden] {
+  display: none;
+}
+
+body.form-open {
+  overflow: hidden;
+}
+
+.form-modal {
+  position: relative;
+  width: min(480px, 100%);
+  padding: 28px 24px 24px;
+  background: var(--navy-mid);
+  border: 1px solid var(--stroke);
+}
+
+.form-modal h2 {
+  margin: 0 0 20px;
+  font-size: 20px;
+}
+
+.form-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--cream-dim);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.form-close:hover {
+  color: var(--pink);
+}
+
+.form-modal form {
+  display: grid;
+  gap: 14px;
+}
+
+.form-modal label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--pink);
+}
+
+.form-modal input,
+.form-modal textarea {
+  width: 100%;
+  border: 1px solid var(--stroke);
+  background: #07080b;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 10px 12px;
+}
+
+.form-modal input[readonly] {
+  color: var(--cream-dim);
+}
+
+.form-modal textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-honey {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  height: 0;
+  width: 0;
+}
+
+.form-submit {
+  margin-top: 6px;
+  border: 1px solid var(--pink);
+  background: transparent;
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.form-submit:hover:not(:disabled) {
+  background: var(--pink-dim);
+}
+
+.form-submit:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.form-status {
+  margin: 0;
+  font-size: 14px;
+}
+
+.form-status.is-ok {
+  color: var(--pink);
+}
+
+.form-status.is-err {
+  color: #e8a0a0;
+}
+
+.legal-shell a.brand {
+  text-decoration: none;
+  color: inherit;
+}
+
+.legal-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.legal-shell .workspace {
+  flex: 1;
+}
+
+.legal-prose {
+  max-width: 720px;
+  padding: 48px 24px 80px;
+  margin: 0 auto;
+}
+
+.legal-prose .legal-back {
+  color: var(--pink);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+
+.legal-prose h1 {
+  margin: 18px 0 8px;
+  font-size: clamp(28px, 4vw, 40px);
+}
+
+.legal-updated {
+  color: var(--cream-mute);
+  font-size: 13px;
+  margin: 0 0 28px;
+}
+
+.legal-prose h2 {
+  margin: 28px 0 10px;
+  font-size: 16px;
+  color: var(--pink);
+}
+
+.legal-prose p,
+.legal-prose li {
+  color: var(--cream-dim);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.legal-prose ul {
+  padding-left: 18px;
+}
+
+.legal-prose a {
+  color: var(--pink);
+}
+
+.legal-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 20px;
+  font-size: 13px;
+}
+
+.legal-prose th,
+.legal-prose td {
+  border: 1px solid var(--stroke);
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.legal-prose th {
+  color: var(--pink);
+  font-weight: 600;
 }
 
 .ar-flag {
@@ -1495,8 +1721,8 @@ h2 {
   .chrome-top { height: 52px; }
   .site-footer {
     flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
+    justify-content: space-between;
+    text-align: left;
   }
 }
 
