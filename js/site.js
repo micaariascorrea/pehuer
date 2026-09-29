@@ -1,8 +1,8 @@
-import { apply, setLang, t, locale, ROOT, maybeDetectLang } from "./i18n.js";
+import { apply, setLang, t, locale, ROOT, maybeDetectLang } from "./i18n.js?v=i18n12";
 import { refText } from "./ref-text.js";
 
 const MOON_MOD = "./moon-globe.js";
-const DEMO_MOD = "./sys-demo.js?v=demo14";
+const DEMO_MOD = "./sys-demo.js?v=demo15";
 
 maybeDetectLang();
 apply();
@@ -227,19 +227,28 @@ window.addEventListener("pehuer-lang", () => {
   }
 });
 
+const JOIN_ENDPOINT = "https://formsubmit.co/ajax/" + atob("aW5mb0BwZWh1ZXIuY29t");
+
 joinForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const email = joinEmail.value.trim();
   const message = joinMessage.value.trim();
   const subject = joinSubject.value.trim();
+  joinEmail.value = email;
+  joinMessage.value = message;
   if (!email || !message || !subject) {
-    setJoinStatus("err", t("form.err"));
+    setJoinStatus("err", t("form.empty"));
+    return;
+  }
+  if (joinEmail && !joinEmail.checkValidity()) {
+    setJoinStatus("err", t("form.emailInvalid"));
+    joinEmail.focus();
     return;
   }
   if (joinSubmit) joinSubmit.disabled = true;
   setJoinStatus("", t("form.sending"));
   try {
-    const res = await fetch("https://formsubmit.co/ajax/info@pehuer.com", {
+    const res = await fetch(JOIN_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
@@ -460,6 +469,7 @@ search.addEventListener("keydown", (e) => {
   }
 });
 
+setupHero();
 const initial = location.hash.slice(1);
 openTab(resolveTab(initial));
 
@@ -478,9 +488,41 @@ function prefersReducedMotion() {
   return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+function prefersLiteMedia() {
+  const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (!c) return false;
+  if (c.saveData) return true;
+  const type = String(c.effectiveType || "").toLowerCase();
+  return type === "slow-2g" || type === "2g";
+}
+
+function setupHero() {
+  if (!heroVideo) return;
+  heroVideo.muted = true;
+  heroVideo.loop = true;
+  const cine = heroVideo.closest(".hero-cine");
+  if (prefersLiteMedia()) {
+    heroVideo.dataset.lite = "1";
+    heroVideo.preload = "none";
+    heroVideo.removeAttribute("autoplay");
+    heroVideo.pause();
+    if (cine) {
+      cine.classList.add("is-lite");
+      cine.addEventListener("click", () => {
+        heroVideo.dataset.lite = "0";
+        cine.classList.remove("is-lite");
+        heroVideo.preload = "metadata";
+        heroVideo.play().catch(() => {});
+      }, { once: true });
+    }
+  } else {
+    heroVideo.preload = "metadata";
+  }
+}
+
 function setHeroActive(on) {
   if (!heroVideo) return;
-  if (on && !prefersReducedMotion()) {
+  if (on && !prefersReducedMotion() && heroVideo.dataset.lite !== "1") {
     heroVideo.loop = true;
     heroVideo.muted = true;
     heroVideo.play().catch(() => {});

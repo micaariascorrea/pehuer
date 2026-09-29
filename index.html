@@ -25,17 +25,38 @@
   <meta name="twitter:description" content="Somos PEHUER. Construimos software para el posicionamiento en la superficie lunar. Desde Argentina." />
   <meta name="twitter:image" content="https://www.pehuer.com/assets/og-pehuer.jpg" />
   <link rel="icon" href="assets/mark.png?v=5" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&text=Explorar%20para%20ser%20libresExplore%20to%20be%20free&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/site.css?v=demo22" />
+  <link rel="stylesheet" href="css/site.css?v=demo24" />
   <script type="importmap">
   {
     "imports": {
-      "three": "./vendor/three.module.js",
+      "three": "./vendor/three.module.min.js",
       "three/addons/controls/OrbitControls.js": "./vendor/OrbitControls.js"
     }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "PEHUER",
+    "legalName": "PEHUER SPACE",
+    "url": "https://www.pehuer.com/",
+    "logo": "https://www.pehuer.com/assets/mark.png",
+    "email": "info@pehuer.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "AR"
+    },
+    "sameAs": [
+      "https://www.instagram.com/pehuer.space/",
+      "https://x.com/pehuerspace",
+      "https://github.com/micaariascorrea/pehuer"
+    ]
   }
   </script>
 </head>
@@ -82,9 +103,9 @@
     </header>
 
     <main class="workspace">
-      <section id="panel-home" class="panel is-active" data-panel="home" role="tabpanel" aria-labelledby="tab-home">
+      <section id="panel-home" class="panel is-active" data-panel="home" role="tabpanel" aria-labelledby="tab-home" tabindex="0">
         <div class="hero hero-cine">
-          <video id="hero-video" class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+          <video id="hero-video" class="hero-video" autoplay muted loop playsinline preload="none" poster="assets/hero-es-poster.jpg" aria-hidden="true">
             <source src="assets/hero-es.mp4" type="video/mp4" />
           </video>
           <h1 class="visually-hidden" data-i18n="hero.h1">Software de posicionamiento lunar</h1>
@@ -97,7 +118,7 @@
           </article>
 
           <div class="aims">
-            <p class="kicker aims-kicker" data-i18n="home.aims">Objetivo</p>
+            <h2 class="kicker aims-kicker" data-i18n="home.aims">Objetivo</h2>
             <article class="obj">
               <div class="obj-n">01</div>
               <h3 data-i18n="home.obj1.title">Estimación de posición</h3>
@@ -106,7 +127,7 @@
             <article class="obj">
               <div class="obj-n">02</div>
               <h3 data-i18n="home.obj2.title">Veredicto de riesgo</h3>
-              <p data-i18n="home.obj2.body">Traducimos esa lectura a un veredicto sobre esta posición: RIESGO ACEPTABLE o RIESGO EXCEDIDO. El umbral es parametrizable por cada cliente.</p>
+              <p data-i18n="home.obj2.body">Traducimos esa lectura a un veredicto sobre esta posición: RIESGO ACEPTABLE o RIESGO EXCEDIDO. El umbral es configurable por cada cliente.</p>
             </article>
           </div>
 
@@ -139,9 +160,9 @@
         </div>
       </section>
 
-      <section id="panel-servicios" class="panel" data-panel="servicios" role="tabpanel" aria-labelledby="tab-servicios">
+      <section id="panel-servicios" class="panel" data-panel="servicios" role="tabpanel" aria-labelledby="tab-servicios" tabindex="0">
         <div class="page sys-hero">
-          <h2 data-i18n="sys.title">Servicios PEHUER</h2>
+          <h1 data-i18n="sys.title">Servicios PEHUER</h1>
           <p class="lede" data-i18n="sys.lede">Proveemos una lectura de posicionamiento estructurada:</p>
 
           <div class="sys-grid">
@@ -155,7 +176,7 @@
             </article>
             <article class="sys-block">
               <h3 data-i18n="sys.ver.title">Veredicto</h3>
-              <p data-i18n="sys.ver.body">RIESGO ACEPTABLE o RIESGO EXCEDIDO, sobre esta posición. El umbral es parametrizable por cada cliente.</p>
+              <p data-i18n="sys.ver.body">RIESGO ACEPTABLE o RIESGO EXCEDIDO, sobre esta posición. El umbral es configurable por cada cliente.</p>
             </article>
           </div>
 
@@ -167,14 +188,14 @@
                 <ul class="integ-list">
                   <li data-i18n="sys.integ.in.1">Observaciones</li>
                   <li data-i18n="sys.integ.in.2">Marco de referencia de la misión</li>
-                  <li data-i18n="sys.integ.in.3">Umbral de riesgo parametrizado</li>
+                  <li data-i18n="sys.integ.in.3">Umbral de riesgo configurable</li>
                 </ul>
               </div>
               <div>
                 <h3 data-i18n="sys.integ.out">Output</h3>
                 <ul class="integ-list">
                   <li data-i18n="sys.integ.out.1">Posición del activo</li>
-                  <li data-i18n="sys.integ.out.2">Aforo</li>
+                  <li data-i18n="sys.integ.out.2">Nivel de protección</li>
                   <li data-i18n="sys.integ.out.3">Veredicto de riesgo sobre la posición</li>
                 </ul>
               </div>
@@ -263,7 +284,7 @@
                   <em id="sys-out-local">—</em>
                 </div>
                 <div>
-                  <span data-i18n="sys.demo.pehuer">Aforo PEHUER</span>
+                  <span data-i18n="sys.demo.pehuer">Nivel de protección PEHUER</span>
                   <strong id="sys-out-pehuer" class="is-ok">—</strong>
                 </div>
                 <div>
@@ -284,9 +305,9 @@
         </div>
       </section>
 
-      <section id="panel-moon" class="panel panel-moon" data-panel="moon" role="tabpanel" aria-labelledby="tab-moon">
+      <section id="panel-moon" class="panel panel-moon" data-panel="moon" role="tabpanel" aria-labelledby="tab-moon" tabindex="0">
         <aside class="moon-side">
-          <h2 data-i18n="moon.title">Referencias y sus fuentes</h2>
+          <h1 data-i18n="moon.title">Referencias y sus fuentes</h1>
           <div class="search-wrap">
             <input id="ref-search" type="search" placeholder="Buscar cráter, órbita o misión" data-i18n-placeholder="moon.search" autocomplete="off" />
           </div>
@@ -314,10 +335,10 @@
         </div>
       </section>
 
-      <section id="panel-unite" class="panel" data-panel="sumate" role="tabpanel" aria-labelledby="tab-sumate">
+      <section id="panel-unite" class="panel" data-panel="sumate" role="tabpanel" aria-labelledby="tab-sumate" tabindex="0">
         <div class="page unite-page">
           <p class="kicker" data-i18n="unite.kicker">Comunidad</p>
-          <h2 data-i18n="unite.title">Sumate a PEHUER</h2>
+          <h1 data-i18n="unite.title">Sumate a PEHUER</h1>
           <p class="lede" data-i18n="unite.lede">Construimos PEHUER juntos. Elegí cómo querés sumarte.</p>
           <div class="unite-grid">
             <article class="unite-card">
@@ -368,7 +389,7 @@
       </div>
       <div class="footer-right">
         <a class="mail-link footer-mail" href="mailto:info@pehuer.com">info@pehuer.com</a>
-        <span class="ar-flag" title="Argentina" aria-label="Argentina">
+        <span class="ar-flag" role="img" title="Argentina" aria-label="Argentina">
           <svg viewBox="0 0 18 12" width="18" height="12" aria-hidden="true">
             <rect width="18" height="12" fill="#74acdf"/>
             <rect y="4" width="18" height="4" fill="#fff"/>
@@ -401,6 +422,6 @@
       </form>
     </div>
   </div>
-  <script type="module" src="js/site.js?v=perf39"></script>
+  <script type="module" src="js/site.js?v=perf40"></script>
 </body>
 </html>

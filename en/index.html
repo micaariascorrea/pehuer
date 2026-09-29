@@ -25,17 +25,38 @@
   <meta name="twitter:description" content="We are PEHUER. We build software for positioning on the lunar surface. From Argentina." />
   <meta name="twitter:image" content="https://www.pehuer.com/assets/og-pehuer.jpg" />
   <link rel="icon" href="../assets/mark.png?v=5" type="image/png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&text=Explorar%20para%20ser%20libresExplore%20to%20be%20free&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/site.css?v=demo22" />
+  <link rel="stylesheet" href="../css/site.css?v=demo24" />
   <script type="importmap">
   {
     "imports": {
-      "three": "../vendor/three.module.js",
+      "three": "../vendor/three.module.min.js",
       "three/addons/controls/OrbitControls.js": "../vendor/OrbitControls.js"
     }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "PEHUER",
+    "legalName": "PEHUER SPACE",
+    "url": "https://www.pehuer.com/",
+    "logo": "https://www.pehuer.com/assets/mark.png",
+    "email": "info@pehuer.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "AR"
+    },
+    "sameAs": [
+      "https://www.instagram.com/pehuer.space/",
+      "https://x.com/pehuerspace",
+      "https://github.com/micaariascorrea/pehuer"
+    ]
   }
   </script>
 </head>
@@ -69,7 +90,7 @@
           <button class="tab" data-tab="sumate" type="button" role="tab" id="tab-sumate" aria-controls="panel-unite" aria-selected="false">
             <span class="tab-ear left"></span>
             <img class="tab-icon" src="../assets/mark.png?v=5" alt="" />
-            <span class="tab-label" data-i18n="nav.unite">Join as</span>
+            <span class="tab-label" data-i18n="nav.unite">Join</span>
             <span class="tab-ear right"></span>
           </button>
         </nav>
@@ -82,9 +103,9 @@
     </header>
 
     <main class="workspace">
-      <section id="panel-home" class="panel is-active" data-panel="home" role="tabpanel" aria-labelledby="tab-home">
+      <section id="panel-home" class="panel is-active" data-panel="home" role="tabpanel" aria-labelledby="tab-home" tabindex="0">
         <div class="hero hero-cine">
-          <video id="hero-video" class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+          <video id="hero-video" class="hero-video" autoplay muted loop playsinline preload="none" poster="../assets/hero-en-poster.jpg" aria-hidden="true">
             <source src="../assets/hero-en.mp4" type="video/mp4" />
           </video>
           <h1 class="visually-hidden" data-i18n="hero.h1">Lunar positioning software</h1>
@@ -97,7 +118,7 @@
           </article>
 
           <div class="aims">
-            <p class="kicker aims-kicker" data-i18n="home.aims">Purpose</p>
+            <h2 class="kicker aims-kicker" data-i18n="home.aims">Purpose</h2>
             <article class="obj">
               <div class="obj-n">01</div>
               <h3 data-i18n="home.obj1.title">Position estimate</h3>
@@ -106,7 +127,7 @@
             <article class="obj">
               <div class="obj-n">02</div>
               <h3 data-i18n="home.obj2.title">Risk verdict</h3>
-              <p data-i18n="home.obj2.body">We translate that reading into a verdict on this position: RISK ACCEPTABLE or RISK EXCEEDED. The threshold is parametrizable for each client.</p>
+              <p data-i18n="home.obj2.body">We translate that reading into a verdict on this position: RISK ACCEPTABLE or RISK EXCEEDED. The threshold is configurable for each client.</p>
             </article>
           </div>
 
@@ -131,7 +152,7 @@
                 <div class="step-n">03</div>
                 <div>
                   <h3 data-i18n="home.step3.title">Network environment</h3>
-                  <p data-i18n="home.step3.body">Each asset that uses PEHUER contributes and receives crossed corrections. The network improves with each mission: the more assets, the more precise for everyone.</p>
+                  <p data-i18n="home.step3.body">Each asset that uses PEHUER contributes and receives cross-corrections. The network improves with each mission: the more assets, the more precise for everyone.</p>
                 </div>
               </article>
             </div>
@@ -139,9 +160,9 @@
         </div>
       </section>
 
-      <section id="panel-servicios" class="panel" data-panel="servicios" role="tabpanel" aria-labelledby="tab-servicios">
+      <section id="panel-servicios" class="panel" data-panel="servicios" role="tabpanel" aria-labelledby="tab-servicios" tabindex="0">
         <div class="page sys-hero">
-          <h2 data-i18n="sys.title">PEHUER Services</h2>
+          <h1 data-i18n="sys.title">PEHUER Services</h1>
           <p class="lede" data-i18n="sys.lede">We provide a structured positioning reading:</p>
 
           <div class="sys-grid">
@@ -155,7 +176,7 @@
             </article>
             <article class="sys-block">
               <h3 data-i18n="sys.ver.title">Verdict</h3>
-              <p data-i18n="sys.ver.body">RISK ACCEPTABLE or RISK EXCEEDED, on this position. The threshold is parametrizable for each client.</p>
+              <p data-i18n="sys.ver.body">RISK ACCEPTABLE or RISK EXCEEDED, on this position. The threshold is configurable for each client.</p>
             </article>
           </div>
 
@@ -167,14 +188,14 @@
                 <ul class="integ-list">
                   <li data-i18n="sys.integ.in.1">Observations</li>
                   <li data-i18n="sys.integ.in.2">Mission reference frame</li>
-                  <li data-i18n="sys.integ.in.3">Parametrized risk threshold</li>
+                  <li data-i18n="sys.integ.in.3">Configurable risk threshold</li>
                 </ul>
               </div>
               <div>
                 <h3 data-i18n="sys.integ.out">Output</h3>
                 <ul class="integ-list">
                   <li data-i18n="sys.integ.out.1">Asset position</li>
-                  <li data-i18n="sys.integ.out.2">Aforo</li>
+                  <li data-i18n="sys.integ.out.2">Protection level</li>
                   <li data-i18n="sys.integ.out.3">Risk verdict on the position</li>
                 </ul>
               </div>
@@ -263,7 +284,7 @@
                   <em id="sys-out-local">—</em>
                 </div>
                 <div>
-                  <span data-i18n="sys.demo.pehuer">PEHUER aforo</span>
+                  <span data-i18n="sys.demo.pehuer">PEHUER protection level</span>
                   <strong id="sys-out-pehuer" class="is-ok">—</strong>
                 </div>
                 <div>
@@ -284,9 +305,9 @@
         </div>
       </section>
 
-      <section id="panel-moon" class="panel panel-moon" data-panel="moon" role="tabpanel" aria-labelledby="tab-moon">
+      <section id="panel-moon" class="panel panel-moon" data-panel="moon" role="tabpanel" aria-labelledby="tab-moon" tabindex="0">
         <aside class="moon-side">
-          <h2 data-i18n="moon.title">References and their sources</h2>
+          <h1 data-i18n="moon.title">References and their sources</h1>
           <div class="search-wrap">
             <input id="ref-search" type="search" placeholder="Buscar cráter, órbita o misión" data-i18n-placeholder="moon.search" autocomplete="off" />
           </div>
@@ -314,10 +335,10 @@
         </div>
       </section>
 
-      <section id="panel-unite" class="panel" data-panel="sumate" role="tabpanel" aria-labelledby="tab-sumate">
+      <section id="panel-unite" class="panel" data-panel="sumate" role="tabpanel" aria-labelledby="tab-sumate" tabindex="0">
         <div class="page unite-page">
           <p class="kicker" data-i18n="unite.kicker">Community</p>
-          <h2 data-i18n="unite.title">Join PEHUER</h2>
+          <h1 data-i18n="unite.title">Join PEHUER</h1>
           <p class="lede" data-i18n="unite.lede">We are building PEHUER together. Choose how you want to take part.</p>
           <div class="unite-grid">
             <article class="unite-card">
@@ -368,7 +389,7 @@
       </div>
       <div class="footer-right">
         <a class="mail-link footer-mail" href="mailto:info@pehuer.com">info@pehuer.com</a>
-        <span class="ar-flag" title="Argentina" aria-label="Argentina">
+        <span class="ar-flag" role="img" title="Argentina" aria-label="Argentina">
           <svg viewBox="0 0 18 12" width="18" height="12" aria-hidden="true">
             <rect width="18" height="12" fill="#74acdf"/>
             <rect y="4" width="18" height="4" fill="#fff"/>
@@ -401,6 +422,6 @@
       </form>
     </div>
   </div>
-  <script type="module" src="../js/site.js?v=perf39"></script>
+  <script type="module" src="../js/site.js?v=perf40"></script>
 </body>
 </html>

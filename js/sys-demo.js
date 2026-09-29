@@ -38,7 +38,7 @@ function fmtLon(lon) {
   let l = lon;
   if (l > 180) l -= 360;
   if (l < -180) l += 360;
-  return `${Math.abs(l).toFixed(2)}°${l < 0 ? "W" : "E"}`;
+  return `${Math.abs(l).toFixed(3)}°${l < 0 ? "W" : "E"}`;
 }
 
 function fmtM(v, loc) {
