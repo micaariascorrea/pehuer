@@ -10,7 +10,6 @@ document.querySelectorAll("[data-set-lang]").forEach((btn) => {
   btn.addEventListener("click", () => {
     setLang(btn.getAttribute("data-set-lang"));
     renderList();
-    if (heroRef) setHeroCard(heroRef);
     if (loaderText && loader && !loader.classList.contains("is-hide") && !moonReady) {
       loaderText.textContent = t("moon.loading");
     }
@@ -26,13 +25,6 @@ const TAB_ALIAS = {
   contacto: "sumate",
   contact: "sumate",
 };
-const HERO_TOUR = [
-  { i: 30, img: `${ROOT}/assets/tour/apollo11.jpg` },
-  { i: 80, img: `${ROOT}/assets/tour/carroll.jpg` },
-  { i: 35, img: `${ROOT}/assets/tour/apollo17.jpg` },
-  { i: 4, img: `${ROOT}/assets/tour/shackleton.jpg` },
-  { i: 18, img: `${ROOT}/assets/tour/tycho.jpg` },
-];
 
 const tabs = [...document.querySelectorAll(".tab")];
 const panels = [...document.querySelectorAll("[data-panel]")];
@@ -43,11 +35,7 @@ const canvas = document.getElementById("moon-canvas");
 const loader = document.getElementById("moon-loader");
 const loaderText = document.getElementById("moon-loader-text");
 const status = document.getElementById("moon-status");
-const heroCanvas = document.getElementById("hero-canvas");
-const heroCard = document.getElementById("hero-card");
-const heroCardImg = document.getElementById("hero-card-img");
-const heroCardName = document.getElementById("hero-card-name");
-const heroCardDesc = document.getElementById("hero-card-desc");
+const heroVideo = document.getElementById("hero-video");
 
 let refs = [];
 let filtered = [];
@@ -58,13 +46,8 @@ let moonReady = false;
 let moonStarting = false;
 let pendingFly = null;
 let statusTimer = 0;
-let hero = null;
-let heroStarting = false;
 let demo = null;
 let demoStarting = false;
-let heroTimer = 0;
-let heroStep = 0;
-let heroRef = null;
 
 function fold(s) {
   return s
@@ -98,14 +81,10 @@ function openTab(id, opts = {}) {
   if (location.hash.slice(1) !== id) {
     history.replaceState(null, "", "#" + id);
   }
-  if (hero) hero.setPaused(id !== "home");
   if (demo) demo.setPaused(id !== "servicios");
   if (moon) moon.setPaused(id !== "moon");
-  if (id !== "home") clearTimeout(heroTimer);
-  if (id === "home") {
-    scheduleHero();
-    setHeroActive(true);
-  } else if (id === "servicios") {
+  setHeroActive(id === "home");
+  if (id === "servicios") {
     startDemo();
   } else if (id === "moon") {
     if (!opts.focusTab && search) search.focus({ preventScroll: true });
@@ -122,14 +101,13 @@ function openTab(id, opts = {}) {
   }
   afterPaint(() => {
     if (gen !== tabGen) return;
-    if (id === "home" && hero) hero.resize();
-    else if (id === "moon" && moon) moon.resize();
+    if (id === "moon" && moon) moon.resize();
   });
 }
 
 function warmTab(id) {
   if (id === "servicios") import(DEMO_MOD);
-  else if (id === "moon" || id === "home") import(MOON_MOD);
+  else if (id === "moon") import(MOON_MOD);
 }
 
 tabs.forEach((btn) => {
@@ -491,66 +469,23 @@ fetch(`${ROOT}/data/refs.json`)
     refs = data;
     renderList();
     if (moon) moon.setRefs(refs);
-    if (hero) hero.setRefs(tourRefs(true));
   })
   .catch(() => {
     countEl.textContent = t("moon.refsFail");
   });
 
-function tourRefs(wide) {
-  const ids = new Set(HERO_TOUR.map((s) => s.i));
-  return refs.filter((r) => ids.has(r.i) && (!wide || Math.abs(r.lat) < 70));
-}
-
-function setHeroCard(r) {
-  if (!heroCard) return;
-  heroRef = r || null;
-  if (!r) {
-    heroCard.hidden = true;
-    return;
-  }
-  const stop = HERO_TOUR.find((s) => s.i === r.i);
-  heroCard.hidden = false;
-  if (heroCardName) heroCardName.textContent = r.name;
-  if (heroCardDesc) heroCardDesc.textContent = t(`tour.${r.i}.desc`);
-  if (heroCardImg && stop) {
-    heroCardImg.src = stop.img;
-    heroCardImg.alt = r.name;
-  }
-}
-
 function prefersReducedMotion() {
   return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-function nextHeroStop() {
-  if (!hero) return;
-  const wide = heroStep % 2 === 1;
-  if (wide) {
-    if (refs.length) hero.setRefs(tourRefs(true));
-    hero.wideShot();
-    setHeroCard(null);
-  } else {
-    const stop = HERO_TOUR[Math.floor(heroStep / 2) % HERO_TOUR.length];
-    const r = refs.find((x) => x.i === stop.i);
-    if (r) {
-      hero.setRefs([r]);
-      hero.flyTo(r);
-      setHeroCard(r);
-    }
-  }
-  heroStep += 1;
-  heroTimer = setTimeout(nextHeroStop, wide ? 3800 : 5600);
-}
-
 function setHeroActive(on) {
-  if (hero) {
-    hero.setPaused(!on);
-    if (on) hero.resize();
-  }
-  clearTimeout(heroTimer);
-  if (on && hero && !prefersReducedMotion() && refs.length) {
-    nextHeroStop();
+  if (!heroVideo) return;
+  if (on && !prefersReducedMotion()) {
+    heroVideo.loop = true;
+    heroVideo.muted = true;
+    heroVideo.play().catch(() => {});
+  } else {
+    heroVideo.pause();
   }
 }
 
@@ -563,40 +498,6 @@ async function startDemo() {
     demo = createSysDemo(root);
     const onSys = document.querySelector('[data-panel="servicios"]').classList.contains("is-active");
     demo.setPaused(!onSys);
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-function scheduleHero() {
-  if (hero || heroStarting) return;
-  const run = () => startHero();
-  if ("requestIdleCallback" in window) requestIdleCallback(run, { timeout: 1500 });
-  else setTimeout(run, 50);
-}
-
-async function startHero() {
-  if (!heroCanvas || hero || heroStarting) return;
-  heroStarting = true;
-  try {
-    const { createMoonGlobe } = await import(MOON_MOD);
-    hero = createMoonGlobe(heroCanvas, {
-      interactive: false,
-      dem: false,
-      autoStart: false,
-      flyStep: 0.016,
-      zoomIn: 0.9,
-      pinScale: 0.14,
-      moonMap: `${ROOT}/assets/moon-hi.jpg`,
-      pinMap: `${ROOT}/assets/mark.png?v=5`,
-    });
-    if (refs.length) hero.setRefs(tourRefs(true));
-    hero.resize();
-    const onHome = document.querySelector('[data-panel="home"]').classList.contains("is-active");
-    setHeroActive(onHome);
-    hero.ready.then(() => {
-      hero.resize();
-    }).catch(() => {});
   } catch (err) {
     console.error(err);
   }
