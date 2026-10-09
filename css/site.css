@@ -1766,6 +1766,29 @@ body.form-open {
   .form-modal {
     padding: 24px 16px 20px;
   }
+  .site-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+  .footer-left,
+  .footer-right {
+    flex-wrap: nowrap;
+    margin-left: 0;
+    width: 100%;
+    gap: 4px 12px;
+  }
+  .footer-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .footer-legal a,
+  .footer-mail {
+    padding: 8px 12px 8px 0;
+  }
 }
 
 @media (max-width: 480px) {
