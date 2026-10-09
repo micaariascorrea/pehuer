@@ -32,11 +32,25 @@ html, body {
   font-size: 16px;
   line-height: 1.55;
   overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden;
+}
+
+button,
+a,
+.tab,
+.lang-btn,
+.unite-cta,
+.form-submit,
+.form-close,
+.ref-btn {
+  touch-action: manipulation;
 }
 
 a { color: var(--pink); text-decoration: none; }
@@ -57,6 +71,7 @@ img { max-width: 100%; display: block; background: transparent; }
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   background: var(--navy-deep);
 }
 
@@ -1338,7 +1353,7 @@ h2 {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px 16px;
-  padding: 10px 20px;
+  padding: 10px 20px calc(10px + env(safe-area-inset-bottom, 0px));
   background: #07080b;
   border-top: 1px solid var(--stroke);
   font-size: 12px;
@@ -1523,6 +1538,7 @@ body.form-open {
 
 .legal-shell {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -1609,10 +1625,25 @@ body.form-open {
 }
 
 @media (max-width: 860px) {
-  body { overflow: auto; }
-  .app { height: auto; min-height: 100vh; }
+  html, body { height: auto; }
+  body { overflow: auto; overflow-x: hidden; }
+  .app {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  .chrome {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
   .workspace { overflow: visible; }
   .panel { height: auto; }
+  .page {
+    width: min(1080px, calc(100% - 32px));
+    padding: 28px 0 56px;
+  }
   .split,
   .aims,
   .sys-demo-out-grid { grid-template-columns: 1fr 1fr; }
@@ -1648,23 +1679,58 @@ body.form-open {
   }
   .lockup-mark { width: 64px; height: 64px; }
   .lockup { gap: 14px; }
-  .panel-moon.is-active { flex-direction: column; height: calc(100vh - var(--chrome-h) - 44px); }
+  .panel-moon.is-active {
+    flex-direction: column;
+    height: calc(100dvh - var(--chrome-h) - env(safe-area-inset-top, 0px));
+    min-height: 28rem;
+  }
   .moon-side { width: 100%; min-width: 0; max-height: 42%; }
+  .moon-stage { min-height: 220px; }
   .tab {
     min-width: 0;
     flex: 1 1 0;
     max-width: none;
-    padding: 0 18px 0 14px;
-    margin: 0 0 -1px -12px;
+    padding: 0 10px;
+    margin: 0;
     gap: 0;
     font-size: 12px;
+    justify-content: center;
   }
   .tab:first-child { margin-left: 0; }
+  .tabs { gap: 3px; }
   .tab-icon { display: none; }
   .brand-lockup { display: none; }
   .brand-mark { display: block; }
   .brand { padding: 0 10px 8px 2px; margin-right: 0; }
   .chrome-top { height: 60px; }
+  .sys-demo-stage {
+    height: min(52dvh, 420px);
+    min-height: 240px;
+  }
+  .search-wrap input {
+    height: 44px;
+    font-size: 16px;
+  }
+  .ref-btn {
+    padding: 12px 10px;
+    min-height: 44px;
+  }
+  .form-overlay {
+    padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .form-close {
+    top: 6px;
+    right: 6px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .form-modal input,
+  .form-modal textarea {
+    font-size: 16px;
+    padding: 12px;
+  }
   .site-footer {
     flex-wrap: wrap;
     justify-content: space-between;
@@ -1674,10 +1740,16 @@ body.form-open {
 
 @media (max-width: 560px) {
   .sys-grid,
-  .unite-grid { grid-template-columns: 1fr; }
+  .unite-grid,
+  .rail,
+  .aims,
+  .split,
+  .integ-cols,
+  .sys-demo-out-grid { grid-template-columns: 1fr; }
   .unite-cta {
     font-size: 13px;
     padding: 12px 14px;
+    min-height: 44px;
   }
   .lang {
     height: auto;
@@ -1688,40 +1760,59 @@ body.form-open {
     min-height: 44px;
     padding: 0 12px;
   }
+  .form-overlay {
+    place-items: start center;
+  }
+  .form-modal {
+    padding: 24px 16px 20px;
+  }
 }
 
 @media (max-width: 480px) {
+  :root { --chrome-h: 118px; }
   .chrome-top {
-    padding: 6px 4px 0 6px;
-    gap: 4px;
-    height: 60px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "brand lang"
+      "tabs tabs";
+    height: auto;
+    align-items: center;
+    padding: 8px 8px 0;
+    gap: 6px 8px;
   }
   .brand {
-    padding: 0 8px 8px 0;
+    grid-area: brand;
+    padding: 0;
+    margin: 0;
     border-right: 0;
   }
   .brand-mark {
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
+  }
+  .lang {
+    grid-area: lang;
+    justify-self: end;
+    margin: 0 0 2px;
+  }
+  .tabs {
+    grid-area: tabs;
+    width: 100%;
   }
   .tab {
-    padding: 0 14px 0 10px;
-    margin: 0 0 -1px -8px;
-    font-size: 10.5px;
+    padding: 0 4px;
+    margin: 0;
+    font-size: 12px;
   }
   .tab:first-child { margin-left: 0; }
   .tab-label {
-    overflow: visible;
-    text-overflow: clip;
-  }
-  .lang {
-    height: auto;
-    min-height: 44px;
-    margin: 0 2px 8px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .lang-btn {
     padding: 0 8px;
-    font-size: 9px;
+    font-size: 10px;
     min-width: 44px;
     min-height: 44px;
   }

@@ -84,10 +84,15 @@ function openTab(id, opts = {}) {
   if (demo) demo.setPaused(id !== "servicios");
   if (moon) moon.setPaused(id !== "moon");
   setHeroActive(id === "home");
+  if (window.matchMedia("(max-width: 860px)").matches) {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
   if (id === "servicios") {
     startDemo();
   } else if (id === "moon") {
-    if (!opts.focusTab && search) search.focus({ preventScroll: true });
+    const skipSearchFocus = window.matchMedia("(pointer: coarse)").matches
+      || window.matchMedia("(max-width: 860px)").matches;
+    if (!opts.focusTab && search && !skipSearchFocus) search.focus({ preventScroll: true });
     startMoon();
     if (moon) moon.resize();
   } else if (id === "sumate" && (raw === "contacto" || raw === "contact")) {
@@ -500,6 +505,8 @@ function setupHero() {
   if (!heroVideo) return;
   heroVideo.muted = true;
   heroVideo.loop = true;
+  heroVideo.setAttribute("playsinline", "");
+  heroVideo.setAttribute("webkit-playsinline", "");
   const cine = heroVideo.closest(".hero-cine");
   if (prefersLiteMedia()) {
     heroVideo.dataset.lite = "1";
@@ -544,3 +551,12 @@ async function startDemo() {
     console.error(err);
   }
 }
+
+function onViewportChange() {
+  if (moon) moon.resize();
+  if (demo && typeof demo.resize === "function") demo.resize();
+}
+
+window.addEventListener("resize", onViewportChange);
+window.addEventListener("orientationchange", onViewportChange);
+window.visualViewport?.addEventListener("resize", onViewportChange);
